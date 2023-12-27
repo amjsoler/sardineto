@@ -33,4 +33,9 @@ class GimnasioPolicy
     {
         return $usuario->id === $gimnasio->propietario;
     }
+
+    public function reenviarInvitaciones(User $usuario, Gimnasio $gimnasio)
+    {
+        return $this->comprobarAdministradorGimnasio($usuario, $gimnasio);
+    }
 }

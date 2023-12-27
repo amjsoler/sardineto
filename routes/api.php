@@ -17,25 +17,36 @@ Route::get("iniciar-sesion", function() {
 ///// GIMNASIOS /////
 /////////////////////
 
-Route::get("gimnasios", [GimnasioController::class, "misGimnasios"])
+Route::get("gimnasios",
+    [GimnasioController::class, "misGimnasios"])
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->name("mis-gimnasios");
 
-Route::post("gimnasios", [GimnasioController::class, "crearGimnasio"])
+Route::post("gimnasios",
+    [GimnasioController::class, "crearGimnasio"])
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->name("crear-gimnasio");
 
-Route::put("gimnasios/{gimnasio}", [GimnasioController::class, "editarGimnasio"])
+Route::put("gimnasios/{gimnasio}",
+    [GimnasioController::class, "editarGimnasio"])
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->can("editarGimnasio", "gimnasio")
     ->name("editar-gimnasio");
 
-Route::delete("gimnasios/{gimnasio}", [GimnasioController::class, "eliminarGimnasio"])
+Route::delete("gimnasios/{gimnasio}",
+    [GimnasioController::class, "eliminarGimnasio"])
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->can("eliminarGimnasio", "gimnasio")
     ->name("eliminar-gimnasio");
 
-Route::post("gimnasios/{gimnasio}/invitar-usuario", [GimnasioController::class, "invitarUsuario"])
+Route::post("gimnasios/{gimnasio}/invitar-usuario",
+    [GimnasioController::class, "invitarUsuario"])
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("invitarUsuarios", "gimnasio")
     ->name("invitar-usuario");
+
+Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}",
+    [GimnasioController::class, "reenviarInvitacion"])
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("reenviarInvitaciones", "gimnasio")
+    ->name("reenviar-invitacion");

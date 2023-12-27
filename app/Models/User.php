@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,5 +47,10 @@ class User extends Authenticatable
     public function gimnasiosPropietario(): HasMany
     {
         return $this->hasMany(Gimnasio::class, "propietario", "id");
+    }
+
+    public function gimnasiosInvitado() : BelongsToMany
+    {
+        return $this->belongsToMany(Gimnasio::class, "usuarios_gimnasios", "usuario", "gimnasio", "id", "id");
     }
 }

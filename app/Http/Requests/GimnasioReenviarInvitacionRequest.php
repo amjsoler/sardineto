@@ -3,10 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Rules\ComprobarSiUsuarioYaEstaInvitadoAGimnasio;
+use App\Rules\ComprobarSiUsuarioYaHaAceptadoLaInvitacion;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class GimnasioInvitarUsuarioRequest extends FormRequest
+class GimnasioReenviarInvitacionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,6 +15,11 @@ class GimnasioInvitarUsuarioRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge(["usuarioId" => $this->usuario->id, "gimnasioId" => $this->gimnasio->id]);
     }
 
     /**
@@ -24,21 +30,18 @@ class GimnasioInvitarUsuarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "email" => [
-                "required",
-                "email",
-                "exists:users,email",
-                new ComprobarSiUsuarioYaEstaInvitadoAGimnasio($this->gimnasio->id)
+            "usuarioId" => [
+                Rule::exists("usuarios_gimnasios", "usuario")->where("gimnasio", $this->gimnasio->id),
+                new ComprobarSiUsuarioYaHaAceptadoLaInvitacion($this->gimnasio, $this->usuario)
             ]
+
         ];
     }
 
-    public function messages() : array
+    public function messages()
     {
         return [
-            "email.required" => __("validation.gimnasio.email.required"),
-            "email.email" => __("validation.gimnasio.email.email"),
-            "email.exists" => __("validation.gimnasio.email.exists"),
+            "usuarioId.exists" => __("validation.gimnasio.usuarioId.exists"),
         ];
     }
 }

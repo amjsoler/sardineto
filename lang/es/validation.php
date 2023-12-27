@@ -16,7 +16,12 @@ return [
             "required" => "Especificada el correo del usuario al que quieres invitar",
             "email" => "El email debe ser una dirección de correo válida",
             "exists" => "No hay ningún usuario con ese correo. ¿Se ha registrado ya?",
-            "unique" => "Este usuario ya ha sido invitado"
+            "comprobarSiUsuarioYaEstaInvitadoAGimnasio" => "Este usuario ya ha sido invitado",
+
+        ],
+        "usuarioId" => [
+            "exists" => "El usuario especificado no está invitado",
+            "yaAceptado" => "El usuario ya ha aceptado la invitación"
         ]
-    ]
+    ],
 ];

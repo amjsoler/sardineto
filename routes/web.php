@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GimnasioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", [GimnasioController::class, "aceptarInvitacion"])
+    ->name("aceptar-invitacion");

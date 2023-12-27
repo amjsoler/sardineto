@@ -15,7 +15,7 @@ class Gimnasio extends Model
     public function usuariosInvitados() : BelongsToMany
     {
         return $this->belongsToMany(User::class,
-            "users_gimnasios",
+            "usuarios_gimnasios",
             "gimnasio",
             "usuario",
             "id",
