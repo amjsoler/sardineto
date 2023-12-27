@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Gimnasio::class, "usuarios_gimnasios", "usuario", "gimnasio", "id", "id");
     }
+
+    public function clasesEnLasQueParticipa(): BelongsToMany
+    {
+        return $this->belongsToMany(Clase::class, "usuarios_participan_clases", "usuario", "clase", "id", "id")->withTimestamps();
+    }
 }

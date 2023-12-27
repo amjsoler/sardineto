@@ -12,7 +12,6 @@ class GimnasioPolicy
      */
     public function __construct()
     {
-        //
     }
 
     public function editarGimnasio(User $usuario, Gimnasio $gimnasio)

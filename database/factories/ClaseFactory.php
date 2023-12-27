@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Gimnasio>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Clase>
  */
-class GimnasioFactory extends Factory
+class ClaseFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +18,9 @@ class GimnasioFactory extends Factory
     {
         return [
             "nombre" => $this->faker->name,
-            "descripcion" => $this->faker->paragraph(2),
-            "logo" => $this->faker->imageUrl,
-            "direccion" => $this->faker->address,
+            "descripcion" => $this->faker->paragraph(3),
+            "fechayhora" => $this->faker->dateTime,
+            "plazas" => $this->faker->numberBetween(1, 20),
         ];
     }
 }

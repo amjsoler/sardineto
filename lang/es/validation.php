@@ -24,4 +24,26 @@ return [
             "yaAceptado" => "El usuario ya ha aceptado la invitación"
         ]
     ],
+    "clase" => [
+        "nombre" => [
+            "required" => "Especifica un nombre para la clase",
+            "max" => "El nombre de la clase es muy largo"
+        ],
+        "descripcion" => [
+            "max" => "La descripción de la clase es muy larga"
+        ],
+        "fechayhora" => [
+            "required" => "Especifica cuando se celebrará la clase"
+        ],
+        "plazas" => [
+            "required" => "Indica el cantidad de plazas para esta clase",
+            "integer" => "La cantidad de plazas debe ser un número entero",
+            "min" => "La cantidad de plazas debe ser mayor que 0"
+        ],
+        "pertenece" => "Esta clase no pertenece al gimnasio"
+    ],
+    "usuarioApuntaClase" => [
+        "exists" => "Debes estar invitado al gimnasio para poder apuntarte a la clase",
+        "unique" => "Ya estás apuntado a esta clase"
+    ]
 ];
