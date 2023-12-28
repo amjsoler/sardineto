@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\GimnasioController;
+use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TarifaController;
 use App\Models\Clase;
+use App\Models\Suscripcion;
 use App\Models\Tarifa;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -140,10 +142,47 @@ Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}",
 ///// SUSCRIPCIONES /////
 /////////////////////////
 
-Route::get("gimnasios/{gimnasio}/suscripciones", []);
-Route::post("gimnasios/{gimnasio}/suscripciones", []);//Como admin
-Route::post("gimnasios/{gimnasio}/suscribirse", []);//Como user
-Route::put("gimnasios/{gimnasio}/suscripciones/{suscripcion}", []); //Como admin
-Route::delete("gimnasios/{gimnasio}/suscripciones/{suscripcion}", []); //Como admin
-Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada"); //Como admin y como tpv
+Route::get("gimnasios/{gimnasio}/suscripciones",
+    [SuscripcionController::class, "verSuscripciones"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verSuscripciones", [Suscripcion::class, "gimnasio"])
+    ->name("ver-suscripcion");
+
+//Generar una suscripción como user
+Route::post("gimnasios/{gimnasio}/suscripciones",
+    [SuscripcionController::class, "crearSuscripcion"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearSuscripciones", [Suscripcion::class, "gimnasio"])
+    ->name("crear-suscripcion");
+
+//Generar suscripción como admin
+Route::post("gimnasios/{gimnasio}/suscribirse",
+    [SuscripcionController::class, "adminCreaSuscripcion"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearSuscripcionesComoAdmin", [Suscripcion::class, "gimnasio"])
+    ->name("admin-crear-suscripcion");
+
+Route::put("gimnasios/{gimnasio}/suscripciones/{suscripcion}",
+    [SuscripcionController::class, "editarSuscripcion"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("editarSuscripciones", [Suscripcion::class, "gimnasio", "suscripcion"])
+    ->name("editar-suscripcion");
+
+Route::delete("gimnasios/{gimnasio}/suscripciones/{suscripcion}",
+    [SuscripcionController::class, "eliminarSuscripcion"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("eliminarSuscripciones", [Suscripcion::class, "gimnasio", "suscripcion"])
+    ->name("eliminar-suscripcion");
+
+Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada",
+    [SuscripcionController::class, "marcarSuscripcionComoPagada"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("marcarSuscripcionesPagadas", [Suscripcion::class, "gimnasio", "suscripcion"])
+    ->name("marcar-suscripcion-pagada");;
 

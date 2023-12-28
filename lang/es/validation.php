@@ -61,5 +61,16 @@ return [
             "integer" => "Los créditos tienen que ser un número válido",
             "min" => "Los créditos deben ser un número positivo",
         ]
+    ],
+    "suscripcion" => [
+        "tarifa" => [
+            "required" => "Indica con qué tarifa te quieres suscribir",
+            "exists" => "La tarifa no existe"
+        ],
+
+        "usuario" => [
+            "required" => "Especifica el usuario al que asignar la suscripción",
+            "exists" => "El usuario al que quieres asignar la suscripción no forma parte del gimnasio",
+        ]
     ]
 ];
