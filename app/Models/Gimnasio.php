@@ -27,4 +27,9 @@ class Gimnasio extends Model
             "id",
             "id")->withTimestamps();
     }
+
+    public function tarifas() : HasMany
+    {
+        return $this->hasMany(Tarifa::class, "gimnasio", "id");
+    }
 }

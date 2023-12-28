@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             GimnasioSeeder::class,
-            ClaseSeeder::class
+            ClaseSeeder::class,
+            TarifaSeeder::class
         ]);
     }
 }

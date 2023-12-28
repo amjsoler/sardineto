@@ -45,5 +45,21 @@ return [
     "usuarioApuntaClase" => [
         "exists" => "Debes estar invitado al gimnasio para poder apuntarte a la clase",
         "unique" => "Ya estás apuntado a esta clase"
+    ],
+    "tarifa" => [
+        "nombre" => [
+            "required" => "Ponle un nombre a la tarifa",
+            "max" => "El nombre de la tarifa es demasiado largo",
+        ],
+        "precio" => [
+            "required" => "Ponle un precio a la tarifa",
+            "decimal" => "El precio ha de ser un número",
+            "min" => "El precio debe ser un número positivo",
+        ],
+        "creditos" => [
+            "required" => "Especifica la cantidad de créditos que otorga esta tarifa al suscriptor",
+            "integer" => "Los créditos tienen que ser un número válido",
+            "min" => "Los créditos deben ser un número positivo",
+        ]
     ]
 ];

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\GimnasioController;
+use App\Http\Controllers\TarifaController;
 use App\Models\Clase;
+use App\Models\Tarifa;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -104,10 +106,33 @@ Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse",
 ///// TARIFAS /////
 ///////////////////
 
-Route::get("gimnasios/{gimnasio}/tarifas", []);
-Route::post("gimnasios/{gimnasio}/tarifas", []);
-Route::put("gimnasios/{gimnasio}/tarifas/{tarifa}", []);
-Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}", []);
+Route::get("gimnasios/{gimnasio}/tarifas",
+    [TarifaController::class, "verTarifas"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verTarifas", [Tarifa::class, "gimnasio"])
+    ->name("ver-tarifas");
+
+Route::post("gimnasios/{gimnasio}/tarifas",
+    [TarifaController::class, "crearTarifa"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearTarifas", [Tarifa::class, "gimnasio"])
+    ->name("crear-tarifas");
+
+Route::put("gimnasios/{gimnasio}/tarifas/{tarifa}",
+    [TarifaController::class, "modificarTarifa"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("editarTarifas", [Tarifa::class, "gimnasio", "tarifa"])
+    ->name("editar-tarifas");
+
+Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}",
+    [TarifaController::class, "eliminarTarifa"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("eliminarTarifas", [Tarifa::class, "gimnasio", "tarifa"])
+    ->name("eliminar-tarifas");
 
 
 
