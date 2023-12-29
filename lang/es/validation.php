@@ -72,5 +72,19 @@ return [
             "required" => "Especifica el usuario al que asignar la suscripción",
             "exists" => "El usuario al que quieres asignar la suscripción no forma parte del gimnasio",
         ]
+    ],
+    "articulo" => [
+        "nombre" => [
+            "required" => "Escribe un nombre para el artículo",
+            "max" => "El nombre del artículo es demasiado largo"
+        ],
+        "descripcion" => [
+            "max" => "La descripción del producto es demasiado larga"
+        ],
+        "stock" => [
+            "required" => "Especifica la cantidad de artículos para poner a la venta",
+            "numeric" => "El stock ha de ser un número",
+            "min" => "El stock no puede ser inferior a 0"
+        ]
     ]
 ];

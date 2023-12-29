@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             GimnasioSeeder::class,
             ClaseSeeder::class,
             TarifaSeeder::class,
-            SuscripcionSeeder::class
+            SuscripcionSeeder::class,
+            ArticuloSeeder::class
         ]);
     }
 }

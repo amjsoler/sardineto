@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\GimnasioController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TarifaController;
+use App\Models\Articulo;
 use App\Models\Clase;
 use App\Models\Suscripcion;
 use App\Models\Tarifa;
@@ -184,5 +186,42 @@ Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada",
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("marcarSuscripcionesPagadas", [Suscripcion::class, "gimnasio", "suscripcion"])
-    ->name("marcar-suscripcion-pagada");;
+    ->name("marcar-suscripcion-pagada");
 
+
+
+/////////////////////
+///// ARTÍCULOS /////
+/////////////////////
+
+Route::get("gimnasios/{gimnasio}/articulos",
+    [ArticuloController::class, "verArticulos"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verArticulos", [Articulo::class, "gimnasio"])
+    ->name("ver-articulos");
+
+Route::post("gimnasios/{gimnasio}/articulos",
+    [ArticuloController::class, "crearArticulo"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearArticulos", [Articulo::class, "gimnasio"])
+    ->name("crear-articulo");
+
+Route::put("gimnasios/{gimnasio}/articulos/{articulo}",
+    [ArticuloController::class, "editarArticulo"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("editarArticulos", [Articulo::class, "gimnasio", "articulo"])
+    ->name("editar-articulo");
+
+Route::delete("gimnasios/{gimnasio}/articulos/{articulo}",
+    [ArticuloController::class, "eliminarArticulo"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("eliminarArticulos", [Articulo::class, "gimnasio", "articulo"])
+    ->name("eliminar-articulo");
+
+Route::get("gimnasios/{gimnasio}/articulos/compras", []);
+Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar", []);
+Route::get("gimnasios/{gimnasio}/articulos/{articulo}/pagar-compra", []);

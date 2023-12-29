@@ -37,4 +37,9 @@ class Gimnasio extends Model
     {
         return $this->hasMany(Suscripcion::class, "gimnasio", "id");
     }
+
+    public function articulos(): HasMany
+    {
+        return $this->hasMany(Articulo::class, "gimnasio", "id");
+    }
 }
