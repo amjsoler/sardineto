@@ -222,6 +222,24 @@ Route::delete("gimnasios/{gimnasio}/articulos/{articulo}",
     ->can("eliminarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("eliminar-articulo");
 
-Route::get("gimnasios/{gimnasio}/articulos/compras", []);
-Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar", []);
-Route::get("gimnasios/{gimnasio}/articulos/{articulo}/pagar-compra", []);
+Route::get("gimnasios/{gimnasio}/articulos/historial-compras",
+    [ArticuloController::class, "historialDeCompras"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verMiHistorialDeCompras", [Articulo::class, "gimnasio"])
+    ->name("articulos-historial-compras");
+
+Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar",
+    [ArticuloController::class, "comprarArticulo"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("comprarArticulos", [Articulo::class, "gimnasio", "articulo"])
+    ->name("comprar-articulo");
+;
+Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
+    [ArticuloController::class, "pagarCompra"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("pagarCompras", [Articulo::class, "gimnasio", "compra"])
+    ->name("pagar-compra");
+

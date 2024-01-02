@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Suscripcion::class, "usuario", "id");
     }
+
+    public function historialDeCompras() : BelongsToMany
+    {
+        return $this->belongsToMany(Articulo::class, "usuarios_compran_articulos", "usuario", "articulo", "id", "id")->withTimestamps();
+    }
 }
