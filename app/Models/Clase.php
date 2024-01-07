@@ -22,4 +22,9 @@ class Clase extends Model
     {
         return $this->belongsToMany(User::class, "usuarios_participan_clases", "clase", "usuario", "id", "id")->withTimestamps();
     }
+
+    public function ejercicios(): BelongsToMany
+    {
+        return $this->belongsToMany(Ejercicio::class, "ejercicios_clases", "clase", "ejercicio", "id", "id");
+    }
 }

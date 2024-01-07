@@ -248,9 +248,9 @@ Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
 
 
 
-/////////////////////
-///// ARTÍCULOS /////
-/////////////////////
+//////////////////////
+///// EJERCICIOS /////
+//////////////////////
 
 Route::get("gimnasios/{gimnasio}/ejercicios",
     [EjercicioController::class, "verEjercicios"]
@@ -279,3 +279,17 @@ Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
     ->name("eliminar-ejercicio");
+
+Route::get("gimnasios/{gimnasio}/clases/{clase}/asignar-ejercicio/{ejercicio}",
+    [EjercicioController::class, "asociarEjercicio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("asociarEjerciciosAClase", [Ejercicio::class, "gimnasio", "clase", "ejercicio"])
+    ->name("asociar-ejercicio");
+
+Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}",
+    [EjercicioController::class, "desasociarEjercicio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("desasociarEjerciciosAClase", [Ejercicio::class, "gimnasio", "clase", "ejercicio"])
+    ->name("desasociar-ejercicio");

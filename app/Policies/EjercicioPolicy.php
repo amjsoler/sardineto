@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Helpers\PolicyHelpers;
+use App\Models\Clase;
 use App\Models\Ejercicio;
 use App\Models\Gimnasio;
 use App\Models\User;
@@ -31,5 +32,19 @@ class EjercicioPolicy
     {
         return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) &&
             $ejercicio->gimnasio === $gimnasio->id;
+    }
+
+    public function asociarEjerciciosAClase(user $usuario, Gimnasio $gimnasio, Clase $clase, Ejercicio $ejercicio)
+    {
+        return $gimnasio->id === $clase->gimnasio &&
+            $ejercicio->gimnasio === $gimnasio->id &&
+            (PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio));
+    }
+
+    public function desasociarEjerciciosAClase(user $usuario, Gimnasio $gimnasio, Clase $clase, Ejercicio $ejercicio)
+    {
+        return $gimnasio->id === $clase->gimnasio &&
+            $ejercicio->gimnasio === $gimnasio->id &&
+            (PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio));
     }
 }

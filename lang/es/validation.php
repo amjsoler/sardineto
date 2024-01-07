@@ -108,6 +108,16 @@ return [
         "demostracion" => [
             "nullable" => "La demostración puede estar vacía",
             "url" => "La demostración debe ser un enlace válido a un video"
+        ],
+
+        "detalles" => [
+            "nullable" => "El detalle de la clase puede estar vacío",
+            "string" => "Los detalles de la clase no son válidos. ¿Contiene algún carácter extraño?",
+            "max" => "Los detalles son muy largos"
+        ],
+
+        "ejercicio" => [
+            "unique" => "El ejercicio ya está asociado a la clase"
         ]
-    ]
+    ],
 ];

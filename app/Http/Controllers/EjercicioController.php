@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EjercicioAsociarEjercicioAClaseRequest;
 use App\Http\Requests\EjercicioCrearEjercicioRequest;
 use App\Http\Requests\EjercicioModificarEjercicioRequest;
+use App\Models\Clase;
 use App\Models\Ejercicio;
 use App\Models\Gimnasio;
 
@@ -35,5 +37,19 @@ class EjercicioController extends Controller
         $ejercicio->delete();
 
         return response()->json();
+    }
+
+    public function asociarEjercicio(Gimnasio $gimnasio, Clase $clase, Ejercicio $ejercicio, EjercicioAsociarEjercicioAClaseRequest $request)
+    {
+        $clase->ejercicios()->attach($ejercicio, ["gimnasio" => $gimnasio->id, "detalles" => $request->detalles]);
+
+        return response()->json($clase->load("ejercicios"));
+    }
+
+    public function desasociarEjercicio(Gimnasio $gimnasio, Clase $clase, Ejercicio $ejercicio)
+    {
+        $clase->ejercicios()->detach($ejercicio);
+
+        return response()->json($clase->load("ejercicios"));
     }
 }
