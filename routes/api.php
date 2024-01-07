@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\ClaseController;
+use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\GimnasioController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TarifaController;
 use App\Models\Articulo;
 use App\Models\Clase;
+use App\Models\Ejercicio;
 use App\Models\Suscripcion;
 use App\Models\Tarifa;
 use App\Models\User;
@@ -243,3 +245,37 @@ Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
     ->can("pagarCompras", [Articulo::class, "gimnasio", "compra"])
     ->name("pagar-compra");
 
+
+
+
+/////////////////////
+///// ARTÍCULOS /////
+/////////////////////
+
+Route::get("gimnasios/{gimnasio}/ejercicios",
+    [EjercicioController::class, "verEjercicios"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verEjercicios", [Ejercicio::class, "gimnasio"])
+    ->name("ver-ejercicios");
+
+Route::post("gimnasios/{gimnasio}/ejercicios",
+    [EjercicioController::class, "crearEjercicio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearEjercicios", [Ejercicio::class, "gimnasio"])
+    ->name("crear-ejercicio");
+
+Route::put("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
+    [EjercicioController::class, "modificarEjercicio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("modificarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
+    ->name("modificar-ejercicio");
+
+Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
+    [EjercicioController::class, "eliminarEjercicio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("eliminarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
+    ->name("eliminar-ejercicio");

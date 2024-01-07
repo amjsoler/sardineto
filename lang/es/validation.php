@@ -90,5 +90,24 @@ return [
             "exists" => "La compra que has especificado no existe",
             "ComprobarSiUnaCompraYaEstaPagada" => "La compra ya está pagada"
         ]
+    ],
+
+    "ejercicio" => [
+        "nombre" => [
+            "required" => "El nombre del ejercicio no puede estar vacío",
+            "string" => "El nombre del ejercicio no es válido. ¿Contiene algún carácter extraño?",
+            "max:150" => "El nombre del ejercicio es demasiado largo"
+        ],
+
+        "descripcion" => [
+            "nullable" => "La descripción puede estar vacía",
+            "string" => "La descripción del ejercicio no es válida. ¿Contiene algún carácter extraño?",
+            "max:500" => "La descripción del ejercicio es demasiado larga"
+        ],
+
+        "demostracion" => [
+            "nullable" => "La demostración puede estar vacía",
+            "url" => "La demostración debe ser un enlace válido a un video"
+        ]
     ]
 ];
