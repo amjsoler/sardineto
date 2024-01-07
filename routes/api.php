@@ -4,11 +4,13 @@ use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\GimnasioController;
+use App\Http\Controllers\MetricaController;
 use App\Http\Controllers\SuscripcionController;
 use App\Http\Controllers\TarifaController;
 use App\Models\Articulo;
 use App\Models\Clase;
 use App\Models\Ejercicio;
+use App\Models\Metrica;
 use App\Models\Suscripcion;
 use App\Models\Tarifa;
 use App\Models\User;
@@ -293,3 +295,29 @@ Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("desasociarEjerciciosAClase", [Ejercicio::class, "gimnasio", "clase", "ejercicio"])
     ->name("desasociar-ejercicio");
+
+
+
+
+////////////////////
+///// MÉTRICAS /////
+////////////////////
+
+Route::get("metricas",
+    [MetricaController::class, "verMetricas"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->name("ver-metricas");
+
+Route::post("metricas",
+    [MetricaController::class, "crearMetrica"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->name("crear-metrica");
+
+Route::delete("metricas/{metrica}",
+    [MetricaController::class, "eliminarMetrica"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("eliminarMetricas", [Metrica::class, "metrica"])
+    ->name("eliminar-metrica");

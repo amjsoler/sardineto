@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             TarifaSeeder::class,
             SuscripcionSeeder::class,
             ArticuloSeeder::class,
-            EjercicioSeeder::class
+            EjercicioSeeder::class,
+            MetricaSeeder::class
         ]);
 
         //Hacemos que Jorge esté invitado en el gimnasio 1

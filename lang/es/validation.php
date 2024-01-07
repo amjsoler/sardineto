@@ -120,4 +120,15 @@ return [
             "unique" => "El ejercicio ya está asociado a la clase"
         ]
     ],
+
+    "metrica" => [
+        "peso" => [
+            "required" => "El peso no puede estar vacío",
+            "decimal" => "El peso debe ser un peso válido (ej. 55,4)"
+        ],
+        "porcentaje_graso" => [
+            "required" => "El porcentaje graso no puede estar vacío",
+            "decimal" => "El porcentaje graso debe ser un valor válido (ej. 13,4)"
+        ]
+    ]
 ];

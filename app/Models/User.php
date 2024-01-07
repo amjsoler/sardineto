@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Articulo::class, "usuarios_compran_articulos", "usuario", "articulo", "id", "id")->withTimestamps();
     }
+
+    public function metricas() : HasMany
+    {
+        return $this->hasMany(Metrica::class, "usuario", "id");
+    }
 }
