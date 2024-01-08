@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Metrica::class, "usuario", "id");
     }
+
+    public function registrosPeso(): HasMany
+    {
+        return $this->hasMany(EjercicioUsuario::class, "usuario", "id");
+    }
 }

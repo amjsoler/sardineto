@@ -130,5 +130,12 @@ return [
             "required" => "El porcentaje graso no puede estar vacío",
             "decimal" => "El porcentaje graso debe ser un valor válido (ej. 13,4)"
         ]
+    ],
+
+    "ejerciciousuario" => [
+        "unorm" => [
+            "requird" => "Debes especificar el peso en 1RM en este ejercicio",
+            "decimal" => "El peso no es válido"
+        ]
     ]
 ];

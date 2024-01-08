@@ -13,4 +13,9 @@ class PolicyHelpers {
     {
         return $usuario->id === $gimnasio->propietario;
     }
+
+    public static function comprobarSiUserEstaInvitadoAlGimnasio(User $usuario, Gimnasio $gimnasio)
+    {
+        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->exists();
+    }
 }

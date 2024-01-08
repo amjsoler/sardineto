@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\EjercicioController;
+use App\Http\Controllers\EjerciciosUsuariosController;
 use App\Http\Controllers\GimnasioController;
 use App\Http\Controllers\MetricaController;
 use App\Http\Controllers\SuscripcionController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\TarifaController;
 use App\Models\Articulo;
 use App\Models\Clase;
 use App\Models\Ejercicio;
+use App\Models\EjercicioUsuario;
 use App\Models\Metrica;
 use App\Models\Suscripcion;
 use App\Models\Tarifa;
@@ -321,3 +323,39 @@ Route::delete("metricas/{metrica}",
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarMetricas", [Metrica::class, "metrica"])
     ->name("eliminar-metrica");
+
+
+
+
+
+////////////////////////////
+///// EJERCICIOUSUARIO /////
+////////////////////////////
+
+Route::get("gimnasios/{gimnasio}/registros-de-peso",
+    [EjerciciosUsuariosController::class, "verRegistrosDePeso"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verRegistrosDePeso", [EjercicioUsuario::class, "gimnasio"])
+    ->name("ver-registros-de-peso");
+
+Route::get("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
+    [EjerciciosUsuariosController::class, "verRegistrosDePesoPorEjercicio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verRegistrosDePesoPorEjercicio", [EjercicioUsuario::class, "gimnasio", "ejercicio"])
+    ->name("ver-registros-de-peso-por-ejercicio");
+
+Route::post("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
+    [EjerciciosUsuariosController::class, "registrarNuevaMarcaDePeso"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearRegistrosDePeso", [EjercicioUsuario::class, "gimnasio", "ejercicio"])
+    ->name("crear-registros-de-peso");
+
+Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso/{ejercicioUsuario}",
+    [EjerciciosUsuariosController::class, "eliminarMarcaDePeso"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("eliminarRegistrosDePeso", [EjercicioUsuario::class, "gimnasio", "ejercicio", "ejercicioUsuario"])
+    ->name("eliminar-registros-de-peso");
