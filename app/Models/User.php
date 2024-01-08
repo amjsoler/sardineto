@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(EjercicioUsuario::class, "usuario", "id");
     }
+
+    public function gimnasiosAdministrados(): BelongsToMany
+    {
+        return $this->belongsToMany(Gimnasio::class, "administradores", "usuario", "gimnasio", "id", "id")->withTimestamps();
+    }
 }

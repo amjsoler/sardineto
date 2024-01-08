@@ -22,6 +22,9 @@ return [
         "usuarioId" => [
             "exists" => "El usuario especificado no está invitado",
             "yaAceptado" => "El usuario ya ha aceptado la invitación"
+        ],
+        "gimnasioId" => [
+            "unique" => "El usuario ya es administrador del gimnasio"
         ]
     ],
     "clase" => [

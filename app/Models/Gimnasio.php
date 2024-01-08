@@ -47,4 +47,9 @@ class Gimnasio extends Model
     {
         return $this->hasMany(Ejercicio::class, "gimnasio", "id");
     }
+
+    public function administradores(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, "administradores", "gimnasio", "usuario", "id", "id")->withTimestamps();
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\UsuarioInvitadoAGimnasio;
+use App\Http\Requests\GimnasioAnyadirAdministradorRequest;
 use App\Http\Requests\GimnasioCrearGimnasioRequest;
 use App\Http\Requests\GimnasioEditarGimnasioRequest;
 use App\Http\Requests\GimnasioInvitarUsuarioRequest;
@@ -79,6 +80,20 @@ class GimnasioController extends Controller
     {
         $token = $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->withPivot("token_aceptacion")->first()->pivot->token_aceptacion;
         Notification::send($usuario, new CorreoConfirmacionUsuarioInvitadoAGimnasio($usuario, $gimnasio, $token));
+
+        return response()->json();
+    }
+
+    public function anyadirAdministrador(Gimnasio $gimnasio, User $usuario, GimnasioAnyadirAdministradorRequest $request)
+    {
+        $gimnasio->administradores()->attach($usuario->id);
+
+        return response()->json();
+    }
+
+    public function quitarAdministrador(Gimnasio $gimnasio, User $usuario)
+    {
+        $gimnasio->administradores()->detach($usuario->id);
 
         return response()->json();
     }

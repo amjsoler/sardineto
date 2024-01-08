@@ -12,6 +12,7 @@ use App\Models\Articulo;
 use App\Models\Clase;
 use App\Models\Ejercicio;
 use App\Models\EjercicioUsuario;
+use App\Models\Gimnasio;
 use App\Models\Metrica;
 use App\Models\Suscripcion;
 use App\Models\Tarifa;
@@ -65,6 +66,19 @@ Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}",
     ->can("reenviarInvitaciones", "gimnasio")
     ->name("reenviar-invitacion");
 
+Route::get("gimnasios/{gimnasio}/crear-administrador/{usuario}",
+    [GimnasioController::class, "anyadirAdministrador"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("crearAdministradores", [Gimnasio::class, "gimnasio", "usuario"])
+    ->name("crear-administrador");
+
+Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}",
+    [GimnasioController::class, "quitarAdministrador"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("quitarAdministradores", [Gimnasio::class, "gimnasio", "usuario"])
+    ->name("quitar-administrador");
 
 //////////////////
 ///// CLASES /////
