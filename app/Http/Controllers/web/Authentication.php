@@ -13,144 +13,41 @@ use Illuminate\Support\Facades\Log;
 
 class Authentication extends Controller
 {
-    /**
-     * Método para verificar una cuenta de usuario dado un token
-     *
-     * @param string $token El token asociado a la cuenta de usuario
-     *
-     * @return null
-     *   0: OK
-     * -11: Excepción
-     * -12: Token no encontrado o no valido
-     * -13: Error al marcar la cuenta como verificada
-     */
     public function verificarCuentaConToken(string $token)
     {
-        $response = [
-            "status" => "",
-            "code" => "",
-            "statusText" => "",
-            "data" => []
-        ];
+        $result = false;
 
-        try{
-            //Log de entrada
-            Log::debug("Entrando al verificarCuentaConToken de Authentication",
-            array(
-                "request: " => compact("token")
-            ));
+        //Consulto el token y veo si todavía es válido
+        $accountVerifyToken = AccountVerifyToken::where("token", "=", $token)
+            ->where("valido_hasta", ">", now())
+            ->first();
 
-            //Consulto el token y veo si todavía es válido
-            $result = AccountVerifyToken::consultarToken($token);
+        if(isset($accountVerifyToken)){
+            $user = User::find($accountVerifyToken->usuario);
+            $user->email_verified_at = now();
+            $user->save();
 
-            $accountVerifyResult = $result["data"];
-
-            if($accountVerifyResult){
-                $resultMarcarVerificacion = User::marcarCuentaVerificada($accountVerifyResult->usuario);
-
-                if($resultMarcarVerificacion["code"] == 0){
-                    $response["code"] = 0;
-                    $response["status"] = 200;
-                    $response["statusText"] = "ok";
-                }else{
-                    $response["code"] = -13;
-                    $response["status"] = 400;
-                    $response["statusText"] = "ko";
-                }
-            }else{
-                $response["code"] = -12;
-                $response["status"] = 400;
-                $response["statusText"] = "ko";
-
-                //El token no es válido, no se ha encontrado porque se lo ha inventado cambiando la url o se ha caducado
-            }
-        }
-        catch(Exception $e){
-            $response["code"] = -11;
-            $response["status"] = 400;
-            $response["statusText"] = "ko";
-
-            Log::error($e->getMessage(),
-                array(
-                    "request: " => compact("token"),
-                    "repsonse: " => $response
-                )
-            );
+            $result = true;
         }
 
-        //Log de salida
-        Log::debug("Saliendo del verificarCuentaConToken de Authentication",
-            array(
-                "request: " => compact("token"),
-                "response: " => $response
-            )
-        );
-
-        return view("cuentaUsuario/verificarCuenta", compact("response"));
+        return view("cuentaUsuario/verificarCuenta", compact("result"));
     }
 
-    /**
-     * Método que devuelve el formulario de cambio de contraseña en caso de que el token sea válido
-     *
-     * @param Request $request request que incluye el token
-     *
-     * @return
-     */
     public function recuperarCuentaGet(string $token)
     {
-        $response = [
-            "status" => "",
-            "code" => "",
-            "statusText" => "",
-            "data" => []
-        ];
+        //Consulto el token y veo si todavía es válido
+        $recuperarCuentaToken = RecuperarCuentaToken::where("token", $token)
+            ->where("valido_hasta", ">", now())
+            ->first();
 
-        try{
-            //Log de entrada
-            Log::debug("Entrando al recuperarCuentaGet de Authentication",
-                array(
-                    "request: " => compact("token")
-                )
-            );
+        $response = array();
 
-            //Consulto el token y veo si todavía es válido
-            $result = RecuperarCuentaToken::consultarToken($token);
-
-            $recuperarCuentaResult = $result["data"];
-
-            if($recuperarCuentaResult){
-                $response["code"] = 0;
-                $response["status"] = 200;
-                $response["statusText"] = "ok";
-                $response["data"] = $recuperarCuentaResult;
-            }else{
-                $response["code"] = -12;
-                $response["status"] = 400;
-                $response["statusText"] = "ko";
-
-                //El token no es válido, no se ha encontrado porque se lo ha inventado cambiando la url o se ha caducado
-            }
+        if(isset($recuperarCuentaToken)){
+            $response["code"] = 0;
+            $response["data"] = $recuperarCuentaToken->token;
+        }else{
+            $response["code"] = -2;
         }
-        catch(Exception $e){
-            $response["code"] = -11;
-            $response["status"] = 400;
-            $response["statusText"] = "ko";
-
-            Log::error($e->getMessage(),
-                array(
-                    "request: " => $token,
-                    "response: " => $response
-                )
-            );
-        }
-
-        //Log de salida
-        Log::debug("Saliendo del verificarCuentaConToken de Authentication",
-            array(
-                "request: " => $token,
-                "response: " => $response
-            )
-        );
 
         return view("cuentaUsuario.recuperarCuenta", compact("response"));
     }

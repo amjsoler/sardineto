@@ -140,5 +140,25 @@ return [
             "requird" => "Debes especificar el peso en 1RM en este ejercicio",
             "decimal" => "El peso no es válido"
         ]
+    ],
+
+    "usuario" => [
+        "name" => [
+            "required" => "El nombre no puede estar vacío",
+            "max" => "El nombre no puede superar los 100 caracteres",
+        ],
+        "email" => [
+            "required" => "El email no puede estar vacío",
+            "email" => "El email no es válido",
+            "unique" => "Este email ya está registrado",
+        ],
+        "password" => [
+            "required" => "La contraseña no puede estar vacía",
+            "confirmed" => "Las contraseñas no coinciden"
+        ],
+
+        "correo" => [
+            "required" => "Debes especificar el correo de la cuenta que quieres recuperar"
+        ]
     ]
 ];

@@ -14,6 +14,7 @@ use App\Notifications\VerificarNuevaCuentaUsuario;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class ApiAuthentication extends Controller
@@ -104,116 +105,27 @@ class ApiAuthentication extends Controller
         );
     }
 
-    /**
-     * Método para registrar un nuevo usuario e iniciar su sesión
-     *
-     * @param RegisterRequest $request Incluye el name, email y password
-     *
-     * @return User El usuario recien creado junto con un token de inicio de sesión
-     *   0: OK
-     * -11: Excepción
-     * -12: Error al crear el nuevo usuario en el modelo
-     * -13: Error al intentar iniciar sesión
-     * -14: No se ha podido mandar el mail de validación
-     */
     public function register(RegisterRequest $request)
     {
-        $response = [
-            "status" => "",
-            "code" => "",
-            "statusText" => "",
-            "data" => []
-        ];
+        //Creo el usuario
+        $nuevoUsuario = User::create([
+            "name" => $request->get("name"),
+            "email" => $request->get("email"),
+            "password" =>$request->get("password")
+        ]);
 
-        try{
-            //Log de entrada
-            Log::debug("Entrando al register de ApiAuthentication",
-                array(
-                    "request: " => $request->all()
-                )
-            );
+        //Inicio sesión para disponer del id en el auth()
+        Auth::attempt($request->only("email", "password"));
 
-            //Creo el nuevo usuario
-            $userResult = User::crearNuevoUsuario(
-                $request->get("name"),
-                $request->get("email"),
-                $request->get("password")
-            );
+        //Creo el token de usuario
+        $token = $nuevoUsuario->createToken("authToken")->plainTextToken;
+        $nuevoUsuario->access_token = $token;
+        $nuevoUsuario->token_type = "Bearer";
 
-            if($userResult["code"] == 0){
-                $user = $userResult["data"];
+        //Mandando notificación con el enlace de verificación de la cuenta
+        $this->mandarCorreoVerificacionCuenta();
 
-                //Inicio de sesión de usuario y devuelvo el token dentro del user
-                $inicioSesion = Auth::attempt(['email' => $user->email, 'password' => $request->get("password")], true);
-
-                if($inicioSesion){
-                    $token = $user->createToken("authToken")->plainTextToken;
-                    $user["access_token"] = $token;
-                    $user["token_type"] = "Bearer";
-
-                    //Mandando notificación con el enlace
-                    $resultMandarCorreo = $this->mandarCorreoVerificacionCuenta();
-
-                    if($resultMandarCorreo["code"] == 0){
-                        $response["data"] = $user;
-                        $response["code"] = 0;
-                        $response["status"] = 200;
-                        $response["statusText"] = "ok";
-                    }else{
-                        $response["code"] = -14;
-                        $response["status"] = 400;
-                        $response["statusText"] = "ko";
-                    }
-                } else{
-                    $response["code"] = -13;
-                    $response["status"] = 400;
-                    $response["statusText"] = "ko";
-
-                    Log::error("Fallo al inciar sesión con el usuario recién creado, esto no debería fallar",
-                    array(
-                        "request: " => $request->all(),
-                        "response: " => $response)
-                    );
-                }
-
-            }else{
-                $response["code"] = -12;
-                $response["status"] = 400;
-                $response["statusText"] = "ko";
-
-                Log::error("Fallo al crear el usuario, esto no debería fallar si el validador hace bien su trabajo",
-                    array(
-                        "request: " => $request->all(),
-                        "response: " => $response
-                    )
-                );
-            }
-        }
-        catch(Exception $e){
-            $response["code"] = -11;
-            $response["status"] = 400;
-            $response["statusText"] = "ko";
-
-            Log::error($e->getMessage(),
-                array(
-                    "request: " => $request->all(),
-                    "repsonse: " => $response
-                )
-            );
-        }
-
-        //Log de salida
-        Log::debug("Saliendo del register del ApiAuthentication",
-            array(
-                "request: " => $request->all(),
-                "response: " => $response
-            )
-        );
-
-        return response()->json(
-            $response["data"],
-            $response["status"]
-        );
+        return response()->json($nuevoUsuario);
     }
 
     /**
@@ -228,149 +140,46 @@ class ApiAuthentication extends Controller
      */
     public function recuperarCuenta(RecuperarCuentaFormRequest $request)
     {
-        $response = [
-            "status" => "",
-            "code" => "",
-            "statusText" => "",
-            "data" => []
-        ];
+        $usuario = User::where("email", $request->get("correo"))->first();
 
-        try{
-            //Log de entrada
-            Log::debug("Entrando al recuperarCuenta de ApiAuthentication",
-                array(
-                    "request: " => $request->all()
-                ));
+        if(isset($usuario)){
+            //Creo el nuevo token
+            $validez = now()->addMinute(env("TIEMPO_VALIDEZ_TOKEN_RECUPERAR_CUENTA_EN_MINUTOS"));
 
-            //Si tiene algo el correo sigo, si no, envío una respuesta ok (no queremos dar info al posible atacante)
-            if($request->get("correo")){
-                $resultDameUsuario = User::dameUsuarioDadoCorreo($request->get("correo"));
+            //Primero vacío los tokens del usuario para crear uno nuevo puesto un usuario solo puede tener un token
+            RecuperarCuentaToken::where("usuario", $usuario->id)->delete();
 
-                if($resultDameUsuario["code"] == 0){
-                    $usuario = $resultDameUsuario["data"];
+            //Ahora creo el nuevo token
+            $nuevoRecuperarCuenta = RecuperarCuentaToken::create([
+                "usuario" => $usuario->id,
+                "token" => str_replace("/", "", Hash::make(now())),
+                "valido_hasta" => $validez,
+            ]);
 
-                    //Creo el nuevo token
-                    $validez = now()->addMinute(env("TIEMPO_VALIDEZ_TOKEN_RECUPERAR_CUENTA_EN_MINUTOS"));
-                    $result = RecuperarCuentaToken::crearTokenDeRecuperacionCuenta($usuario->id, $validez);
-
-                    if($result["code"] == 0){
-                        //Se ha creado el token correctamente, ahora lo mando por correo
-                        $tokenCreado = $result["data"];
-                        $usuario->notify(new RecuperarCuenta($tokenCreado->token));
-
-                        $response["code"] = 0;
-                        $response["status"] = 200;
-                        $response["statusText"] = "ok";
-                    }else{
-                        $response["code"] = -12;
-                        $response["status"] = 400;
-                        $response["statusText"] = "ko";
-                    }
-                }else{
-                    //Si no se encuentra al usuario respondo con OK porque no quiero dar info de si existe el correo o no
-
-                    $response["code"] = 0;
-                    $response["status"] = 200;
-                    $response["statusText"] = "ok";
-                }
-            }else{
-                $response["code"] = 0;
-                $response["status"] = 200;
-                $response["statusText"] = "ok";
-            }
-        }
-        catch(Exception $e){
-            $response["code"] = -11;
-            $response["status"] = 400;
-            $response["statusText"] = "ko";
-
-            Log::error($e->getMessage(),
-                array(
-                    "request: " => $request->all(),
-                    "repsonse: " => $response
-                )
-            );
+            //Se ha creado el token correctamente, ahora lo mando por correo
+            $usuario->notify(new RecuperarCuenta($nuevoRecuperarCuenta->token));
         }
 
-        //Log de salida
-        Log::debug("Saliendo del recuperarCuenta de ApiAuthentication",
-            array(
-                "request: " => $request->all(),
-                "response: " => $response
-            )
-        );
-
-        return response()->json(
-            $response["data"],
-            $response["status"]
-        );
+        return response()->json();
     }
 
-    /**
-     * Método para enviar un correo de verificación de cuenta
-     *
-     * @return null
-     *   0: OK
-     * -11: Excepción
-     * -12: Fallo al crear el token de verificación
-     */
     public function mandarCorreoVerificacionCuenta()
     {
-        $response = [
-            "status" => "",
-            "code" => "",
-            "statusText" => "",
-            "data" => []
-        ];
+        //Creo el nuevo token
+        $validez = now()->addMinute(env("TIEMPO_VALIDEZ_TOKEN_VERIFICACION_EN_MINUTOS"));
 
-        try{
-            //Log de entrada
-            Log::debug("Entrando al mandarCorreoVerificacionCuenta de ApiAuthentication");
+        //Primero borro los tokens del usuario, ya que solo puede tener uno
+        AccountVerifyToken::where("usuario", auth()->user()->id)->delete();
 
-            //Creo el nuevo token
-            $validez = now()->addMinute(env("TIEMPO_VALIDEZ_TOKEN_VERIFICACION_EN_MINUTOS"));
-            $result = AccountVerifyToken::crearTokenDeVerificacion(auth()->user()->id, $validez);
+        //Ahora creo el token
+        $nuevoAccountVerify = AccountVerifyToken::create([
+            "usuario" => auth()->user()->id,
+            "token" => str_replace("/", "", Hash::make(now())),
+            "valido_hasta" => $validez
+        ]);
 
-            if($result["code"] == 0){
-                //Se ha creado el token correctamente, ahora lo mando por correo
-                $tokenCreado = $result["data"];
-                auth()->user()->notify(new VerificarNuevaCuentaUsuario($tokenCreado->token));
-
-                $response["code"] = 0;
-                $response["status"] = 200;
-                $response["statusText"] = "ok";
-            }else{
-                $response["code"] = -12;
-                $response["status"] = 400;
-                $response["statusText"] = "ko";
-
-                Log::error("La creación del token no debería fallar",
-                    array(
-                        "response: " => $response
-                    )
-                );
-            }
-        }
-        catch(Exception $e){
-            $response["code"] = -11;
-            $response["status"] = 400;
-            $response["statusText"] = "ko";
-
-            Log::error($e->getMessage(),
-                array(
-                    "repsonse: " => $response
-                )
-            );
-        }
-
-        //Log de salida
-        Log::debug("Saliendo del mandarCorreoVerificacionCuenta de ApiAuthentication",
-            array(
-                "response: " => $response
-            )
-        );
-
-        return $response;
+        //Se ha creado el token correctamente, ahora lo mando por correo
+        auth()->user()->notify(new VerificarNuevaCuentaUsuario($nuevoAccountVerify->token));
     }
 
     /**

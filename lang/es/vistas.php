@@ -8,5 +8,27 @@ return [
             "ko1" => "Ha habido algún problema al aceptar la invitación",
             "ko2" => "¿Es posible que hayas modificado el enlace sin querer? Si no es así, pide al administrador que te vuelva a mandar la invitación y si el problema persiste, ponte en contacto con nosotros"
         ]
+    ],
+    "cuentaUsuario" => [
+        "login" => [
+            "iniciaSesion" => "Inicia sesión",
+            "email" => "Correo electrónico",
+            "password" => "Contraseña",
+            "recordarme" => "Recordarme",
+            "botonlogin" => "Iniciar sesión"
+        ],
+        "verificarcuenta" => [
+            "title" => "Verificación de cuenta",
+            "ok" => "La cuenta se ha verificado correctamente. Ya puedes cerrar esta ventana y volver a la app",
+            "ko" => "Al parecer el link ya no es válido. Solicita un nuevo correo de verificación desde la app y si el problema persiste, ponte en contacto con nosotros"
+        ],
+
+        "recuperarcuenta" => [
+            "title" => "Renueva tu contraseña",
+            "nuevacontrasena" => "Nueva contraseña",
+            "confirmarcontrasena" => "Repite la nueva contraseña",
+            "guardarnuevacontrasena" => "Guardar nueva contraseña",
+            "ko" => "Parece ser que el enlace no es válido o ha caducado. Intenta solicitar un nuevo correo desde la app y si el problema persiste, ponte en contacto con nosotros"
+        ]
     ]
 ];

@@ -1,48 +1,52 @@
 <?php
 
 use App\Http\Controllers\GimnasioController;
+use App\Http\Controllers\web\Authentication;
 use App\Models\User;
+use App\Notifications\PruebaBorrar;
+use App\Notifications\PruebaQueuedBorrar;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
-Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", [GimnasioController::class, "aceptarInvitacion"])
-    ->name("aceptar-invitacion");
-
-
-
-
 
 ///////////////////////////////
 /////// RUTAS DE CUENTA ///////
 ///////////////////////////////
 
-Route::get("/con-sesion", function(){
+Route::get("/", function(){
     return "Tienes una sesión iniciada";
-})->middleware("auth:sanctum")->name("consesion");
+})
+    ->middleware("auth:sanctum")
+    ->name("consesion");
 
 Route::get("verificar-cuenta/{token}",
     [Authentication::class, "verificarCuentaConToken"]
-)->name("verificarcuentacontoken");
+)
+    ->name("verificarcuentacontoken");
 
 Route::get("recuperar-cuenta/{token}",
     [Authentication::class, "recuperarCuentaGet"]
-)->name("recuperarcuentaget");
+)
+    ->name("recuperarcuentaget");
 
-Route::post("recuperar-cuenta",
+Route::post("recuperar-cuenta",//
     [Authentication::class, "recuperarCuentaPost"]
-)->name("recuperarcuentapost");
+)
+    ->name("recuperarcuentapost");
 
-Route::get("/login", function(){
+Route::get("/login", function(){//
     return view("cuentaUsuario.login");
 })->middleware(["guest"])
-    ->name("login");
+    ->name("web-login");
 
-Route::post("/login", function(Request $request){
-    if(Auth::attempt(array("email" => $request->get("email"), "password" => $request->get("password")))){
-        return redirect(route("versorteos"));
+Route::post("/login", function(Request $request){//
+    if(Auth::attempt(array("email" => $request->get("email"), "password" => $request->get("password")),
+        (isset($request->remember)))){
+        return redirect()->route("consesion");
     }else{
         return redirect()->back();
     }
-})->middleware(["guest"]);
+})->middleware(["guest"])->name("web-post-login");
 
 
 
@@ -52,13 +56,24 @@ Route::post("/login", function(Request $request){
 ///// RUTAS GENERALES /////
 ///////////////////////////
 
-Route::get("politica-de-privacidad", function(){
+Route::get("politica-de-privacidad", function(){//
     return view("politicaDePrivacidad");
 });
 
-Route::get("tutorial-eliminar-cuenta", function() {
+Route::get("tutorial-eliminar-cuenta", function() {//
     return view("tutorialEliminarCuenta");
 });
+
+
+
+
+
+//////////////////////////////
+///// RUTAS DE GIMNASIOS /////
+//////////////////////////////
+
+Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", [GimnasioController::class, "aceptarInvitacion"])//
+    ->name("aceptar-invitacion");
 
 
 
@@ -69,11 +84,15 @@ Route::get("tutorial-eliminar-cuenta", function() {
 ////////////////////////////
 
 Route::get("prueba-correo", function(){
-    User::where("email", "amjsoler@gmail.com")->first()->notify(new PruebaBorrar());
-})->middleware("auth:sanctum", "cuentaVerificada")
+    User::where("email", env("admin_autorizado"))->first()->notify(new PruebaBorrar());
+    return "Correo de prueba enviado";
+})
+    ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("esAdmin", User::class);
 
 Route::get("prueba-queued-correo", function(){
-    User::where("email", "amjsoler@gmail.com")->first()->notify(new PruebaQueuedBorrar());
-})->middleware("auth:sanctum", "cuentaVerificada")
+    User::where("email", env("admin_autorizado"))->first()->notify(new PruebaQueuedBorrar());
+    return "Correo encolado de prueba enviado";
+})
+    ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("esAdmin", User::class);

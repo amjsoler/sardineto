@@ -1,0 +1,2 @@
+* Estilar correos (cabecera, saludo y despedida)
+*
