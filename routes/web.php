@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 /////// RUTAS DE CUENTA ///////
 ///////////////////////////////
 
-Route::get("/", function(){
+Route::get("/", function () {
     return "Tienes una sesión iniciada";
 })
     ->middleware("auth:sanctum")
@@ -34,63 +34,55 @@ Route::post("recuperar-cuenta",
 )
     ->name("recuperarcuentapost");
 
-Route::get("/login", function(){//
+Route::get("/login", function () {
     return view("cuentaUsuario.login");
 })->middleware(["guest"])
     ->name("web-login");
 
-Route::post("/login", function(Request $request){//
-    if(Auth::attempt(array("email" => $request->get("email"), "password" => $request->get("password")),
-        (isset($request->remember)))){
+//El login vía web es solo para el admin del sistema, para poder usar las pruebas de correo y telescope
+Route::post("/login", function (Request $request) {
+    if ($request->email === env("ADMIN_AUTORIZADO") &&
+        Auth::attempt($request->only("email", "password"))) {
         return redirect()->route("consesion");
-    }else{
+    } else {
         return redirect()->back();
     }
 })->middleware(["guest"])->name("web-post-login");
-
-
-
 
 
 ///////////////////////////
 ///// RUTAS GENERALES /////
 ///////////////////////////
 
-Route::get("politica-de-privacidad", function(){//
+Route::get("politica-de-privacidad", function () {//TODO
     return view("politicaDePrivacidad");
 });
 
-Route::get("tutorial-eliminar-cuenta", function() {//
+Route::get("tutorial-eliminar-cuenta", function () {//TODO
     return view("tutorialEliminarCuenta");
 });
-
-
-
 
 
 //////////////////////////////
 ///// RUTAS DE GIMNASIOS /////
 //////////////////////////////
 
-Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", [GimnasioController::class, "aceptarInvitacion"])//
-    ->name("aceptar-invitacion");
-
-
-
+Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", [GimnasioController::class, "aceptarInvitacion"])//todo
+->name("aceptar-invitacion");
 
 
 ////////////////////////////
 ///// RUTAS DE PRUEBAS /////
 ////////////////////////////
 
-Route::get("prueba-correo", function(){
+Route::get("prueba-correo", function () {
     User::where("email", env("admin_autorizado"))->first()->notify(new PruebaBorrar());
     return "Correo de prueba enviado";
 })
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("esAdmin", User::class);
 
-Route::get("prueba-queued-correo", function(){
+Route::get("prueba-queued-correo", function () {
     User::where("email", env("admin_autorizado"))->first()->notify(new PruebaQueuedBorrar());
     return "Correo encolado de prueba enviado";
 })

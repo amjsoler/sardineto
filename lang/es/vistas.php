@@ -11,10 +11,10 @@ return [
     ],
     "cuentaUsuario" => [
         "login" => [
+            "title" => "Inicia sesión",
             "iniciaSesion" => "Inicia sesión",
             "email" => "Correo electrónico",
             "password" => "Contraseña",
-            "recordarme" => "Recordarme",
             "botonlogin" => "Iniciar sesión"
         ],
         "verificarcuenta" => [
