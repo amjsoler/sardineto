@@ -18,8 +18,10 @@ class GimnasioController extends Controller
 {
     public function misGimnasios()
     {
-        //TODO Devolver también los gimnasios que sigues
-        return response()->json(auth()->user()->gimnasiosPropietario, 200);
+        $gimnasiosPropietario = auth()->user()->gimnasiosPropietario;
+        $gimnasiosInvitado = auth()->user()->gimnasiosInvitado;
+
+        return response()->json($gimnasiosInvitado->merge($gimnasiosPropietario), 200);
     }
 
     public function crearGimnasio(GimnasioCrearGimnasioRequest $request)

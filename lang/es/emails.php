@@ -21,5 +21,10 @@ return [
         "linea1" => 'Este mensaje se ha generado de forma automática para que restablezcas la contraseña de tu cuenta de usuario',
         "linea2" => "Para hacerlo, solo tienes que pulsar en el enlace que encontrarás a continuación:",
         "accion" => "Recuperar cuenta"
+    ],
+
+    "sugerencia" => [
+        "asunto" => "Nueva sugerencia realizada",
+        "linea1" => " ha realizado la siguiente sugerencia:",
     ]
 ];

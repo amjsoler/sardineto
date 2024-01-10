@@ -151,6 +151,7 @@ return [
             "required" => "El email no puede estar vacío",
             "email" => "El email no es válido",
             "unique" => "Este email ya está registrado",
+            "exists" => "El email no es válido"
         ],
         "password" => [
             "required" => "La contraseña no puede estar vacía",
@@ -159,6 +160,34 @@ return [
 
         "correo" => [
             "required" => "Debes especificar el correo de la cuenta que quieres recuperar"
+        ],
+
+        "contrasenaActual" => [
+            "required" => "La contraseña actual no puede estar vacía",
+            "ContrasenaActualCorrectaRule" => "La contraseña actual no es correcta",
+        ],
+
+        "nuevaContrasena" => [
+            "required" => "Debes especificar la contraseña nueva",
+            "confirmed" => "Las contraseñas no coinciden"
+        ],
+
+        "alertasporcorreo" => [
+            "required" => "Debes especificar el campo alertas por correo" ,
+            "boolean" => "El campo alertas por correo tiene un formato no valido",
+        ],
+
+        "alertaspornotificacion" => [
+            "required" => "El campo alertas por correo tiene un formato no valido",
+            "boolean" => "El campo alertas por correo tiene un formato no valido",
+        ]
+    ],
+
+    "enviarsugerencia" => [
+        "texto" => [
+            "required" => "¡Escribe algo!",
+            "string" => "El formato no es válido ¿Contiene caracteres extraños?",
+            "max" => "El texto no puede superar los 500 caracteres"
         ]
     ]
 ];

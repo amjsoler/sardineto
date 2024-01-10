@@ -8,21 +8,15 @@ use App\Models\User;
 
 class GimnasioPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-    }
-
     public function editarGimnasio(User $usuario, Gimnasio $gimnasio)
     {
-        return $this->comprobarAdministradorGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio);
     }
 
-    public function eliminarGimnasio(User $user, Gimnasio $gimnasio)
+    public function eliminarGimnasio(User $usuario, Gimnasio $gimnasio)
     {
-        return $this->comprobarAdministradorGimnasio($user, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function invitarUsuarios(User $usuario, Gimnasio $gimnasio)

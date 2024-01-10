@@ -18,4 +18,9 @@ class PolicyHelpers {
     {
         return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->exists();
     }
+
+    public static function comprobarSiUserEsAdministradorDelGimnasio(User $usuario, Gimnasio $gimnasio)
+    {
+        return $gimnasio->administradores()->wherePivot("usuario", $usuario->id)->exists();
+    }
 }
