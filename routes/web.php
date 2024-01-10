@@ -29,7 +29,7 @@ Route::get("recuperar-cuenta/{token}",
 )
     ->name("recuperarcuentaget");
 
-Route::post("recuperar-cuenta",//
+Route::post("recuperar-cuenta",
     [Authentication::class, "recuperarCuentaPost"]
 )
     ->name("recuperarcuentapost");

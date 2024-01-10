@@ -29,6 +29,12 @@ return [
             "confirmarcontrasena" => "Repite la nueva contraseña",
             "guardarnuevacontrasena" => "Guardar nueva contraseña",
             "ko" => "Parece ser que el enlace no es válido o ha caducado. Intenta solicitar un nuevo correo desde la app y si el problema persiste, ponte en contacto con nosotros"
+        ],
+        "recuperarcuentaresult" => [
+            "ok1" => "La contraseña se ha modificado correctamente",
+            "ok2" => "Ya puedes cerrar esta ventana y volver a la app",
+            "ko1" => "Ha habido un problema al modificar la contraseña",
+            "ko2" => "Prueba de nuevo y si el problema persiste, ponte en contacto con nosotros"
         ]
     ]
 ];
