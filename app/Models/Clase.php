@@ -4,19 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Clase extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
+    protected $table = "clases";
 
-    protected $fillable = ["nombre", "descripcion", "fechayhora", "plazas"];
-    public function gimnasioPerteneciente(): BelongsTo
-    {
-        return $this->belongsTo(Gimnasio::class, "gimnasio", "id");
-    }
+    protected $fillable = [
+        "nombre",
+        "descripcion",
+        "fechayhora",
+        "plazas"
+    ];
 
     public function participantes(): BelongsToMany
     {

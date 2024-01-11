@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger("gimnasio");
-            $table->foreign("gimnasio")->references("id")->on("gimnasios");
+            $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
             $table->unsignedBigInteger("clase");
-            $table->foreign("clase")->references("id")->on("clases");
+            $table->foreign("clase")->references("id")->on("clases")->cascadeOnDelete();
 
             $table->unsignedBigInteger("ejercicio");
-            $table->foreign("ejercicio")->references("id")->on("ejercicios");
+            $table->foreign("ejercicio")->references("id")->on("ejercicios")->cascadeOnDelete();
 
             $table->unique(["gimnasio", "clase", "ejercicio"]);
 

@@ -18,9 +18,10 @@ return new class extends Migration
             $table->float("porcentaje_graso")->required();
 
             $table->unsignedBigInteger("usuario");
-            $table->foreign("usuario")->references("id")->on("users");
+            $table->foreign("usuario")->references("id")->on("users")->cascadeOnDelete();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

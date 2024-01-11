@@ -23,7 +23,6 @@ class SuscripcionController extends Controller
         $suscripcion = Suscripcion::make($request->all());
         $suscripcion->usuario = auth()->user()->id;
         $suscripcion->gimnasio = $gimnasio->id;
-        $suscripcion->creditos_restantes = $tarifa->creditos;
         $suscripcion->save();
 
         return response()->json($suscripcion->refresh());

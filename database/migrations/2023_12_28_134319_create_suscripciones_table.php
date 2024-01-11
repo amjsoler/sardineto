@@ -15,18 +15,18 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger("usuario")->required();
-            $table->foreign("usuario")->references("id")->on("users");
+            $table->foreign("usuario")->references("id")->on("users")->cascadeOnDelete();
 
             $table->unsignedBigInteger("gimnasio")->required();
-            $table->foreign("gimnasio")->references("id")->on("gimnasios");
+            $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
-            $table->unsignedBigInteger("tarifa")->nullable();
-            $table->foreign("tarifa")->references("id")->on("tarifas")->nullOnDelete();
+            $table->unsignedBigInteger("tarifa")->required();
+            $table->foreign("tarifa")->references("id")->on("tarifas")->cascadeOnDelete();
 
-            $table->integer("creditos_restantes")->required();
             $table->dateTime("pagada")->nullable()->default(null);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

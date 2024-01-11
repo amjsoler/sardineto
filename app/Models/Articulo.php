@@ -6,22 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Articulo extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = "articulos";
 
-    protected $guarded = ["gimnasio"];
-
-    public function gimnasioAlQuePertenece(): BelongsTo
-    {
-        return $this->belongsTo(Gimnasio::class, "gimnasio", "id");
-    }
-
-    public function historialDeCompras(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, "usuarios_compran_articulos", "articulo", "usuario", "id", "id");
-    }
+    protected $fillable = [
+        "nombre",
+        "descripcion",
+        "stock"
+    ];
 }

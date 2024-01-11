@@ -74,10 +74,6 @@ return [
             "required" => "Especifica el usuario al que asignar la suscripción",
             "exists" => "El usuario al que quieres asignar la suscripción no forma parte del gimnasio",
         ],
-
-        "creditos_restantes" => [
-            "integer" => "El créditos restantes debe ser un número entero"
-        ]
     ],
     "articulo" => [
         "nombre" => [

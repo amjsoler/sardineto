@@ -15,11 +15,11 @@ return new class extends Migration
         Schema::create('usuarios_gimnasios', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger("usuario");
-            $table->foreign("usuario")->references("id")->on("users");
+            $table->unsignedBigInteger("usuario")->required();
+            $table->foreign("usuario")->references("id")->on("users")->cascadeOnDelete();
 
-            $table->unsignedBigInteger("gimnasio");
-            $table->foreign("gimnasio")->references("id")->on("gimnasios");
+            $table->unsignedBigInteger("gimnasio")->required();
+            $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
             $table->string("token_aceptacion")->default(str_replace("/", "", Hash::make(now())));
             $table->boolean("invitacion_aceptada")->default(false);

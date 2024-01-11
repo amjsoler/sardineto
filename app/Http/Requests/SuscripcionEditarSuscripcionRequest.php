@@ -18,7 +18,6 @@ class SuscripcionEditarSuscripcionRequest extends FormRequest
             "tarifa" => [
                 Rule::exists("tarifas", "id")->where("gimnasio", $this->gimnasio->id)
             ],
-            "creditos_restantes" => "integer",
 
         ];
     }
@@ -27,7 +26,6 @@ class SuscripcionEditarSuscripcionRequest extends FormRequest
     {
         return [
             "tarifa.exists" => __("validation.suscripcion.tarifa.exists"),
-            "creditos_restantes" => __("validation.suscripcion.creditos_restantes.integer")
         ];
     }
 }

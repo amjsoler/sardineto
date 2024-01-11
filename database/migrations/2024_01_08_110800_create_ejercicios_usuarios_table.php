@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger("usuario");
-            $table->foreign("usuario")->references("id")->on("users");
+            $table->foreign("usuario")->references("id")->on("users")->cascadeOnDelete();
 
             $table->unsignedBigInteger("ejercicio");
-            $table->foreign("ejercicio")->references("id")->on("ejercicios");
+            $table->foreign("ejercicio")->references("id")->on("ejercicios")->cascadeOnDelete();
 
             $table->float("unorm")->required();
 

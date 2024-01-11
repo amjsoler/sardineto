@@ -6,12 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Gimnasio extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ["nombre", "descripcion", "logo", "direccion"];
+    protected $fillable = [
+        "nombre",
+        "descripcion",
+        "logo",
+        "direccion"
+    ];
 
     public function clases(): HasMany
     {

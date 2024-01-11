@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger("usuario");
-            $table->foreign("usuario")->references("id")->on("users");
+            $table->foreign("usuario")->references("id")->on("users")->cascadeOnDelete();
 
             $table->unsignedBigInteger("clase");
-            $table->foreign("clase")->references("id")->on("clases");
+            $table->foreign("clase")->references("id")->on("clases")->cascadeOnDelete();
 
             $table->unique(["usuario", "clase"]);
 

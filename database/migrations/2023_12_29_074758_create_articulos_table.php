@@ -19,9 +19,10 @@ return new class extends Migration
             $table->integer("stock")->required();
 
             $table->unsignedBigInteger("gimnasio");
-            $table->foreign("gimnasio")->references("id")->on("gimnasios");
+            $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
