@@ -21,7 +21,9 @@ class GimnasioController extends Controller
         $gimnasiosPropietario = auth()->user()->gimnasiosPropietario;
         $gimnasiosInvitado = auth()->user()->gimnasiosInvitado()->wherePivot("invitacion_aceptada", true)->get();
 
-        return response()->json($gimnasiosInvitado->merge($gimnasiosPropietario), 200);
+        $coleccionFinal = $gimnasiosInvitado->merge($gimnasiosPropietario);
+
+        return response()->json($coleccionFinal->sortBy("nombre"), 200);
     }
 
     public function crearGimnasio(GimnasioCrearGimnasioRequest $request)

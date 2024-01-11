@@ -80,5 +80,41 @@ class VerGimnasios extends TestCase
         );
     }
 
+    public function test_ver_mis_gimnasios_con_dos_gimnasios_uno_propietario_otro_invitado_ok(): void
+    {
+        $usuario1 = User::factory()->create();
+        $usuario2 = User::factory()->create();
+
+        $this->actingAs($usuario1);
+
+        $gimnasio2 = Gimnasio::factory()->make([
+            "nombre" => "fdsa"
+        ]);
+        $gimnasio2->propietario = $usuario2->id;
+        $gimnasio2->save();
+        $gimnasio2->usuariosInvitados()->attach($usuario1->id, ["invitacion_aceptada" => 1]);
+
+        $gimnasio1 = Gimnasio::factory()->make([
+            "nombre" => "asdf"
+        ]);
+        $gimnasio1->propietario = $usuario1->id;
+        $gimnasio1->save();
+
+        $response = $this->get(route("mis-gimnasios"),
+            [
+                "Content-Type" => "application/json",
+                "Accept" => "application/json"
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(2);
+        $response->assertJson(fn(AssertableJson $json) =>
+            $json->first(fn (AssertableJson $json) =>
+                $json->where("nombre", "asdf")
+                ->etc()
+            )
+            ->etc()
+        );
+    }
 
 }
