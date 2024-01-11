@@ -16,7 +16,10 @@ class PolicyHelpers {
 
     public static function comprobarSiUserEstaInvitadoAlGimnasio(User $usuario, Gimnasio $gimnasio)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->exists();
+        return $gimnasio->usuariosInvitados()
+            ->wherePivot("usuario", $usuario->id)
+            ->wherePivot("invitacion_aceptada", true)
+            ->exists();
     }
 
     public static function comprobarSiUserEsAdministradorDelGimnasio(User $usuario, Gimnasio $gimnasio)

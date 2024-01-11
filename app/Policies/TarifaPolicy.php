@@ -9,50 +9,39 @@ use App\Models\User;
 
 class TarifaPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function verTarifas(User $usuario, Gimnasio $gimnasio): bool
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function crearTarifas(User $usuario, Gimnasio $gimnasio): bool
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function editarTarifas(User $usuario, Gimnasio $gimnasio, Tarifa $tarifa)
     {
-        $puede = true;
-
-        if(!PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)){
-            $puede = false;
-        }
-
-        if($puede &&
-            $gimnasio->id !== $tarifa->gimnasio
-        ){
-            $puede = false;
-        }
-
-        return $puede;
+        return $this->comprobarSiTarifaPerteneceAGimnasio($tarifa, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function eliminarTarifas(User $usuario, Gimnasio $gimnasio, Tarifa $tarifa)
     {
-        $puede = true;
+        return $this->comprobarSiTarifaPerteneceAGimnasio($tarifa, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
+    }
 
-        if(!PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)){
-            $puede = false;
-        }
-
-        if($puede &&
-            $gimnasio->id !== $tarifa->gimnasio
-        ){
-            $puede = false;
-        }
-
-        return $puede;
+    private function comprobarSiTarifaPerteneceAGimnasio(Tarifa $tarifa, Gimnasio $gimnasio)
+    {
+        return $tarifa->gimnasio === $gimnasio->id;
     }
 }

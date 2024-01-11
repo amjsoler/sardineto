@@ -137,40 +137,43 @@ Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}",
 ///// CLASES /////
 //////////////////
 
-Route::get("gimnasios/{gimnasio}/clases",////TODO
-    [ClaseController::class, "verClases"])
+Route::get("gimnasios/{gimnasio}/clases",
+    [ClaseController::class, "verClases"]
+)
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verClases", [Clase::class, "gimnasio"])
     ->name("ver-clases-de-gimnasio");
 
-Route::post("gimnasios/{gimnasio}/clases",////TODO
+Route::post("gimnasios/{gimnasio}/clases",
     [ClaseController::class, "crearClase"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearClases", [Clase::class, "gimnasio"])
     ->name("crear-clase");
 
-Route::put("gimnasios/{gimnasio}/clases/{clase}",////TODO
+Route::put("gimnasios/{gimnasio}/clases/{clase}",
     [ClaseController::class, "editarClase"]
 )->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarClases", [Clase::class, "gimnasio", "clase"])
     ->name("editar-clase");
 
-Route::delete("gimnasios/{gimnasio}/clases/{clase}",////TODO
+Route::delete("gimnasios/{gimnasio}/clases/{clase}",
     [ClaseController::class, "eliminarClase"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarClases", [Clase::class, "gimnasio", "clase"])
     ->name("eliminar-clase");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/apuntarse",////TODO
+Route::get("gimnasios/{gimnasio}/clases/{clase}/apuntarse",
     [ClaseController::class, "usuarioSeApunta"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
+    //TODO MIDDLEWARE: comprobar si el user tiene créditos para apuntarse
+    //TODO MIDDLEWARE: comprobar si quedan plazas para apuntarse
     ->can("usuarioSePuedeApuntar", [Clase::class, "gimnasio", "clase"])
     ->name("usuario-se-apunta");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse",////TODO
+Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse",
     [ClaseController::class, "usuarioSeDesapunta"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -185,14 +188,14 @@ Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse",////TODO
 ///// TARIFAS /////
 ///////////////////
 
-Route::get("gimnasios/{gimnasio}/tarifas",////TODO
+Route::get("gimnasios/{gimnasio}/tarifas",
     [TarifaController::class, "verTarifas"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verTarifas", [Tarifa::class, "gimnasio"])
     ->name("ver-tarifas");
 
-Route::post("gimnasios/{gimnasio}/tarifas",////TODO
+Route::post("gimnasios/{gimnasio}/tarifas",
     [TarifaController::class, "crearTarifa"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

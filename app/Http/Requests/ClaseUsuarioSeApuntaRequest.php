@@ -34,7 +34,6 @@ class ClaseUsuarioSeApuntaRequest extends FormRequest
     {
         return [
             "usuarioId" => [
-                Rule::exists("usuarios_gimnasios", "usuario")->where("invitacion_aceptada", true),
                 Rule::unique("usuarios_participan_clases", "usuario")->where("clase", $this->claseId)
             ],
         ];
@@ -42,7 +41,6 @@ class ClaseUsuarioSeApuntaRequest extends FormRequest
 
     public function messages() {
         return [
-            "usuarioId.exists" => __("validation.usuarioApuntaClase.exists"),
             "usuarioId.unique" => __("validation.usuarioApuntaClase.unique"),
         ];
     }

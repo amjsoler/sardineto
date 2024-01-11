@@ -46,7 +46,6 @@ return [
         "pertenece" => "Esta clase no pertenece al gimnasio"
     ],
     "usuarioApuntaClase" => [
-        "exists" => "Debes estar invitado al gimnasio para poder apuntarte a la clase",
         "unique" => "Ya estás apuntado a esta clase"
     ],
     "tarifa" => [
