@@ -75,7 +75,7 @@ Route::post("/enviar-sugerencia", //TODO TESTING
 ///// GIMNASIOS /////
 /////////////////////
 
-Route::get("gimnasios", //TODO TESTING
+Route::get("gimnasios",
     [GimnasioController::class, "misGimnasios"]
 )
     ->middleware(["auth:sanctum", "cuentaVerificada"])

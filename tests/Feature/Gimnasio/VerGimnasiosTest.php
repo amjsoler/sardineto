@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
-class VerGimnasios extends TestCase
+class VerGimnasiosTest extends TestCase
 {
     public function test_ver_gimnasio_sin_autenticar(): void
     {
