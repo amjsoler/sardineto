@@ -12,7 +12,7 @@ class Metrica extends Model
 
     protected $table = "metricas";
 
-    protected $guarded = [];
+    protected $fillable = ["peso", "porcentaje_graso"];
 
     public function usuario(): BelongsTo
     {

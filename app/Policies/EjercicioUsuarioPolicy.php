@@ -12,26 +12,45 @@ class EjercicioUsuarioPolicy
 {
     public function verRegistrosDePeso(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function verRegistrosDePesoPorEjercicio(User $usuario, Gimnasio $gimnasio, Ejercicio $ejercicio)
     {
-        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) &&
-            $gimnasio->id === $ejercicio->gimnasio;
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function crearRegistrosDePeso(User $usuario, Gimnasio $gimnasio, Ejercicio $ejercicio)
     {
-        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) &&
-            $gimnasio->id === $ejercicio->gimnasio;
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function eliminarRegistrosDePeso(User $usuario, Gimnasio $gimnasio, Ejercicio $ejercicio, EjercicioUsuario $ejercicioUsuario)
     {
-        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) &&
-            $gimnasio->id === $ejercicio->gimnasio &&
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            $ejercicioUsuario->usuario === $usuario->id &&
             $ejercicioUsuario->ejercicio === $ejercicio->id &&
-            ($ejercicioUsuario->usuario === $usuario->id);
+            (
+                PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
+    }
+
+    private function comprobarSiEjercicioPerteneceAGimnasio(Ejercicio $ejercicio, Gimnasio $gimnasio)
+    {
+        return $ejercicio->gimnasio === $gimnasio->id;
     }
 }

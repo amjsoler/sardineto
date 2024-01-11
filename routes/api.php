@@ -385,19 +385,19 @@ Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}
 ///// MÉTRICAS /////
 ////////////////////
 
-Route::get("metricas",////TODO
+Route::get("metricas",
     [MetricaController::class, "verMetricas"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->name("ver-metricas");
 
-Route::post("metricas",////TODO
+Route::post("metricas",
     [MetricaController::class, "crearMetrica"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->name("crear-metrica");
 
-Route::delete("metricas/{metrica}",////TODO
+Route::delete("metricas/{metrica}",
     [MetricaController::class, "eliminarMetrica"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -412,28 +412,28 @@ Route::delete("metricas/{metrica}",////TODO
 ///// EJERCICIOUSUARIO /////
 ////////////////////////////
 
-Route::get("gimnasios/{gimnasio}/registros-de-peso",////TODO
+Route::get("gimnasios/{gimnasio}/registros-de-peso",
     [EjerciciosUsuariosController::class, "verRegistrosDePeso"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verRegistrosDePeso", [EjercicioUsuario::class, "gimnasio"])
     ->name("ver-registros-de-peso");
 
-Route::get("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",////TODO
+Route::get("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
     [EjerciciosUsuariosController::class, "verRegistrosDePesoPorEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verRegistrosDePesoPorEjercicio", [EjercicioUsuario::class, "gimnasio", "ejercicio"])
     ->name("ver-registros-de-peso-por-ejercicio");
 
-Route::post("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",////TODO
+Route::post("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
     [EjerciciosUsuariosController::class, "registrarNuevaMarcaDePeso"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearRegistrosDePeso", [EjercicioUsuario::class, "gimnasio", "ejercicio"])
     ->name("crear-registros-de-peso");
 
-Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso/{ejercicioUsuario}",////TODO
+Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso/{ejercicioUsuario}",
     [EjerciciosUsuariosController::class, "eliminarMarcaDePeso"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
