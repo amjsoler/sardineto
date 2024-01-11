@@ -21,16 +21,19 @@ class GimnasioPolicy
 
     public function invitarUsuarios(User $usuario, Gimnasio $gimnasio)
     {
-        return $this->comprobarAdministradorGimnasio($usuario, $gimnasio);
-    }
-    private function comprobarAdministradorGimnasio(User $usuario, Gimnasio $gimnasio)
-    {
-        return $usuario->id === $gimnasio->propietario;
+        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio);
     }
 
     public function reenviarInvitaciones(User $usuario, Gimnasio $gimnasio)
     {
-        return $this->comprobarAdministradorGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio);
+    }
+
+    private function comprobarAdministradorGimnasio(User $usuario, Gimnasio $gimnasio)
+    {
+        return $usuario->id === $gimnasio->propietario;
     }
 
     public function crearAdministradores(User $user, Gimnasio $gimnasio, User $usuario)

@@ -19,7 +19,7 @@ class GimnasioController extends Controller
     public function misGimnasios()
     {
         $gimnasiosPropietario = auth()->user()->gimnasiosPropietario;
-        $gimnasiosInvitado = auth()->user()->gimnasiosInvitado;
+        $gimnasiosInvitado = auth()->user()->gimnasiosInvitado()->wherePivot("invitacion_aceptada", true)->get();
 
         return response()->json($gimnasiosInvitado->merge($gimnasiosPropietario), 200);
     }
@@ -54,7 +54,7 @@ class GimnasioController extends Controller
 
         UsuarioInvitadoAGimnasio::dispatch($usuario, $gimnasio, $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->withPivot("token_aceptacion")->first()->pivot->token_aceptacion);
 
-        return response()->json("Se ha invitado al usuario correctamente");
+        return response()->json();
     }
 
     public function aceptarInvitacion(Gimnasio $gimnasio, string $hash)
@@ -63,15 +63,20 @@ class GimnasioController extends Controller
         $response["message"] = "";
 
         try{
-            $userId = $gimnasio->usuariosInvitados()->wherePivot("token_aceptacion", $hash)->first()->id;
-            $gimnasio->usuariosInvitados()->wherePivot("token_aceptacion", $hash)->updateExistingPivot($userId, [
+            $usuarioGimnasioId = $gimnasio->usuariosInvitados()
+                ->wherePivot("token_aceptacion", $hash)
+                ->first()->id;
+
+            $gimnasio->usuariosInvitados()
+                ->updateExistingPivot($usuarioGimnasioId, [
                 "invitacion_aceptada" => true
             ]);
 
             $response["code"] = 0;
 
             return view("gimnasio.invitacionAceptada", compact("response"));
-        }catch (Exception $e){
+        }
+        catch (Exception $e){
             $response["code"] = -2;
 
             return view("gimnasio.invitacionAceptada", compact("response"));
@@ -80,7 +85,9 @@ class GimnasioController extends Controller
 
     public function reenviarInvitacion(Gimnasio $gimnasio, User $usuario, GimnasioReenviarInvitacionRequest $request)
     {
-        $token = $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->withPivot("token_aceptacion")->first()->pivot->token_aceptacion;
+        $token = $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)
+            ->withPivot("token_aceptacion")
+            ->first()->pivot->token_aceptacion;
         Notification::send($usuario, new CorreoConfirmacionUsuarioInvitadoAGimnasio($usuario, $gimnasio, $token));
 
         return response()->json();

@@ -76,47 +76,53 @@ Route::post("/enviar-sugerencia",
 /////////////////////
 
 Route::get("gimnasios",
-    [GimnasioController::class, "misGimnasios"])
+    [GimnasioController::class, "misGimnasios"]
+)
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->name("mis-gimnasios");
 
 Route::post("gimnasios",
-    [GimnasioController::class, "crearGimnasio"])
+    [GimnasioController::class, "crearGimnasio"]
+)
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->name("crear-gimnasio");
 
 Route::put("gimnasios/{gimnasio}",
-    [GimnasioController::class, "editarGimnasio"])
+    [GimnasioController::class, "editarGimnasio"]
+)
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->can("editarGimnasio", "gimnasio")
     ->name("editar-gimnasio");
 
 Route::delete("gimnasios/{gimnasio}",
-    [GimnasioController::class, "eliminarGimnasio"])
+    [GimnasioController::class, "eliminarGimnasio"]
+)
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->can("eliminarGimnasio", "gimnasio")
     ->name("eliminar-gimnasio");
 
-Route::post("gimnasios/{gimnasio}/invitar-usuario",////TODO
-    [GimnasioController::class, "invitarUsuario"])
+Route::post("gimnasios/{gimnasio}/invitar-usuario",
+    [GimnasioController::class, "invitarUsuario"]
+)
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("invitarUsuarios", "gimnasio")
     ->name("invitar-usuario");
 
-Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}",////TODO
-    [GimnasioController::class, "reenviarInvitacion"])
+Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}",
+    [GimnasioController::class, "reenviarInvitacion"]
+)
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("reenviarInvitaciones", "gimnasio")
     ->name("reenviar-invitacion");
 
-Route::get("gimnasios/{gimnasio}/crear-administrador/{usuario}",////TODO
+Route::get("gimnasios/{gimnasio}/crear-administrador/{usuario}",
     [GimnasioController::class, "anyadirAdministrador"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearAdministradores", [Gimnasio::class, "gimnasio", "usuario"])
     ->name("crear-administrador");
 
-Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}",////TODO
+Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}",
     [GimnasioController::class, "quitarAdministrador"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
