@@ -19,6 +19,13 @@ class Gimnasio extends Model
         "direccion"
     ];
 
+    protected $hidden = [
+        "propietario",
+        "created_at",
+        "updated_at",
+        "deleted_at"
+    ];
+
     public function clases(): HasMany
     {
         return $this->hasMany(Clase::class, "gimnasio", "id");

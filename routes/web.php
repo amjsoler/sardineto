@@ -13,34 +13,34 @@ use Illuminate\Support\Facades\Route;
 /////// RUTAS DE CUENTA ///////
 ///////////////////////////////
 
-Route::get("/", function () {
+Route::get("/", function () { //TODO TESTING
     return "Tienes una sesión iniciada";
 })
     ->middleware("auth:sanctum")
     ->name("consesion");
 
-Route::get("verificar-cuenta/{token}",
+Route::get("verificar-cuenta/{token}", //TODO TESTING
     [Authentication::class, "verificarCuentaConToken"]
 )
     ->name("verificarcuentacontoken");
 
-Route::get("recuperar-cuenta/{token}",
+Route::get("recuperar-cuenta/{token}", //TODO TESTING
     [Authentication::class, "recuperarCuentaGet"]
 )
     ->name("recuperarcuentaget");
 
-Route::post("recuperar-cuenta",
+Route::post("recuperar-cuenta", //TODO TESTING
     [Authentication::class, "recuperarCuentaPost"]
 )
     ->name("recuperarcuentapost");
 
-Route::get("/login", function () {
+Route::get("/login", function () { //TODO TESTING
     return view("cuentaUsuario.login");
 })->middleware(["guest"])
     ->name("web-login");
 
 //El login vía web es solo para el admin del sistema, para poder usar las pruebas de correo y telescope
-Route::post("/login", function (Request $request) {
+Route::post("/login", function (Request $request) { //TODO TESTING
     if ($request->email === env("ADMIN_AUTORIZADO") &&
         Auth::attempt($request->only("email", "password"))) {
         return redirect()->route("consesion");
@@ -67,7 +67,7 @@ Route::get("tutorial-eliminar-cuenta", function () {//TODO
 ///// RUTAS DE GIMNASIOS /////
 //////////////////////////////
 
-Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}",
+Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", //TODO TESTING
     [GimnasioController::class, "aceptarInvitacion"])
 ->name("aceptar-invitacion");
 
