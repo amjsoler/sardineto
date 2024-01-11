@@ -7,44 +7,62 @@ use App\Models\Clase;
 use App\Models\Ejercicio;
 use App\Models\Gimnasio;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class EjercicioPolicy
 {
     public function verEjercicios(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
-                $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->exists();
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function crearEjercicios(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function modificarEjercicios(User $usuario, Gimnasio $gimnasio, Ejercicio $ejercicio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) &&
-            $ejercicio->gimnasio === $gimnasio->id;
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function eliminarEjercicios(User $usuario, Gimnasio $gimnasio, Ejercicio $ejercicio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) &&
-            $ejercicio->gimnasio === $gimnasio->id;
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function asociarEjerciciosAClase(user $usuario, Gimnasio $gimnasio, Clase $clase, Ejercicio $ejercicio)
     {
-        return $gimnasio->id === $clase->gimnasio &&
-            $ejercicio->gimnasio === $gimnasio->id &&
-            (PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio));
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            $clase->gimnasio === $gimnasio->id &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function desasociarEjerciciosAClase(user $usuario, Gimnasio $gimnasio, Clase $clase, Ejercicio $ejercicio)
     {
-        return $gimnasio->id === $clase->gimnasio &&
-            $ejercicio->gimnasio === $gimnasio->id &&
-            (PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio));
+        return $this->comprobarSiEjercicioPerteneceAGimnasio($ejercicio, $gimnasio) &&
+            $clase->gimnasio === $gimnasio->id &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
+    }
+
+    private function comprobarSiEjercicioPerteneceAGimnasio(Ejercicio $ejercicio, Gimnasio $gimnasio)
+    {
+        return $ejercicio->gimnasio === $gimnasio->id;
     }
 }

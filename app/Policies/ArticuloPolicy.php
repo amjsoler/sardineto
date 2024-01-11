@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Helpers\PolicyHelpers;
-use App\Http\Requests\ArticuloPagarCompraRequest;
 use App\Models\Articulo;
 use App\Models\Gimnasio;
 use App\Models\User;
@@ -13,42 +12,63 @@ class ArticuloPolicy
 {
     public function verArticulos(User $usuario, Gimnasio $gimnasio)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->count() === 1 ||
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
             PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function crearArticulos(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function editarArticulos(User $usuario, Gimnasio $gimnasio, Articulo $articulo)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) &&
-            $gimnasio->id === $articulo->gimnasio;
+        return $this->comprobarSiArticuloPerteneceAGimnasio($articulo, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function eliminarArticulos(User $usuario, Gimnasio $gimnasio, Articulo $articulo)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) &&
-            $gimnasio->id === $articulo->gimnasio;
+        return $this->comprobarSiArticuloPerteneceAGimnasio($articulo, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
-    public function verMiHistorialDeCompras(User $user, Gimnasio $gimnasio)
+    public function verMiHistorialDeCompras(User $usuario, Gimnasio $gimnasio)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $user->id)->count() === 1;
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function comprarArticulos(User $usuario, Gimnasio $gimnasio, Articulo $articulo)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->exists()
-            && $gimnasio->articulos()->whereIn("id", [$articulo->id])->exists();
+        return $this->comprobarSiArticuloPerteneceAGimnasio($articulo, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function pagarCompras(User $usuario, Gimnasio $gimnasio, UsuarioCompraArticulo $compra)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->exists() &&
-            $compra->gimnasio === $gimnasio->id &&
-            $compra->usuario === $usuario->id;
+        return $compra->gimnasio === $gimnasio->id &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
+    }
+
+    private function comprobarSiArticuloPerteneceAGimnasio(Articulo $articulo, Gimnasio $gimnasio)
+    {
+        return $articulo->gimnasio === $gimnasio->id;
     }
 }

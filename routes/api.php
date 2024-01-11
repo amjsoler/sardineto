@@ -202,14 +202,14 @@ Route::post("gimnasios/{gimnasio}/tarifas",
     ->can("crearTarifas", [Tarifa::class, "gimnasio"])
     ->name("crear-tarifas");
 
-Route::put("gimnasios/{gimnasio}/tarifas/{tarifa}",////TODO
+Route::put("gimnasios/{gimnasio}/tarifas/{tarifa}",
     [TarifaController::class, "modificarTarifa"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarTarifas", [Tarifa::class, "gimnasio", "tarifa"])
     ->name("editar-tarifas");
 
-Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}",////TODO
+Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}",
     [TarifaController::class, "eliminarTarifa"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -224,7 +224,7 @@ Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}",////TODO
 ///// SUSCRIPCIONES /////
 /////////////////////////
 
-Route::get("gimnasios/{gimnasio}/suscripciones",////TODO
+Route::get("gimnasios/{gimnasio}/suscripciones",
     [SuscripcionController::class, "verSuscripciones"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -232,36 +232,38 @@ Route::get("gimnasios/{gimnasio}/suscripciones",////TODO
     ->name("ver-suscripcion");
 
 //Generar una suscripción como user
-Route::post("gimnasios/{gimnasio}/suscripciones",////TODO
+Route::post("gimnasios/{gimnasio}/suscripciones",
     [SuscripcionController::class, "crearSuscripcion"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearSuscripciones", [Suscripcion::class, "gimnasio"])
+    //TODO COMPROBAR POR MIDDLEWARE SI TIENES UNA SUSCRIPCIÓN ACTIVA Y NO ES ABONO
     ->name("crear-suscripcion");
 
 //Generar suscripción como admin
-Route::post("gimnasios/{gimnasio}/suscribirse",////TODO
+Route::post("gimnasios/{gimnasio}/suscribirse",
     [SuscripcionController::class, "adminCreaSuscripcion"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
+    //TODO COMPROBAR POR MIDDLEWARE SI TIENES UNA SUSCRIPCIÓN ACTIVA Y NO ES ABONO
     ->can("crearSuscripcionesComoAdmin", [Suscripcion::class, "gimnasio"])
     ->name("admin-crear-suscripcion");
 
-Route::put("gimnasios/{gimnasio}/suscripciones/{suscripcion}",////TODO
+Route::put("gimnasios/{gimnasio}/suscripciones/{suscripcion}",
     [SuscripcionController::class, "editarSuscripcion"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarSuscripciones", [Suscripcion::class, "gimnasio", "suscripcion"])
     ->name("editar-suscripcion");
 
-Route::delete("gimnasios/{gimnasio}/suscripciones/{suscripcion}",////TODO
+Route::delete("gimnasios/{gimnasio}/suscripciones/{suscripcion}",
     [SuscripcionController::class, "eliminarSuscripcion"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarSuscripciones", [Suscripcion::class, "gimnasio", "suscripcion"])
     ->name("eliminar-suscripcion");
 
-Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada",////TODO
+Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada",
     [SuscripcionController::class, "marcarSuscripcionComoPagada"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -276,49 +278,49 @@ Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada",////
 ///// ARTÍCULOS /////
 /////////////////////
 
-Route::get("gimnasios/{gimnasio}/articulos",////TODO
+Route::get("gimnasios/{gimnasio}/articulos",
     [ArticuloController::class, "verArticulos"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verArticulos", [Articulo::class, "gimnasio"])
     ->name("ver-articulos");
 
-Route::post("gimnasios/{gimnasio}/articulos",////TODO
+Route::post("gimnasios/{gimnasio}/articulos",
     [ArticuloController::class, "crearArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearArticulos", [Articulo::class, "gimnasio"])
     ->name("crear-articulo");
 
-Route::put("gimnasios/{gimnasio}/articulos/{articulo}",////TODO
+Route::put("gimnasios/{gimnasio}/articulos/{articulo}",
     [ArticuloController::class, "editarArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("editar-articulo");
 
-Route::delete("gimnasios/{gimnasio}/articulos/{articulo}",////TODO
+Route::delete("gimnasios/{gimnasio}/articulos/{articulo}",
     [ArticuloController::class, "eliminarArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("eliminar-articulo");
 
-Route::get("gimnasios/{gimnasio}/articulos/historial-compras",////TODO
+Route::get("gimnasios/{gimnasio}/articulos/historial-compras",
     [ArticuloController::class, "historialDeCompras"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verMiHistorialDeCompras", [Articulo::class, "gimnasio"])
     ->name("articulos-historial-compras");
 
-Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar",////TODO
+Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar",
     [ArticuloController::class, "comprarArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("comprarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("comprar-articulo");
 
-Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",////TODO
+Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
     [ArticuloController::class, "pagarCompra"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -333,42 +335,42 @@ Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",////TODO
 ///// EJERCICIOS /////
 //////////////////////
 
-Route::get("gimnasios/{gimnasio}/ejercicios",////TODO
+Route::get("gimnasios/{gimnasio}/ejercicios",
     [EjercicioController::class, "verEjercicios"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verEjercicios", [Ejercicio::class, "gimnasio"])
     ->name("ver-ejercicios");
 
-Route::post("gimnasios/{gimnasio}/ejercicios",////TODO
+Route::post("gimnasios/{gimnasio}/ejercicios",
     [EjercicioController::class, "crearEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearEjercicios", [Ejercicio::class, "gimnasio"])
     ->name("crear-ejercicio");
 
-Route::put("gimnasios/{gimnasio}/ejercicios/{ejercicio}",////TODO
+Route::put("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
     [EjercicioController::class, "modificarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("modificarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
     ->name("modificar-ejercicio");
 
-Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}",////TODO
+Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
     [EjercicioController::class, "eliminarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
     ->name("eliminar-ejercicio");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/asignar-ejercicio/{ejercicio}",////TODO
+Route::get("gimnasios/{gimnasio}/clases/{clase}/asignar-ejercicio/{ejercicio}",
     [EjercicioController::class, "asociarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("asociarEjerciciosAClase", [Ejercicio::class, "gimnasio", "clase", "ejercicio"])
     ->name("asociar-ejercicio");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}",////TODO
+Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}",
     [EjercicioController::class, "desasociarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

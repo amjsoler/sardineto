@@ -7,6 +7,7 @@ use App\Http\Requests\SuscripcionCrearSuscripcionRequest;
 use App\Http\Requests\SuscripcionEditarSuscripcionRequest;
 use App\Models\Gimnasio;
 use App\Models\Suscripcion;
+use App\Models\Tarifa;
 
 class SuscripcionController extends Controller
 {
@@ -17,9 +18,12 @@ class SuscripcionController extends Controller
 
     public function crearSuscripcion(Gimnasio $gimnasio, SuscripcionCrearSuscripcionRequest $request)
     {
+        $tarifa = Tarifa::find($request->tarifa);
+
         $suscripcion = Suscripcion::make($request->all());
         $suscripcion->usuario = auth()->user()->id;
         $suscripcion->gimnasio = $gimnasio->id;
+        $suscripcion->creditos_restantes = $tarifa->creditos;
         $suscripcion->save();
 
         return response()->json($suscripcion->refresh());
@@ -50,8 +54,10 @@ class SuscripcionController extends Controller
 
     public function marcarSuscripcionComoPagada(Gimnasio $gimnasio, Suscripcion $suscripcion)
     {
-        $suscripcion->pagada = now();
-        $suscripcion->save();
+        if(!$suscripcion->pagada){
+            $suscripcion->pagada = now();
+            $suscripcion->save();
+        }
 
         return response()->json();
     }

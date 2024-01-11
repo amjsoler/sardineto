@@ -20,9 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger("gimnasio")->required();
             $table->foreign("gimnasio")->references("id")->on("gimnasios");
 
-            $table->unsignedBigInteger("tarifa")->required();
-            $table->foreign("tarifa")->references("id")->on("tarifas");
+            $table->unsignedBigInteger("tarifa")->nullable();
+            $table->foreign("tarifa")->references("id")->on("tarifas")->nullOnDelete();
 
+            $table->integer("creditos_restantes")->required();
             $table->dateTime("pagada")->nullable()->default(null);
 
             $table->timestamps();

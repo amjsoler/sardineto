@@ -11,37 +11,50 @@ class SuscripcionPolicy
 {
     public function verSuscripciones(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function crearSuscripciones(User $usuario, Gimnasio $gimnasio)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->count() === 1;
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio);
     }
 
     public function crearSuscripcionesComoAdmin(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function editarSuscripciones(user $usuario, Gimnasio $gimnasio, Suscripcion $suscripcion)
     {
-        return $gimnasio->id === $suscripcion->gimnasio &&
-            (PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
-            $suscripcion->usuario === $usuario->id);
+        return $this->comprobarSiSuscripcionPerteneceAGimnasio($suscripcion, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function eliminarSuscripciones(user $usuario, Gimnasio $gimnasio, Suscripcion $suscripcion)
     {
-        return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) &&
-            $gimnasio->id === $suscripcion->gimnasio;
+        return $this->comprobarSiSuscripcionPerteneceAGimnasio($suscripcion, $gimnasio) &&
+            (
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio)
+            );
     }
 
     public function marcarSuscripcionesPagadas(user $usuario, Gimnasio $gimnasio, Suscripcion $suscripcion)
     {
-        return $gimnasio->id === $suscripcion->gimnasio &&
-            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+        return $this->comprobarSiSuscripcionPerteneceAGimnasio($suscripcion, $gimnasio) &&
+        (
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio)
+        );
     }
 
-
+    private function comprobarSiSuscripcionPerteneceAGimnasio(Suscripcion $suscripcion, Gimnasio $gimnasio)
+    {
+        return $suscripcion->gimnasio === $gimnasio->id;
+    }
 }

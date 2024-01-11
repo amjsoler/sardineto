@@ -8,7 +8,6 @@ use App\Http\Requests\ArticuloPagarCompraRequest;
 use App\Models\Articulo;
 use App\Models\Gimnasio;
 use App\Models\UsuarioCompraArticulo;
-use Illuminate\Http\Request;
 
 class ArticuloController extends Controller
 {
@@ -61,8 +60,10 @@ class ArticuloController extends Controller
 
     public function pagarCompra(Gimnasio $gimnasio, UsuarioCompraArticulo $compra, ArticuloPagarCompraRequest $request)
     {
-        $compra->pagada = now();
-        $compra->save();
+        if(!$compra->pagada){
+            $compra->pagada = now();
+            $compra->save();
+        }
 
         return response()->json();
     }

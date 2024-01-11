@@ -9,15 +9,15 @@ use Illuminate\Database\Seeder;
 
 class SuscripcionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $tarifa = Gimnasio::find(1)->tarifas()->first();
+
         Suscripcion::factory()->count(5)->create([
             "usuario" => User::find(1),
             "gimnasio" => Gimnasio::find(1),
-            "tarifa" => Gimnasio::find(1)->tarifas()->first(),
+            "tarifa" => $tarifa->id,
+            "creditos_restantes" => $tarifa->creditos
         ]);
     }
 }
