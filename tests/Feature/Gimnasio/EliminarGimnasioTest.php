@@ -64,6 +64,22 @@ class EliminarGimnasioTest extends TestCase
         $this->assertEquals(0, Gimnasio::all()->count());
     }
 
+    public function test_eliminar_gimnasio_ok()
+    {
+        $usuario1 = User::factory()->create();
+        $usuario2 = User::factory()->create();
+        $this->actingAs($usuario1);
+
+        $gimnasio = Gimnasio::factory()->create([
+            "propietario" => $usuario2
+        ]);
+
+        $this->actingAs($usuario2);
+        $response = $this->deleteJson(route("eliminar-gimnasio", $gimnasio->id), []);
+        $response->assertStatus(200);
+        $response->assertExactJson([]);
+    }
+
     public function test_eliminar_gimnasio_que_no_existe()
     {
         $usuario1 = User::factory()->create();

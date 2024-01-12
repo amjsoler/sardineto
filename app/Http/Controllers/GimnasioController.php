@@ -45,7 +45,7 @@ class GimnasioController extends Controller
     {
         $gimnasio->delete();
 
-        return response()->json(null, 200);
+        return response()->json();
     }
 
     public function invitarUsuario(Gimnasio $gimnasio, GimnasioInvitarUsuarioRequest $request)

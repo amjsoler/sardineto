@@ -108,7 +108,7 @@ Route::post("gimnasios/{gimnasio}/invitar-usuario",
     ->can("invitarUsuarios", "gimnasio")
     ->name("invitar-usuario");
 
-Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}",
     [GimnasioController::class, "reenviarInvitacion"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

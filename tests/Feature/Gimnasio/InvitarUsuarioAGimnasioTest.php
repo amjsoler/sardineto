@@ -127,6 +127,25 @@ class InvitarUsuarioAGimnasioTest extends TestCase
         );
     }
 
+    public function test_invitar_usuario_ok()
+    {
+        $usuario1 = User::factory()->create();
+        $usuario2 = User::factory()->create();
+        $this->actingAs($usuario1);
+
+        $gimnasio = Gimnasio::factory()->create([
+            "propietario" => $usuario1
+        ]);
+
+        //Comprobamos el required del email
+        $response = $this->postJson(route("invitar-usuario", $gimnasio->id),
+            [
+                "email" => $usuario2->email
+            ]);
+        $response->assertStatus(200);
+        $response->assertExactJson([]);
+    }
+
     public function test_dispatch_invitar_usuario_event()
     {
         Event::fake();

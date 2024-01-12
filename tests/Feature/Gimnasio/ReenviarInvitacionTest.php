@@ -115,6 +115,24 @@ class ReenviarInvitacionTest extends TestCase
         );
     }
 
+    public function test_reenviar_invitacion_a_gimnasio_ok()
+    {
+        $usuario1 = User::factory()->create();
+        $usuario2 = User::factory()->create();
+        $this->actingAs($usuario1);
+
+        $gimnasio = Gimnasio::factory()->create([
+            "propietario" => $usuario1
+        ]);
+
+        $gimnasio->usuariosInvitados()->attach($usuario2);
+
+        $response = $this->getJson(
+            route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => $usuario2->id])
+        );
+        $response->assertStatus(200);
+        $response->assertExactJson([]);
+    }
 
     public function test_comprobar_que_notificacion_se_envia_al_usuario()
     {
