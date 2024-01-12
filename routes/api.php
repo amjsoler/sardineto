@@ -81,7 +81,7 @@ Route::get("gimnasios",
     ->middleware(["auth:sanctum", "cuentaVerificada"])
     ->name("mis-gimnasios");
 
-Route::post("gimnasios", //TODO TESTING
+Route::post("gimnasios",
     [GimnasioController::class, "crearGimnasio"]
 )
     ->middleware(["auth:sanctum", "cuentaVerificada"])

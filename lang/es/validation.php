@@ -4,7 +4,7 @@ return [
     "gimnasio" => [
         "nombre" => [
             "required" => "Especifica el nombre de tu gimnasio",
-            "max" => "El nombre es muy largo",
+            "max" => "El nombre es demasiado largo",
         ],
         "descripcion" => [
             "max" => "La descripción es demasiado larga"
