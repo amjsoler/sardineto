@@ -122,7 +122,7 @@ Route::get("gimnasios/{gimnasio}/crear-administrador/{usuario}",
     ->can("crearAdministradores", [Gimnasio::class, "gimnasio", "usuario"])
     ->name("crear-administrador");
 
-Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}", //TODO TESTING
+Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}",
     [GimnasioController::class, "quitarAdministrador"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
@@ -188,7 +188,7 @@ Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse", //TODO TESTING
 ///// TARIFAS /////
 ///////////////////
 
-Route::get("gimnasios/{gimnasio}/tarifas", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/tarifas",
     [TarifaController::class, "verTarifas"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

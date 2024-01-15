@@ -11,4 +11,5 @@ class Tarifa extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ["nombre", "precio", "creditos"];
+    protected $hidden = ["created_at", "updated_at", "deleted_at"];
 }
