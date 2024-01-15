@@ -78,6 +78,7 @@ class EliminarGimnasioTest extends TestCase
         $response = $this->deleteJson(route("eliminar-gimnasio", $gimnasio->id), []);
         $response->assertStatus(200);
         $response->assertExactJson([]);
+        $this->assertSoftDeleted($gimnasio);
     }
 
     public function test_eliminar_gimnasio_que_no_existe()

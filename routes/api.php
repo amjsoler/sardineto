@@ -195,21 +195,21 @@ Route::get("gimnasios/{gimnasio}/tarifas",
     ->can("verTarifas", [Tarifa::class, "gimnasio"])
     ->name("ver-tarifas");
 
-Route::post("gimnasios/{gimnasio}/tarifas", //TODO TESTING
+Route::post("gimnasios/{gimnasio}/tarifas",
     [TarifaController::class, "crearTarifa"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearTarifas", [Tarifa::class, "gimnasio"])
     ->name("crear-tarifas");
 
-Route::put("gimnasios/{gimnasio}/tarifas/{tarifa}", //TODO TESTING
+Route::put("gimnasios/{gimnasio}/tarifas/{tarifa}",
     [TarifaController::class, "modificarTarifa"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarTarifas", [Tarifa::class, "gimnasio", "tarifa"])
     ->name("editar-tarifas");
 
-Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}", //TODO TESTING
+Route::delete("gimnasios/{gimnasio}/tarifas/{tarifa}",
     [TarifaController::class, "eliminarTarifa"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
