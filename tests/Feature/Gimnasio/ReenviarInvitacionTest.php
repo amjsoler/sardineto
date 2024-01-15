@@ -2,18 +2,17 @@
 
 namespace Tests\Feature\Gimnasio;
 
-use App\Events\UsuarioInvitadoAGimnasio;
-use App\Listeners\EnviarCorreoConfirmacionUsuarioInvitadoAGimnasio;
 use App\Models\Gimnasio;
 use App\Models\User;
 use App\Notifications\CorreoConfirmacionUsuarioInvitadoAGimnasio;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class ReenviarInvitacionTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_reenviar_invitacion_a_gimnasio_sin_autenticacion()
     {
         $response = $this->getJson(
@@ -90,7 +89,7 @@ class ReenviarInvitacionTest extends TestCase
         $response->assertStatus(404);
 
         $response = $this->getJson(
-            route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => User::latest()->first()->id+1])
+            route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => $usuario2->id+1])
         );
         $response->assertStatus(404);
 

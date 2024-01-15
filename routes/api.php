@@ -115,7 +115,7 @@ Route::get("gimnasios/{gimnasio}/reenviar-invitacion/{usuario}",
     ->can("reenviarInvitaciones", "gimnasio")
     ->name("reenviar-invitacion");
 
-Route::get("gimnasios/{gimnasio}/crear-administrador/{usuario}", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/crear-administrador/{usuario}",
     [GimnasioController::class, "anyadirAdministrador"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

@@ -32,7 +32,7 @@ class ModificarGimnasioTest extends TestCase
             "propietario" => $usuario->id
         ]);
 
-        $response = $this->putJson(route("editar-gimnasio", 1),
+        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id),
             []);
 
         $response->assertStatus(460);
