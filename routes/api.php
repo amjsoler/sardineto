@@ -385,19 +385,19 @@ Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}
 ///// MÉTRICAS /////
 ////////////////////
 
-Route::get("metricas", //TODO TESTING
+Route::get("metricas",
     [MetricaController::class, "verMetricas"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->name("ver-metricas");
 
-Route::post("metricas", //TODO TESTING
+Route::post("metricas",
     [MetricaController::class, "crearMetrica"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->name("crear-metrica");
 
-Route::delete("metricas/{metrica}", //TODO TESTING
+Route::delete("metricas/{metrica}",
     [MetricaController::class, "eliminarMetrica"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

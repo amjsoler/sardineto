@@ -17,6 +17,10 @@ class Metrica extends Model
         "peso",
         "porcentaje_graso"
     ];
+    protected $hidden = [
+        "created_at",
+        "updated_at"
+    ];
 
     public function usuario(): BelongsTo
     {
