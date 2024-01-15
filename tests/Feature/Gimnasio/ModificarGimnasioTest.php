@@ -4,15 +4,12 @@ namespace Tests\Feature\Gimnasio;
 
 use App\Models\Gimnasio;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class ModificarGimnasioTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_editar_gimnasio_sin_autenticacion()
     {
         $response = $this->putJson(route("editar-gimnasio", 1),
@@ -68,7 +65,7 @@ class ModificarGimnasioTest extends TestCase
         $usuario1 = User::factory()->create();
         $this->actingAs($usuario1);
 
-        $response = $this->putJson(route("editar-gimnasio", 999));
+        $response = $this->putJson(route("editar-gimnasio", Gimnasio::orderBy("id", "desc")->first()->id+1));
         $response->assertStatus(404);
     }
 

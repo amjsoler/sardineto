@@ -4,13 +4,10 @@ namespace Tests\Feature\Gimnasio;
 
 use App\Models\Gimnasio;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class EliminarGimnasioTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_eliminar_gimnasio_sin_autenticacion()
     {
         $response = $this->deleteJson(route("eliminar-gimnasio", 1),
@@ -30,7 +27,7 @@ class EliminarGimnasioTest extends TestCase
             "propietario" => $usuario->id
         ]);
 
-        $response = $this->deleteJson(route("eliminar-gimnasio", 1),
+        $response = $this->deleteJson(route("eliminar-gimnasio", $gimnasio->id),
             []);
 
         $response->assertStatus(460);
@@ -56,12 +53,13 @@ class EliminarGimnasioTest extends TestCase
         $response->assertStatus(403);
 
         //Siendo propietario debería dar 422 sin payload
+        $countTemp = Gimnasio::all()->count();
         $this->actingAs($usuario2);
         $response = $this->deleteJson(route("eliminar-gimnasio", $gimnasio->id), []);
         $response->assertStatus(200);
 
         //Comprobamos que ya no está
-        $this->assertEquals(0, Gimnasio::all()->count());
+        $this->assertEquals($countTemp-1, Gimnasio::all()->count());
     }
 
     public function test_eliminar_gimnasio_ok()
@@ -86,7 +84,7 @@ class EliminarGimnasioTest extends TestCase
         $usuario1 = User::factory()->create();
         $this->actingAs($usuario1);
 
-        $response = $this->deleteJson(route("eliminar-gimnasio", 999));
+        $response = $this->deleteJson(route("eliminar-gimnasio", Gimnasio::orderBy("id", "desc")->first()->id+1));
         $response->assertStatus(404);
     }
 }

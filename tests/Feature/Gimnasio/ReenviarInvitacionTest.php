@@ -5,14 +5,12 @@ namespace Tests\Feature\Gimnasio;
 use App\Models\Gimnasio;
 use App\Models\User;
 use App\Notifications\CorreoConfirmacionUsuarioInvitadoAGimnasio;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class ReenviarInvitacionTest extends TestCase
 {
-    use RefreshDatabase;
     public function test_reenviar_invitacion_a_gimnasio_sin_autenticacion()
     {
         $response = $this->getJson(
@@ -84,12 +82,12 @@ class ReenviarInvitacionTest extends TestCase
 
         //Comprobamos los 404 de los modelos en ruta
         $response = $this->getJson(
-            route("reenviar-invitacion", ["gimnasio" => $gimnasio->id+1, "usuario" => $usuario1->id])
+            route("reenviar-invitacion", ["gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1, "usuario" => $usuario1->id])
         );
         $response->assertStatus(404);
 
         $response = $this->getJson(
-            route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => $usuario2->id+1])
+            route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => User::orderBy("id", "desc")->first()->id+1])
         );
         $response->assertStatus(404);
 
