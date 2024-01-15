@@ -278,56 +278,56 @@ Route::get("gimnasios/{gimnasio}/suscripciones/{suscripcion}/marcar-pagada", //T
 ///// ARTÍCULOS /////
 /////////////////////
 
-Route::get("gimnasios/{gimnasio}/articulos", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/articulos",
     [ArticuloController::class, "verArticulos"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verArticulos", [Articulo::class, "gimnasio"])
     ->name("ver-articulos");
 
-Route::post("gimnasios/{gimnasio}/articulos", //TODO TESTING
+Route::post("gimnasios/{gimnasio}/articulos",
     [ArticuloController::class, "crearArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearArticulos", [Articulo::class, "gimnasio"])
     ->name("crear-articulo");
 
-Route::put("gimnasios/{gimnasio}/articulos/{articulo}", //TODO TESTING
+Route::put("gimnasios/{gimnasio}/articulos/{articulo}",
     [ArticuloController::class, "editarArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("editar-articulo");
 
-Route::delete("gimnasios/{gimnasio}/articulos/{articulo}", //TODO TESTING
+Route::delete("gimnasios/{gimnasio}/articulos/{articulo}",
     [ArticuloController::class, "eliminarArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("eliminar-articulo");
 
-Route::get("gimnasios/{gimnasio}/articulos/historial-compras", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/articulos/historial-compras",
     [ArticuloController::class, "historialDeCompras"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verMiHistorialDeCompras", [Articulo::class, "gimnasio"])
     ->name("articulos-historial-compras");
 
-Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar",
     [ArticuloController::class, "comprarArticulo"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("comprarArticulos", [Articulo::class, "gimnasio", "articulo"])
     ->name("comprar-articulo");
 
-Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
     [ArticuloController::class, "pagarCompra"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("pagarCompras", [Articulo::class, "gimnasio", "compra"])
     ->name("pagar-compra");
 
-
+//TODO: Falta otra ruta para marcar el artículo como entregado
 
 
 

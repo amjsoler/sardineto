@@ -14,7 +14,7 @@ class ArticuloEditarArticuloRequest extends FormRequest
         return [
             "nombre" => "max:150",
             "descripcion" => "max:5000",
-            "stock" => "numeric|min:0",
+            "stock" => "integer|min:0",
         ];
     }
 
@@ -23,7 +23,7 @@ class ArticuloEditarArticuloRequest extends FormRequest
         return [
             "nombre.max" => __("validation.articulo.nombre.max"),
             "descripcion.max" => __("validation.articulo.descripcion.max"),
-            "stock.numeric" => __("validation.articulo.stock.numeric"),
+            "stock.integer" => __("validation.articulo.stock.integer"),
             "stock.min" => __("validation.articulo.stock.min"),
         ];
     }

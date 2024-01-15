@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArticuloComprarArticuloRequest;
 use App\Http\Requests\ArticuloCrearArticuloRequest;
 use App\Http\Requests\ArticuloEditarArticuloRequest;
 use App\Http\Requests\ArticuloPagarCompraRequest;
@@ -46,7 +47,7 @@ class ArticuloController extends Controller
         return response()->json($compras);
     }
 
-    public function comprarArticulo(Gimnasio $gimnasio, Articulo $articulo)
+    public function comprarArticulo(Gimnasio $gimnasio, Articulo $articulo, ArticuloComprarArticuloRequest $request)
     {
         $user = auth()->user();
         $user->historialDeCompras()->attach($articulo, ["gimnasio" => $gimnasio->id]);

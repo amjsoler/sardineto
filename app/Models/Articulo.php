@@ -19,4 +19,9 @@ class Articulo extends Model
         "descripcion",
         "stock"
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }

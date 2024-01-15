@@ -85,12 +85,15 @@ return [
         ],
         "stock" => [
             "required" => "Especifica la cantidad de artículos para poner a la venta",
-            "numeric" => "El stock ha de ser un número",
+            "integer" => "El stock ha de ser un número entero",
             "min" => "El stock no puede ser inferior a 0"
         ],
         "compra" => [
             "exists" => "La compra que has especificado no existe",
             "ComprobarSiUnaCompraYaEstaPagada" => "La compra ya está pagada"
+        ],
+        "stockdisponible" => [
+            "min" => "No hay stock disponible"
         ]
     ],
 
