@@ -11,12 +11,22 @@ class EjerciciosUsuariosController extends Controller
 {
     public function verRegistrosDePeso(Gimnasio $gimnasio)
     {
-        return response()->json(auth()->user()->registrosPeso->load("ejercicio"));
+        return response()->json(auth()->user()->registrosPeso()
+            ->with("ejercicio")
+            ->whereHas("ejercicio", function($query) use ($gimnasio){
+                return $query->where("gimnasio", $gimnasio->id);
+            })
+            ->get());
     }
 
     public function verRegistrosDePesoPorEjercicio(Gimnasio $gimnasio, Ejercicio $ejercicio)
     {
-        return response()->json(auth()->user()->registrosPeso()->where("ejercicio", $ejercicio->id)->get());
+        return response()->json(
+            auth()->user()
+            ->registrosPeso()
+            ->where("ejercicio", $ejercicio->id)
+            ->get()
+        );
     }
 
     public function registrarNuevaMarcaDePeso(Gimnasio $gimnasio, Ejercicio $ejercicio, EjerciciosUsuariosCrearEjerciciosUsuariosRequest $request)

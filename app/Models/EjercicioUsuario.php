@@ -14,6 +14,8 @@ class EjercicioUsuario extends Model
 
     protected $fillable = ["unorm"];
 
+    protected $hidden = ["created_at", "updated_at"];
+
     public function ejercicio() : BelongsTo
     {
         return $this->belongsTo(Ejercicio::class, "ejercicio", "id");
