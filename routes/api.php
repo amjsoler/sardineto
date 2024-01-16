@@ -335,42 +335,42 @@ Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
 ///// EJERCICIOS /////
 //////////////////////
 
-Route::get("gimnasios/{gimnasio}/ejercicios", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/ejercicios",
     [EjercicioController::class, "verEjercicios"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verEjercicios", [Ejercicio::class, "gimnasio"])
     ->name("ver-ejercicios");
 
-Route::post("gimnasios/{gimnasio}/ejercicios", //TODO TESTING
+Route::post("gimnasios/{gimnasio}/ejercicios",
     [EjercicioController::class, "crearEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearEjercicios", [Ejercicio::class, "gimnasio"])
     ->name("crear-ejercicio");
 
-Route::put("gimnasios/{gimnasio}/ejercicios/{ejercicio}", //TODO TESTING
+Route::put("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
     [EjercicioController::class, "modificarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("modificarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
     ->name("modificar-ejercicio");
 
-Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}", //TODO TESTING
+Route::delete("gimnasios/{gimnasio}/ejercicios/{ejercicio}",
     [EjercicioController::class, "eliminarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("eliminarEjercicios", [Ejercicio::class, "gimnasio", "ejercicio"])
     ->name("eliminar-ejercicio");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/asignar-ejercicio/{ejercicio}", //TODO TESTING
+Route::post("gimnasios/{gimnasio}/clases/{clase}/asignar-ejercicio/{ejercicio}",
     [EjercicioController::class, "asociarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("asociarEjerciciosAClase", [Ejercicio::class, "gimnasio", "clase", "ejercicio"])
     ->name("asociar-ejercicio");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/clases/{clase}/desasignar-ejercicio/{ejercicio}",
     [EjercicioController::class, "desasociarEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
