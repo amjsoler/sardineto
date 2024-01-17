@@ -11,11 +11,8 @@ use App\Models\RecuperarCuentaToken;
 use App\Models\User;
 use App\Notifications\RecuperarCuenta;
 use App\Notifications\VerificarNuevaCuentaUsuario;
-use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class ApiAuthentication extends Controller
 {
@@ -29,8 +26,8 @@ class ApiAuthentication extends Controller
             $response["status"] = 200;
             $response["data"] = ["access_token" => $token, "token_type" => "Bearer"];
         }else{
-            $response["status"] = 401;
-            $response["data"] = "Unauthorized";
+            $response["status"] = 462;
+            $response["data"] = "La contraseña no es correcta";
         }
 
         return response()->json(
@@ -42,11 +39,12 @@ class ApiAuthentication extends Controller
     public function register(RegisterRequest $request)
     {
         //Creo el usuario
-        $nuevoUsuario = User::create([
+        $nuevoUsuario = User::make([
             "name" => $request->get("name"),
-            "email" => $request->get("email"),
             "password" =>$request->get("password")
         ]);
+        $nuevoUsuario->email = $request->get("email");
+        $nuevoUsuario->save();
 
         //Inicio sesión para disponer del id en el auth()
         Auth::attempt($request->only("email", "password"));

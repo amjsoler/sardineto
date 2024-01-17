@@ -28,15 +28,17 @@ use Illuminate\Support\Facades\Route;
 /////// RUTAS DE AUTENTICACIÓN ///////
 //////////////////////////////////////
 
-Route::post("/iniciar-sesion", //TODO TESTING
+Route::post("/iniciar-sesion",
     [ApiAuthentication::class, "login"]
 )
-    ->middleware("guest");
+    ->middleware("invitadoObligatorio")
+    ->name("iniciar-sesion");
 
-Route::post("/registrarse", //TODO TESTING
+Route::post("/registrarse",
     [ApiAuthentication::class, "register"]
 )
-    ->middleware("guest");
+    ->middleware("invitadoObligatorio")
+    ->name("registrarse");
 
 Route::post("/recuperar-cuenta", //TODO TESTING
     [ApiAuthentication::class, "recuperarCuenta"]
