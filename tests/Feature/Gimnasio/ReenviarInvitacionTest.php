@@ -67,7 +67,7 @@ class ReenviarInvitacionTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_reenviar_invitacion_a_gimnasio_validation_fail()
+    public function test_reenviar_invitacion_a_gimnasio_not_found_route_param()
     {
         $usuario1 = User::factory()->create();
         $usuario2 = User::factory()->create();
@@ -76,9 +76,6 @@ class ReenviarInvitacionTest extends TestCase
         $gimnasio = Gimnasio::factory()->create([
             "propietario" => $usuario1
         ]);
-
-        $this->assertEquals(0, $gimnasio->usuariosInvitados()->count());
-
 
         //Comprobamos los 404 de los modelos en ruta
         $response = $this->getJson(
@@ -90,6 +87,19 @@ class ReenviarInvitacionTest extends TestCase
             route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => User::orderBy("id", "desc")->first()->id+1])
         );
         $response->assertStatus(404);
+    }
+
+    public function test_reenviar_invitacion_a_gimnasio_validation_fail()
+    {
+        $usuario1 = User::factory()->create();
+        $usuario2 = User::factory()->create();
+        $this->actingAs($usuario1);
+
+        $gimnasio = Gimnasio::factory()->create([
+            "propietario" => $usuario1
+        ]);
+
+        $this->assertEquals(0, $gimnasio->usuariosInvitados()->count());
 
         $response = $this->getJson(
             route("reenviar-invitacion", ["gimnasio" => $gimnasio->id, "usuario" => $usuario1->id])

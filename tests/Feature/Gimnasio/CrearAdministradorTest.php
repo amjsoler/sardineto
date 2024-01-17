@@ -60,6 +60,28 @@ class CrearAdministradorTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_crear_administrador_not_found_route_param()
+    {
+        $usuario1 = User::factory()->create();
+        $usuario2 = User::factory()->create();
+        $this->actingAs($usuario1);
+
+        $gimnasio = Gimnasio::factory()->create([
+            "propietario" => $usuario1->id
+        ]);
+
+        $response = $this->getJson(route("crear-administrador",
+            ["gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1, "usuario" => $usuario2->id]));
+        $response->assertStatus(404);
+
+
+
+
+        $response = $this->getJson(route("crear-administrador",
+            ["gimnasio" => $gimnasio->id, "usuario" => User::orderBy("id", "desc")->first()->id+1]));
+        $response->assertStatus(404);
+    }
+
     public function test_crear_administrador_validation_fail()
     {
         $usuario1 = User::factory()->create();

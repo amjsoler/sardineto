@@ -12,9 +12,7 @@ class ModificarGimnasioTest extends TestCase
 {
     public function test_editar_gimnasio_sin_autenticacion()
     {
-        $response = $this->putJson(route("editar-gimnasio", 1),
-            []);
-
+        $response = $this->putJson(route("editar-gimnasio", 1));
         $response->assertStatus(401);
     }
 
@@ -29,9 +27,7 @@ class ModificarGimnasioTest extends TestCase
             "propietario" => $usuario->id
         ]);
 
-        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id),
-            []);
-
+        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id));
         $response->assertStatus(460);
     }
 
@@ -46,17 +42,16 @@ class ModificarGimnasioTest extends TestCase
         ]);
 
         //Comprobamos sin ser nada que da 403
-        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id), []);
+        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id));
         $response->assertStatus(403);
 
         //Ahora nos damos de alta como administrador para comprobar que cambia
         $gimnasio->administradores()->attach($usuario1->id);
-        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id), []);
+        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id));
         $response->assertStatus(200);
 
-        //Siendo propietario debería dar 422 sin payload
         $this->actingAs($usuario2);
-        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id), []);
+        $response = $this->putJson(route("editar-gimnasio", $gimnasio->id));
         $response->assertStatus(200);
     }
 

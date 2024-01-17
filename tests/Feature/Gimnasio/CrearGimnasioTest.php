@@ -3,8 +3,6 @@
 namespace Tests\Feature\Gimnasio;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
@@ -13,13 +11,7 @@ class CrearGimnasioTest extends TestCase
 {
     public function test_crear_gimnasio_sin_autenticacion()
     {
-        $response = $this->post(route("crear-gimnasio"),
-            [],
-            [
-                "Content-Type" => "application/json",
-                "Accept" => "application/json"
-            ]);
-
+        $response = $this->postJson(route("crear-gimnasio"));
         $response->assertStatus(401);
     }
 
@@ -30,13 +22,7 @@ class CrearGimnasioTest extends TestCase
         ]);
         $this->actingAs($usuario);
 
-        $response = $this->post(route("crear-gimnasio"),
-            [],
-            [
-                "Content-Type" => "application/json",
-                "Accept" => "application/json"
-            ]);
-
+        $response = $this->postJson(route("crear-gimnasio"));
         $response->assertStatus(460);
     }
 
@@ -45,19 +31,33 @@ class CrearGimnasioTest extends TestCase
         $usuario = User::factory()->create();
         $this->actingAs($usuario);
 
-        //Validamos el nombre required
+        //Validamos el nombre:required, descripcion:max, direccion:max
         $response = $this->postJson(route("crear-gimnasio"),
         [
             "descripcion" => Str::random(5001),
             "direccion" => Str::random(201)
         ]);
-
         $response->assertStatus(422);
         $response->assertJson(fn (AssertableJson $json) =>
             $json->has("message")
                 ->where("errors.nombre.0", __("validation.gimnasio.nombre.required"))
                 ->where("errors.descripcion.0", __("validation.gimnasio.descripcion.max"))
                 ->where("errors.direccion.0", __("validation.gimnasio.direccion.max"))
+        );
+
+
+
+        //Validamos el nombre:max
+        $response = $this->postJson(route("crear-gimnasio"),
+            [
+                "nombre" => Str::random(151),
+                "descripcion" => "descripción",
+                "direccion" => "dirección"
+            ]);
+        $response->assertStatus(422);
+        $response->assertJson(fn (AssertableJson $json) =>
+        $json->has("message")
+            ->where("errors.nombre.0", __("validation.gimnasio.nombre.max"))
         );
     }
 

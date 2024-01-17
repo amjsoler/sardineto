@@ -28,7 +28,7 @@ class GimnasioController extends Controller
 
     public function crearGimnasio(GimnasioCrearGimnasioRequest $request)
     {
-        $gimnasio = new Gimnasio($request->all());
+        $gimnasio = Gimnasio::make($request->all());
         auth()->user()->gimnasiosPropietario()->save($gimnasio);
 
         return response()->json($gimnasio->refresh(), 200);

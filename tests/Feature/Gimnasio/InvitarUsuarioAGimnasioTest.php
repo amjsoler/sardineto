@@ -17,7 +17,6 @@ class InvitarUsuarioAGimnasioTest extends TestCase
     public function test_invitar_a_gimnasio_sin_autenticacion()
     {
         $response = $this->postJson(route("invitar-usuario", 1));
-
         $response->assertStatus(401);
     }
 
@@ -33,7 +32,6 @@ class InvitarUsuarioAGimnasioTest extends TestCase
         ]);
 
         $response = $this->postJson(route("invitar-usuario", $gimnasio->id));
-
         $response->assertStatus(460);
     }
 
@@ -125,6 +123,20 @@ class InvitarUsuarioAGimnasioTest extends TestCase
         $json->has("message")
             ->where("errors.email.0", __("validation.gimnasio.email.comprobarSiUsuarioYaEstaInvitadoAGimnasio"))
         );
+    }
+
+    public function test_invitar_usuario_not_found_param()
+    {
+        $usuario1 = User::factory()->create();
+        $this->actingAs($usuario1);
+
+        $gimnasio = Gimnasio::factory()->create([
+            "propietario" => $usuario1
+        ]);
+
+        //Comprobamos el required del email
+        $response = $this->postJson(route("invitar-usuario", Gimnasio::orderBy("id", "desc")->first()->id+1));
+        $response->assertStatus(404);
     }
 
     public function test_invitar_usuario_ok()

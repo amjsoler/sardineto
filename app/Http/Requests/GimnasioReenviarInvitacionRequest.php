@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ComprobarSiUsuarioYaEstaInvitadoAGimnasio;
 use App\Rules\ComprobarSiUsuarioYaHaAceptadoLaInvitacion;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
