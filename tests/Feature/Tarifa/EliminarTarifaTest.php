@@ -5,15 +5,14 @@ namespace Tests\Feature\Tarifa;
 use App\Models\Gimnasio;
 use App\Models\Tarifa;
 use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class EliminarTarifaTest extends TestCase
 {
-    public function test_liminar_tarifa_sin_autenticar()
+    public function test_eliminar_tarifa_sin_autenticar()
     {
-        $response = $this->deleteJson(route("eliminar-tarifas", ["gimnasio" => 1, "tarifa" => 1]));
+        $response = $this->deleteJson(route("eliminar-tarifas",
+            ["gimnasio" => 1, "tarifa" => 1]));
         $response->assertStatus(401);
     }
 
@@ -30,7 +29,8 @@ class EliminarTarifaTest extends TestCase
             "gimnasio" => $gimnasio
         ]);
 
-        $response = $this->deleteJson(route("eliminar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
+        $response = $this->deleteJson(route("eliminar-tarifas",
+            ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
         $response->assertStatus(460);
     }
 

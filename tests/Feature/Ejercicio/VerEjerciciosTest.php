@@ -83,17 +83,18 @@ class VerEjerciciosTest extends TestCase
     public function test_ver_ejercicios_ok()
     {
         $this->actingAs($this->propietario);
+
         $response = $this->getJson(route("ver-ejercicios", $this->gimnasio->id));
         $response->assertStatus(200);
         $response->assertJsonCount(0);
 
         $ejer1 = Ejercicio::factory()->create(["gimnasio" => $this->gimnasio]);
         $ejer2 = Ejercicio::factory()->create(["gimnasio" => $this->gimnasio]);
-        $ejer3 = Ejercicio::factory()->create(["gimnasio" => $this->gimnasio]);
+        $ejer3 = Ejercicio::factory()->create(["gimnasio" => $this->gimnasio2]);
 
         $response = $this->getJson(route("ver-ejercicios", $this->gimnasio->id));
         $response->assertStatus(200);
-        $response->assertJsonCount(3);
+        $response->assertJsonCount(2);
         $response->assertJson(fn (AssertableJson $json) => $json
             ->first(fn (AssertableJson $json) => $json
                 ->has("id")

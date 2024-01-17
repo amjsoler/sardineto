@@ -23,6 +23,7 @@ class ClaseEditarClaseRequest extends FormRequest
     {
         return [
             "nombre" => "max:150",
+            "fechayhora" => "date",
             "descripcion" => "max:5000",
             "plazas" => "integer|min:1",
         ];
@@ -33,6 +34,7 @@ class ClaseEditarClaseRequest extends FormRequest
         return [
             "nombre.max" => __("validation.clase.nombre.max"),
             "descripcion.max" => __("validation.clase.descripcion.max"),
+            "fechayhora" => __("validation.clase.fechayhora.date"),
             "plazas.integer" => __("validation.clase.plazas.integer"),
             "plazas.min" => __("validation.clase.plazas.min"),
         ];

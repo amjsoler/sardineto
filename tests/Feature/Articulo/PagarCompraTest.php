@@ -106,7 +106,7 @@ class PagarCompraTest extends TestCase
                 "gimnasio" => $this->gimnasio->id,
                 "compra" => $this->compra->id
             ]));
-        $response->assertStatus(422);
+        $response->assertStatus(422);//<-- 422 porque la compra ya está pagada del test de arriba. Lo importante es ver que pasa el policy
 
         //Pagar compra de otro gimnasio
         $this->actingAs($this->propietario);

@@ -13,7 +13,7 @@ return new class extends Migration
 
             $table->string("nombre", 150)->required();
             $table->text("descripcion", 5000)->nullable();
-            $table->timestamp("fechayhora")->required();
+            $table->dateTime("fechayhora")->required();
             $table->unsignedInteger("plazas")->required();
 
             $table->unsignedBigInteger("gimnasio");

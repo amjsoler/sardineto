@@ -36,7 +36,8 @@ return [
             "max" => "La descripción de la clase es muy larga"
         ],
         "fechayhora" => [
-            "required" => "Especifica cuando se celebrará la clase"
+            "required" => "Especifica cuando se celebrará la clase",
+            "date" => "La fecha/hora especificada no es válida",
         ],
         "plazas" => [
             "required" => "Indica el cantidad de plazas para esta clase",

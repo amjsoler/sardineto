@@ -17,9 +17,8 @@ class ClaseController extends Controller
 
     public function crearClase(Gimnasio $gimnasio, ClaseCrearClaseRequest $request)
     {
-        $clase = new Clase($request->all());
-        $clase->gimnasio = $gimnasio->id;
-        $clase->save();
+        $clase = Clase::make($request->all());
+        $gimnasio->clases()->save($clase);
 
         return response()->json($clase);
     }

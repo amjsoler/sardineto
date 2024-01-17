@@ -39,8 +39,8 @@ class VerTarifaTest extends TestCase
         $gimnasio = Gimnasio::factory()->create([
             "propietario" => $propietario
         ]);
-        $this->actingAs($usuarioNormal);
 
+        $this->actingAs($usuarioNormal);
         $response = $this->getJson(route("ver-tarifas", $gimnasio->id));
         $response->assertStatus(403);
 
@@ -71,7 +71,8 @@ class VerTarifaTest extends TestCase
         $usuario = User::factory()->create();
         $this->actingAs($usuario);
 
-        $response = $this->getJson(route("ver-tarifas", Gimnasio::orderBy("id", "desc")->first()->id+1));
+        $response = $this->getJson(route("ver-tarifas",
+            Gimnasio::orderBy("id", "desc")->first()->id+1));
         $response->assertStatus(404);
     }
 

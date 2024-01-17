@@ -112,7 +112,8 @@ class CrearEjercicioTest extends TestCase
 
         $this->assertEquals(0, $this->gimnasio->ejercicios()->count());
 
-        $response = $this->postJson(route("crear-ejercicio", $this->gimnasio->id), [
+        $response = $this->postJson(route("crear-ejercicio",
+            $this->gimnasio->id), [
             "nombre" => "invent1",
             "descripcion" => "Hola invent de descripción",
         ]);

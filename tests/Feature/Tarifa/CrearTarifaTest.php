@@ -32,13 +32,19 @@ class CrearTarifaTest extends TestCase
 
     public function test_crear_tarifa_sin_autorizacion()
     {
+        $invitdadoAceptado = User::factory()->create();
         $administrador = User::factory()->create();
         $propietario = User::factory()->create();
         $gimnasio = Gimnasio::factory()->create([
             "propietario" => $propietario
         ]);
-        $this->actingAs($administrador);
+        $gimnasio->usuariosInvitados()->attach($invitdadoAceptado, ["invitacion_aceptada" => true]);
 
+        $this->actingAs($invitdadoAceptado);
+        $response = $this->postJson(route("crear-tarifas", $gimnasio->id));
+        $response->assertStatus(403);
+
+        $this->actingAs($administrador);
         $response = $this->postJson(route("crear-tarifas", $gimnasio->id));
         $response->assertStatus(403);
 
@@ -55,7 +61,8 @@ class CrearTarifaTest extends TestCase
     {
         $usuario = User::factory()->create();
         $this->actingAs($usuario);
-        $response = $this->postJson(route("crear-tarifas", Gimnasio::orderBy("id", "desc")->first()->id+1));
+        $response = $this->postJson(route("crear-tarifas",
+            Gimnasio::orderBy("id", "desc")->first()->id+1));
         $response->assertStatus(404);
     }
 
@@ -65,8 +72,8 @@ class CrearTarifaTest extends TestCase
         $gimnasio = Gimnasio::factory()->create([
             "propietario" => $propietario
         ]);
-        $this->actingAs($propietario);
 
+        $this->actingAs($propietario);
         $response = $this->postJson(route("crear-tarifas", $gimnasio->id), [
 
         ]);

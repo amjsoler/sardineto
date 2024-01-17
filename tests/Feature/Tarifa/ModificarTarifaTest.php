@@ -13,7 +13,8 @@ class ModificarTarifaTest extends TestCase
 {
     public function test_editar_tarifa_sin_autenticar()
     {
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => 1, "tarifa" => 1]));
+        $response = $this->putJson(route("editar-tarifas",
+            ["gimnasio" => 1, "tarifa" => 1]));
         $response->assertStatus(401);
     }
 
@@ -30,7 +31,8 @@ class ModificarTarifaTest extends TestCase
             "gimnasio" => $gimnasio
         ]);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
+        $response = $this->putJson(route("editar-tarifas",
+            ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
         $response->assertStatus(460);
     }
 
@@ -44,28 +46,32 @@ class ModificarTarifaTest extends TestCase
         $tarifa = Tarifa::factory()->create([
             "gimnasio" => $gimnasio
         ]);
-        $this->actingAs($administrador);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
+        $this->actingAs($administrador);
+        $response = $this->putJson(route("editar-tarifas",
+            ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
         $response->assertStatus(403);
 
         $gimnasio->administradores()->attach($administrador);
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
+        $response = $this->putJson(route("editar-tarifas",
+            ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
         $response->assertStatus(200);
 
         $this->actingAs($propietario);
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
+        $response = $this->putJson(route("editar-tarifas",
+            ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]));
         $response->assertStatus(200);
 
         $gimnasio2 = Gimnasio::factory()->create([
             "propietario" => $propietario
         ]);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio2->id, "tarifa" => $tarifa->id]));
+        $response = $this->putJson(route("editar-tarifas",
+            ["gimnasio" => $gimnasio2->id, "tarifa" => $tarifa->id]));
         $response->assertStatus(403);
     }
 
-    public function test_not_found_route_param()
+    public function test_editar_tarifa_not_found_route_param()
     {
         $usuario = User::factory()->create();
         $this->actingAs($usuario);
@@ -76,14 +82,22 @@ class ModificarTarifaTest extends TestCase
             "gimnasio" => $gimnasio
         ]);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1, "tarifa" => $tarifa->id]));
+        $response = $this->putJson(route("editar-tarifas",
+            [
+                "gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1,
+                "tarifa" => $tarifa->id
+            ]));
         $response->assertStatus(404);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => Tarifa::orderBy("id", "desc")->first()->id+1]));
+        $response = $this->putJson(route("editar-tarifas",
+            [
+                "gimnasio" => $gimnasio->id,
+                "tarifa" => Tarifa::orderBy("id", "desc")->first()->id+1
+            ]));
         $response->assertStatus(404);
     }
 
-    public function test_crear_tarifa_validation_fail()
+    public function test_editar_tarifa_validation_fail()
     {
         $propietario = User::factory()->create();
         $gimnasio = Gimnasio::factory()->create([
@@ -94,11 +108,16 @@ class ModificarTarifaTest extends TestCase
         ]);
         $this->actingAs($propietario);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]), [
-            "nombre" => Str::random(151),
-            "precio" => 50.243,
-            "creditos" => 1.5
-        ]);
+        $response = $this->putJson(route("editar-tarifas",
+            [
+                "gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id
+            ]),
+            [
+                "nombre" => Str::random(151),
+                "precio" => 50.243,
+                "creditos" => 1.5
+            ]
+        );
         $response->assertStatus(422);
         $response->assertJson(fn (AssertableJson $json) =>
         $json->has("message")
@@ -107,10 +126,16 @@ class ModificarTarifaTest extends TestCase
             ->where("errors.creditos.0", __("validation.tarifa.creditos.integer"))
         );
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]), [
-            "precio" => -1,
-            "creditos" => -1
-        ]);
+        $response = $this->putJson(route("editar-tarifas",
+            [
+                "gimnasio" => $gimnasio->id,
+                "tarifa" => $tarifa->id
+            ]),
+            [
+                "precio" => -1,
+                "creditos" => -1
+            ]
+        );
         $response->assertStatus(422);
         $response->assertJson(fn (AssertableJson $json) =>
         $json->has("message")
@@ -130,11 +155,17 @@ class ModificarTarifaTest extends TestCase
         ]);
         $this->actingAs($propietario);
 
-        $response = $this->putJson(route("editar-tarifas", ["gimnasio" => $gimnasio->id, "tarifa" => $tarifa->id]), [
-            "nombre" => "EDIT",
-            "precio" => 50,
-            "creditos" => 10
-        ]);
+        $response = $this->putJson(route("editar-tarifas",
+            [
+                "gimnasio" => $gimnasio->id,
+                "tarifa" => $tarifa->id
+            ]),
+            [
+                "nombre" => "EDIT",
+                "precio" => 50,
+                "creditos" => 10
+            ]
+        );
         $response->assertStatus(200);
         $response->assertJson(fn (AssertableJson $json) =>
         $json->where("nombre", "EDIT")

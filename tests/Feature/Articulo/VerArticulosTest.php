@@ -94,6 +94,4 @@ class VerArticulosTest extends TestCase
             )
         );
     }
-
-
 }

@@ -82,6 +82,30 @@ class EliminarArticuloTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_eliminar_articulo_not_found_route_param()
+    {
+        $this->actingAs($this->propietario);
+        $response = $this->deleteJson(
+            route("eliminar-articulo",
+                [
+                    "gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1,
+                    "articulo" => $this->articulo->id
+                ]
+            )
+        );
+        $response->assertStatus(404);
+
+        $response = $this->deleteJson(
+            route("eliminar-articulo",
+                [
+                    "gimnasio" => $this->gimnasio->id,
+                    "articulo" => Articulo::orderBy("id", "desc")->first()->id+1
+                ]
+            )
+        );
+        $response->assertStatus(404);
+    }
+
     public function test_eliminar_articulo_ok()
     {
         $this->actingAs($this->propietario);

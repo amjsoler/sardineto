@@ -107,6 +107,30 @@ class EditarArticuloTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_editar_articulo_not_found_route_param()
+    {
+        $this->actingAs($this->propietario);
+        $response = $this->putJson(
+            route("editar-articulo",
+                [
+                    "gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1,
+                    "articulo" => $this->articulo->id
+                ]
+            )
+        );
+        $response->assertStatus(404);
+
+        $response = $this->putJson(
+            route("editar-articulo",
+                [
+                    "gimnasio" => $this->gimnasio->id,
+                    "articulo" => Articulo::orderBy("id", "desc")->first()->id+1
+                ]
+            )
+        );
+        $response->assertStatus(404);
+    }
+
     public function test_editar_articulo_validation_fail()
     {
         $this->actingAs($this->propietario);

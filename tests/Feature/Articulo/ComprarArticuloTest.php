@@ -104,6 +104,30 @@ class ComprarArticuloTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_comprar_articulo_not_found_route_param()
+    {
+        $this->actingAs($this->propietario);
+        $response = $this->getJson(
+            route("comprar-articulo",
+                [
+                    "gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1,
+                    "articulo" => $this->articulo->id
+                ]
+            )
+        );
+        $response->assertStatus(404);
+
+        $response = $this->getJson(
+            route("comprar-articulo",
+                [
+                    "gimnasio" => $this->gimnasio->id,
+                    "articulo" => Articulo::orderBy("id", "desc")->first()->id+1
+                ]
+            )
+        );
+        $response->assertStatus(404);
+    }
+
     public function test_comprar_articulo_validation_fail()
     {
         //¿Qué pasa si el stock es 0?

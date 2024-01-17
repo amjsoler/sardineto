@@ -145,27 +145,27 @@ Route::delete("gimnasios/{gimnasio}/quitar-administrador/{usuario}",
 ///// CLASES /////
 //////////////////
 
-Route::get("gimnasios/{gimnasio}/clases", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/clases",
     [ClaseController::class, "verClases"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verClases", [Clase::class, "gimnasio"])
     ->name("ver-clases-de-gimnasio");
 
-Route::post("gimnasios/{gimnasio}/clases", //TODO TESTING
+Route::post("gimnasios/{gimnasio}/clases",
     [ClaseController::class, "crearClase"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("crearClases", [Clase::class, "gimnasio"])
     ->name("crear-clase");
 
-Route::put("gimnasios/{gimnasio}/clases/{clase}", //TODO TESTING
+Route::put("gimnasios/{gimnasio}/clases/{clase}",
     [ClaseController::class, "editarClase"]
 )->middleware("auth:sanctum", "cuentaVerificada")
     ->can("editarClases", [Clase::class, "gimnasio", "clase"])
     ->name("editar-clase");
 
-Route::delete("gimnasios/{gimnasio}/clases/{clase}", //TODO TESTING
+Route::delete("gimnasios/{gimnasio}/clases/{clase}",
     [ClaseController::class, "eliminarClase"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

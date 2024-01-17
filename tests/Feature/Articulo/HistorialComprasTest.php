@@ -5,6 +5,7 @@ namespace Tests\Feature\Articulo;
 use App\Models\Articulo;
 use App\Models\Gimnasio;
 use App\Models\User;
+use App\Models\UsuarioCompraArticulo;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -88,6 +89,14 @@ class HistorialComprasTest extends TestCase
         $this->actingAs($this->propietario);
         $response = $this->getJson(route("articulos-historial-compras", ["gimnasio" => $this->gimnasio->id]));
         $response->assertStatus(200);
+    }
+
+    public function test_ver_historial_not_found_route_params()
+    {
+        $this->actingAs($this->propietario);
+        $response = $this->getJson(route("articulos-historial-compras",
+            ["gimnasio" => Gimnasio::orderBy("id", "desc")->first()->id+1]));
+        $response->assertStatus(404);
     }
 
     public function test_ver_historial_de_compras_ok()

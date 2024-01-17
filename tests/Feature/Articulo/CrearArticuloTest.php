@@ -47,6 +47,7 @@ class CrearArticuloTest extends TestCase
         $this->actingAs($administrador);
         $response = $this->postJson(route("crear-articulo", $gimnasio->id));
         $response->assertStatus(403);
+
         $gimnasio->administradores()->attach($administrador);
         $response = $this->postJson(route("crear-articulo", $gimnasio->id));
         $response->assertStatus(422);
