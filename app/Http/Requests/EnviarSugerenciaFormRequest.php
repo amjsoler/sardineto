@@ -24,8 +24,8 @@ class EnviarSugerenciaFormRequest extends FormRequest
     {
         return [
             "texto.required" => __("validation.enviarsugerencia.texto.required"),
-            "texto.string" =>__("validation.enviarsugerencia.texto.string"),
-            "texto.max" =>__("validation.enviarsugerencia.texto.max"),
+            "texto.string" => __("validation.enviarsugerencia.texto.string"),
+            "texto.max" => __("validation.enviarsugerencia.texto.max"),
         ];
     }
 }

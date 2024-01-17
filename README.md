@@ -6,3 +6,4 @@
 - 460: La cuenta no está verificada
 - 461: Ya has iniciado sesión (para las rutas que requieran peticionar como invitado)
 - 462: La contraseña no es correcta durante el inicio de sesión
+- 463: La cuenta ya está verificada

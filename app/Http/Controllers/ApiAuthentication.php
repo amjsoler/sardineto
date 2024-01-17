@@ -87,7 +87,7 @@ class ApiAuthentication extends Controller
 
     public function mandarCorreoVerificacionCuenta()
     {
-        //Creo el nuevo token
+        //Creo el periodo de validez del token
         $validez = now()->addMinute(env("TIEMPO_VALIDEZ_TOKEN_VERIFICACION_EN_MINUTOS"));
 
         //Primero borro los tokens del usuario, ya que solo puede tener uno
@@ -106,21 +106,10 @@ class ApiAuthentication extends Controller
 
     public function cambiarContrasena(CambiarContrasenaFormRequest $request)
     {
-        $response = [
-            "code" => "",
-            "data" => []
-        ];
-
         $user = auth()->user();
         $user->password = Hash::make($request->nuevaContrasena);
+        $user->save();
 
-
-        if($user->save()){
-            $response["status"] = 200;
-        }else{
-            $response["status"] = 400;
-        }
-
-        return response()->json($response["data"], $response["status"]);
+        return response()->json();
     }
 }

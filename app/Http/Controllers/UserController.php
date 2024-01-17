@@ -23,11 +23,9 @@ class UserController extends Controller
 
     public function eliminarCuenta()
     {
-        if(auth()->user()->delete()){
-            return response()->json();
-        }else{
-            return response()->json(null, 400);
-        }
+        auth()->user()->delete();
+
+        return response()->json();
     }
 
     public function guardarAjustesCuentaUsuario(AjustesCuentaFormRequest $request)

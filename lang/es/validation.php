@@ -161,7 +161,8 @@ return [
         ],
 
         "correo" => [
-            "required" => "Debes especificar el correo de la cuenta que quieres recuperar"
+            "required" => "Debes especificar el correo de la cuenta que quieres recuperar",
+            "email" => "El email no es válido",
         ],
 
         "contrasenaActual" => [

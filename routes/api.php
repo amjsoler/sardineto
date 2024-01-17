@@ -40,34 +40,40 @@ Route::post("/registrarse",
     ->middleware("invitadoObligatorio")
     ->name("registrarse");
 
-Route::post("/recuperar-cuenta", //TODO TESTING
+Route::post("/recuperar-cuenta",
     [ApiAuthentication::class, "recuperarCuenta"]
-);
+)
+    ->name("recuperar-cuenta");
 
-Route::get("/verificar-cuenta", //TODO TESTING
+Route::get("/verificar-cuenta",
     [ApiAuthentication::class, "mandarCorreoVerificacionCuenta"]
 )
-    ->middleware("auth:sanctum");
+    ->middleware("auth:sanctum", "cuentaSinVerificar")
+    ->name("verificar-cuenta");
 
-Route::post("/cambiar-contrasena", //TODO TESTING
+Route::post("/cambiar-contrasena",
     [ApiAuthentication::class, "cambiarContrasena"]
 )
-    ->middleware("auth:sanctum", "cuentaVerificada");
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->name("cambiar-contrasena");
 
-Route::post("/ajustes-cuenta", //TODO TESTING
+Route::post("/ajustes-cuenta",
     [UserController::class, "guardarAjustesCuentaUsuario"]
 )
-    ->middleware("auth:sanctum", "cuentaVerificada");
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->name("guardar-ajustes-cuenta");
 
-Route::delete("/eliminar-cuenta", //TODO TESTING
+Route::delete("/eliminar-cuenta",
     [UserController::class, "eliminarCuenta"]
 )
-    ->middleware("auth:sanctum", "cuentaVerificada");
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->name("eliminar-cuenta");
 
-Route::post("/enviar-sugerencia", //TODO TESTING
+Route::post("/enviar-sugerencia",
     [UserController::class, "enviarSugerencia"]
 )
-    ->middleware("auth:sanctum", "cuentaVerificada");
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->name("enviar-sugerencia");
 
 
 

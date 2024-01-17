@@ -14,14 +14,15 @@ class RecuperarCuentaFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "correo" => "required"
+            "correo" => "required|email"
         ];
     }
 
     public function messages()
     {
         return [
-            "correo.required" => __("validation.usuario.correo.required")
+            "correo.required" => __("validation.usuario.correo.required"),
+            "correo.email" => __("validation.usuario.correo.email"),
         ];
     }
 }

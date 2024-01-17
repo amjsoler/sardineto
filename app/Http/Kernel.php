@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ComprobarCuentaSinVerificar;
 use App\Http\Middleware\ComprobarCuentaVerificada;
 use App\Http\Middleware\ComprobarSiLaPeticionSeHaceComoInvitado;
 use App\Http\Middleware\UsuarioEsMiembroDelGimnasio;
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         "cuentaVerificada" => ComprobarCuentaVerificada::class,
-        "invitadoObligatorio" => ComprobarSiLaPeticionSeHaceComoInvitado::class
+        "invitadoObligatorio" => ComprobarSiLaPeticionSeHaceComoInvitado::class,
+        "cuentaSinVerificar" => ComprobarCuentaSinVerificar::class
     ];
 }
