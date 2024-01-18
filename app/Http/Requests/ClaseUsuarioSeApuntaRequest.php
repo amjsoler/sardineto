@@ -2,14 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ComprobarSiQuedanPlazasEnLaClase;
+use App\Rules\ComprobarSiUserReuneRequisitosParaApuntarseAClase;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class ClaseUsuarioSeApuntaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
@@ -19,6 +18,7 @@ class ClaseUsuarioSeApuntaRequest extends FormRequest
     {
         $this->merge(
             [
+                "gimnasioId" => $this->gimnasio->id,
                 "claseId" => $this->clase->id,
                 "usuarioId" => auth()->user()->id
             ]
@@ -34,8 +34,12 @@ class ClaseUsuarioSeApuntaRequest extends FormRequest
     {
         return [
             "usuarioId" => [
-                Rule::unique("usuarios_participan_clases", "usuario")->where("clase", $this->claseId)
+                Rule::unique("usuarios_participan_clases", "usuario")->where("clase", $this->claseId),
+                new ComprobarSiUserReuneRequisitosParaApuntarseAClase($this->gimnasioId)
             ],
+            "claseId" => [
+                new ComprobarSiQuedanPlazasEnLaClase()
+            ]
         ];
     }
 

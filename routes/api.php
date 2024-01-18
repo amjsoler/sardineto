@@ -172,16 +172,14 @@ Route::delete("gimnasios/{gimnasio}/clases/{clase}",
     ->can("eliminarClases", [Clase::class, "gimnasio", "clase"])
     ->name("eliminar-clase");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/apuntarse", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/clases/{clase}/apuntarse",
     [ClaseController::class, "usuarioSeApunta"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
-    //TODO MIDDLEWARE: comprobar si el user tiene créditos para apuntarse
-    //TODO MIDDLEWARE: comprobar si quedan plazas para apuntarse
     ->can("usuarioSePuedeApuntar", [Clase::class, "gimnasio", "clase"])
     ->name("usuario-se-apunta");
 
-Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse", //TODO TESTING
+Route::get("gimnasios/{gimnasio}/clases/{clase}/desapuntarse",
     [ClaseController::class, "usuarioSeDesapunta"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")

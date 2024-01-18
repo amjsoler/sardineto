@@ -44,7 +44,13 @@ return [
             "integer" => "La cantidad de plazas debe ser un número entero",
             "min" => "La cantidad de plazas debe ser mayor que 0"
         ],
-        "pertenece" => "Esta clase no pertenece al gimnasio"
+        "pertenece" => "Esta clase no pertenece al gimnasio",
+        "claseId" => [
+            "ComprobarSiQuedanPlazasEnLaClase" => "No qudan plazas para esta clase"
+        ],
+        "usuarioId" => [
+            "ComprobarSiUserReuneRequisitosParaApuntarseAClase" => "No puedes apuntarte a esta clase. No tienes una suscripción activa o no te quedan créditos"
+        ]
     ],
     "usuarioApuntaClase" => [
         "unique" => "Ya estás apuntado a esta clase"

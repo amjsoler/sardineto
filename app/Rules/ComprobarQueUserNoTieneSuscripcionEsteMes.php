@@ -19,7 +19,7 @@ class ComprobarQueUserNoTieneSuscripcionEsteMes implements ValidationRule
                 ->where("usuario", $value)
                 ->whereYear("created_at", now()->year)
                 ->whereMonth("created_at", now()->month)
-                ->count() > 0)
+                ->exists())
         {
             $fail(__("validation.suscripcion.usuarioQueSeSuscribe.ComprobarQueUserNoTieneSuscripcionEsteMes"));
         }
