@@ -16,6 +16,7 @@ class SuscripcionEditarSuscripcionRequest extends FormRequest
     {
         return [
             "tarifa" => [
+                "required",
                 Rule::exists("tarifas", "id")->where("gimnasio", $this->gimnasio->id)
             ],
 
@@ -25,6 +26,7 @@ class SuscripcionEditarSuscripcionRequest extends FormRequest
     public function messages()
     {
         return [
+            "tarifa.required" => __("validation.suscripcion.tarifa.required"),
             "tarifa.exists" => __("validation.suscripcion.tarifa.exists"),
         ];
     }

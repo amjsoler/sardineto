@@ -5,8 +5,6 @@ namespace App\Http;
 use App\Http\Middleware\ComprobarCuentaSinVerificar;
 use App\Http\Middleware\ComprobarCuentaVerificada;
 use App\Http\Middleware\ComprobarSiLaPeticionSeHaceComoInvitado;
-use App\Http\Middleware\UsuarioEsMiembroDelGimnasio;
-use App\Http\Middleware\UsuarioYaApuntadoAClase;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -71,6 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         "cuentaVerificada" => ComprobarCuentaVerificada::class,
         "invitadoObligatorio" => ComprobarSiLaPeticionSeHaceComoInvitado::class,
-        "cuentaSinVerificar" => ComprobarCuentaSinVerificar::class
+        "cuentaSinVerificar" => ComprobarCuentaSinVerificar::class,
     ];
 }

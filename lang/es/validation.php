@@ -75,6 +75,9 @@ return [
             "required" => "Especifica el usuario al que asignar la suscripción",
             "exists" => "El usuario al que quieres asignar la suscripción no forma parte del gimnasio",
         ],
+        "usuarioQueSeSuscribe" => [
+            "ComprobarQueUserNoTieneSuscripcionEsteMes" => "Este mes ya te has suscrito. Habla con el administrador si quieres cambiar la tarifa o compra un bono"
+        ]
     ],
     "articulo" => [
         "nombre" => [

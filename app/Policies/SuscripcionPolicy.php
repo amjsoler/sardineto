@@ -17,7 +17,9 @@ class SuscripcionPolicy
 
     public function crearSuscripciones(User $usuario, Gimnasio $gimnasio)
     {
-        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio);
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
     public function crearSuscripcionesComoAdmin(User $usuario, Gimnasio $gimnasio)

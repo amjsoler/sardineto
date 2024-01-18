@@ -8,6 +8,7 @@ use App\Http\Requests\SuscripcionEditarSuscripcionRequest;
 use App\Models\Gimnasio;
 use App\Models\Suscripcion;
 use App\Models\Tarifa;
+use App\Models\User;
 
 class SuscripcionController extends Controller
 {
@@ -22,8 +23,7 @@ class SuscripcionController extends Controller
 
         $suscripcion = Suscripcion::make($request->all());
         $suscripcion->usuario = auth()->user()->id;
-        $suscripcion->gimnasio = $gimnasio->id;
-        $suscripcion->save();
+        $gimnasio->suscripciones()->save($suscripcion);
 
         return response()->json($suscripcion->refresh());
     }
@@ -31,8 +31,9 @@ class SuscripcionController extends Controller
     public function adminCreaSuscripcion(Gimnasio $gimnasio, SuscripcionCrearSuscripcionComoAdminRequest $request)
     {
         $suscripcion = Suscripcion::make($request->all());
-        $suscripcion->gimnasio = $gimnasio->id;
-        $suscripcion->save();
+        $suscripcion->tarifa = $request->tarifa;
+        $suscripcion->usuario = $request->usuario;
+        $gimnasio->suscripciones()->save($suscripcion);
 
         return response()->json($suscripcion->refresh());
     }

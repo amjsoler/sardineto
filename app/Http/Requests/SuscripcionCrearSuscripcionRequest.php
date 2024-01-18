@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ComprobarQueUserNoTieneSuscripcionEsteMes;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,12 +13,20 @@ class SuscripcionCrearSuscripcionRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge(["usuarioQueSeSuscribe" => auth()->user()->id]);
+    }
+
     public function rules(): array
     {
         return [
             "tarifa" => [
                 "required",
                 Rule::exists("tarifas", "id")->where("gimnasio", $this->gimnasio->id)
+            ],
+            "usuarioQueSeSuscribe" => [
+                new ComprobarQueUserNoTieneSuscripcionEsteMes($this->gimnasio->id)
             ]
         ];
     }
