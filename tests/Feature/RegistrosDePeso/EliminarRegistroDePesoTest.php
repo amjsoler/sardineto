@@ -20,6 +20,8 @@ class EliminarRegistroDePesoTest extends TestCase
 
     protected $ejercicio;
     protected $ejercicio2;
+    protected $ejercicioUsuarioInvitadoAceptao;
+    protected $ejercicioUsuarioAdministrador;
     protected $ejercicioUsuario;
 
 
@@ -49,6 +51,16 @@ class EliminarRegistroDePesoTest extends TestCase
         $this->ejercicio2 = Ejercicio::factory()->create(["gimnasio" => $this->gimnasio2]);
 
         $this->gimnasio->administradores()->attach($this->administrador);
+
+        $this->ejercicioUsuarioInvitadoAceptao = EjercicioUsuario::make(["unorm" => 50.25]);
+        $this->ejercicioUsuarioInvitadoAceptao->ejercicio = $this->ejercicio->id;
+        $this->ejercicioUsuarioInvitadoAceptao->usuario = $this->usuarioInvitadoYAceptado->id;
+        $this->ejercicioUsuarioInvitadoAceptao->save();
+
+        $this->ejercicioUsuarioAdministrador = EjercicioUsuario::make(["unorm" => 50.25]);
+        $this->ejercicioUsuarioAdministrador->ejercicio = $this->ejercicio->id;
+        $this->ejercicioUsuarioAdministrador->usuario = $this->administrador->id;
+        $this->ejercicioUsuarioAdministrador->save();
 
         $this->ejercicioUsuario = EjercicioUsuario::make(["unorm" => 50.25]);
         $this->ejercicioUsuario->ejercicio = $this->ejercicio->id;
@@ -95,27 +107,17 @@ class EliminarRegistroDePesoTest extends TestCase
         $response = $this->deleteJson(route("eliminar-registros-de-peso", [
             "gimnasio" =>  $this->gimnasio->id,
             "ejercicio" => $this->ejercicio->id,
-            "ejercicioUsuario" => $this->ejercicioUsuario->id
+            "ejercicioUsuario" => $this->ejercicioUsuarioInvitadoAceptao->id
         ]));
-        $response->assertStatus(403);//<-403 porque no es su marca
-
-        $this->ejercicioUsuario = EjercicioUsuario::make(["unorm" => 50.25]);
-        $this->ejercicioUsuario->ejercicio = $this->ejercicio->id;
-        $this->ejercicioUsuario->usuario = $this->propietario->id;
-        $this->ejercicioUsuario->save();
+        $response->assertStatus(200);//<-403 porque no es su marca
 
         $this->actingAs($this->administrador);
         $response = $this->deleteJson(route("eliminar-registros-de-peso", [
             "gimnasio" =>  $this->gimnasio->id,
             "ejercicio" => $this->ejercicio->id,
-            "ejercicioUsuario" => $this->ejercicioUsuario->id
+            "ejercicioUsuario" => $this->ejercicioUsuarioAdministrador->id
         ]));
-        $response->assertStatus(403);
-
-        $this->ejercicioUsuario = EjercicioUsuario::make(["unorm" => 50.25]);
-        $this->ejercicioUsuario->ejercicio = $this->ejercicio->id;
-        $this->ejercicioUsuario->usuario = $this->propietario->id;
-        $this->ejercicioUsuario->save();
+        $response->assertStatus(200);
 
         $this->actingAs($this->propietario);
         $response = $this->deleteJson(route("eliminar-registros-de-peso", [

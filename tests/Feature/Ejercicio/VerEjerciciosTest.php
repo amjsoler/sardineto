@@ -15,6 +15,8 @@ class VerEjerciciosTest extends TestCase
     protected $administrador;
     protected $propietario;
     protected $gimnasio;
+    protected $gimnasio2;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -25,6 +27,10 @@ class VerEjerciciosTest extends TestCase
         $this->propietario = User::factory()->create();
 
         $this->gimnasio = Gimnasio::factory()->create([
+            "propietario" => $this->propietario
+        ]);
+
+        $this->gimnasio2 = Gimnasio::factory()->create([
             "propietario" => $this->propietario
         ]);
 

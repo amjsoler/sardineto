@@ -87,10 +87,11 @@ class VerMisRegistrosDePesoTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_ver_mis_rgistros_de_peso_url_param_not_found()
+    public function test_ver_mis_registros_de_peso_url_param_not_found()
     {
         $this->actingAs($this->propietario);
-        $response = $this->getJson(route("ver-registros-de-peso", Gimnasio::orderBy("id", "desc")->first()->id+1));
+        $response = $this->getJson(route("ver-registros-de-peso",
+            Gimnasio::orderBy("id", "desc")->first()->id+1));
         $response->assertStatus(404);
     }
 
@@ -129,7 +130,6 @@ class VerMisRegistrosDePesoTest extends TestCase
         $ejerusu2->ejercicio = $this->ejercicio2->id;
         $this->propietario->registrosPeso()->save($ejerusu2);
 
-        $this->propietario->load("registrosPeso");
         $response = $this->getJson(route("ver-registros-de-peso", $this->gimnasio->id));
         $response->assertStatus(200);
         $response->assertJsonCount(1);

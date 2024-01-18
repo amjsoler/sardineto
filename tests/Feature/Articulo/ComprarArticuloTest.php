@@ -46,7 +46,8 @@ class ComprarArticuloTest extends TestCase
         ]);
 
         $this->articulo = Articulo::factory()->create([
-            "gimnasio" => $this->gimnasio
+            "gimnasio" => $this->gimnasio,
+            "stock" => 20
         ]);
     }
 
