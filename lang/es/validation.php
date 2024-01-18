@@ -91,7 +91,8 @@ return [
         ],
         "compra" => [
             "exists" => "La compra que has especificado no existe",
-            "ComprobarSiUnaCompraYaEstaPagada" => "La compra ya está pagada"
+            "ComprobarSiUnaCompraYaEstaPagada" => "La compra ya está pagada",
+            "ComprobarSiCompraYaEstaEntregada" => "La compra ya está entregada"
         ],
         "stockdisponible" => [
             "min" => "No hay stock disponible"

@@ -335,7 +335,14 @@ Route::get("gimnasios/{gimnasio}/articulos/pagar-compra/{compra}",
     ->can("pagarCompras", [Articulo::class, "gimnasio", "compra"])
     ->name("pagar-compra");
 
-//TODO: Falta otra ruta para marcar el artículo como entregado
+Route::get("gimnasios/{gimnasio}/articulos/entregar-articulo/{compra}",
+    [ArticuloController::class, "entregarCompra"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("entregarCompras", [Articulo::class, "gimnasio", "compra"])
+    ->name("entregar-compra");
+
+
 
 
 

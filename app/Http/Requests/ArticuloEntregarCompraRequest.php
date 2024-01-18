@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ComprobarSiUnaCompraYaEstaPagada;
+use App\Rules\ComprobarSiCompraYaEstaEntregada;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ArticuloPagarCompraRequest extends FormRequest
+class ArticuloEntregarCompraRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -22,9 +21,16 @@ class ArticuloPagarCompraRequest extends FormRequest
     {
         return [
             "compraId" => [
-                Rule::exists("usuarios_compran_articulos", "id"),
-                new ComprobarSiUnaCompraYaEstaPagada()
+                "exists:usuarios_compran_articulos,id",
+                new ComprobarSiCompraYaEstaEntregada()
             ]
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "compraId.exists" => "La compra especificada no existe"
         ];
     }
 }

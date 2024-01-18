@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticuloComprarArticuloRequest;
 use App\Http\Requests\ArticuloCrearArticuloRequest;
 use App\Http\Requests\ArticuloEditarArticuloRequest;
+use App\Http\Requests\ArticuloEntregarCompraRequest;
 use App\Http\Requests\ArticuloPagarCompraRequest;
 use App\Models\Articulo;
 use App\Models\Gimnasio;
@@ -63,6 +64,16 @@ class ArticuloController extends Controller
     {
         if(!$compra->pagada){
             $compra->pagada = now();
+            $compra->save();
+        }
+
+        return response()->json();
+    }
+
+    public function entregarCompra(Gimnasio $gimnasio, UsuarioCompraArticulo $compra, ArticuloEntregarCompraRequest $request)
+    {
+        if(!isset($compra->entregada)){
+            $compra->entregada = now();
             $compra->save();
         }
 

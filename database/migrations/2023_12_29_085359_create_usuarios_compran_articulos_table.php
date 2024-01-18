@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
             $table->dateTime("pagada")->nullable()->default(null);
+            $table->dateTime("entregada")->nullable()->default(null);
 
             $table->timestamps();
         });

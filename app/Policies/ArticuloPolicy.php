@@ -67,8 +67,18 @@ class ArticuloPolicy
             );
     }
 
+    public function entregarCompras(User $usuario, Gimnasio $gimnasio, UsuarioCompraArticulo $compra)
+    {
+        return $compra->gimnasio === $gimnasio->id &&
+            (
+                PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+                PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio)
+            );
+    }
+
     private function comprobarSiArticuloPerteneceAGimnasio(Articulo $articulo, Gimnasio $gimnasio)
     {
         return $articulo->gimnasio === $gimnasio->id;
     }
+
 }
