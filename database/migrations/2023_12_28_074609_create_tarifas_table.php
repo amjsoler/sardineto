@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('tarifas', function (Blueprint $table) {
@@ -18,6 +16,8 @@ return new class extends Migration
             $table->unsignedDecimal("precio")->required();
             $table->unsignedInteger("creditos")->required();
 
+            $table->enum("tipo", ["suscripcion", "abono"])->default("suscripcion");
+
             $table->unsignedBigInteger("gimnasio")->required();
             $table->foreign("gimnasio")->references("id")->on("gimnasios")->cascadeOnDelete();
 
@@ -26,9 +26,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('tarifas');

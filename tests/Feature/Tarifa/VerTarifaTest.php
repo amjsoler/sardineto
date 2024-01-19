@@ -89,7 +89,8 @@ class VerTarifaTest extends TestCase
         $response->assertExactJson([]);
 
         $tarifa1 = Tarifa::factory()->create([
-            "gimnasio" => $gimnasio->id
+            "gimnasio" => $gimnasio->id,
+            "precio" => 20.35
         ]);
 
         $response = $this->getJson(route("ver-tarifas", $gimnasio->id));
@@ -99,9 +100,10 @@ class VerTarifaTest extends TestCase
             $json->first(fn (AssertableJson $json) =>
                 $json->where("id", $tarifa1->id)
                     ->where("nombre", $tarifa1->nombre)
-                    ->where("precio", (string)$tarifa1->precio)
+                    ->where("precio", "20.35")
                     ->where("creditos", $tarifa1->creditos)
                     ->where("gimnasio", $gimnasio->id)
+                    ->where("tipo", "suscripcion")
             )
         );
 

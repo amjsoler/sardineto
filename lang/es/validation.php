@@ -69,6 +69,9 @@ return [
             "required" => "Especifica la cantidad de créditos que otorga esta tarifa al suscriptor",
             "integer" => "Los créditos tienen que ser un número válido",
             "min" => "Los créditos deben ser un número positivo",
+        ],
+        "tipo" => [
+            "enum" => "El tipo de la tarifa no es válido"
         ]
     ],
     "suscripcion" => [

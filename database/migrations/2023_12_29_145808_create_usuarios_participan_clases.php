@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('usuarios_participan_clases', function (Blueprint $table) {
@@ -20,15 +17,15 @@ return new class extends Migration
             $table->unsignedBigInteger("clase");
             $table->foreign("clase")->references("id")->on("clases")->cascadeOnDelete();
 
+            $table->unsignedBigInteger("suscripcion");
+            $table->foreign("suscripcion")->references("id")->on("suscripciones")->cascadeOnDelete();
+
             $table->unique(["usuario", "clase"]);
 
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('usuarios_participan_clases');

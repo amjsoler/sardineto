@@ -53,8 +53,8 @@ class MarcarSuscripcionComoPagadaTest extends TestCase
         $this->tarifa = Tarifa::factory()->create(["gimnasio" => $this->gimnasio->id]);
         $this->tarifa2 = Tarifa::factory()->create(["gimnasio" => $this->gimnasio2->id]);
 
-        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now()]);
-        $this->suscripcion2 = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio2->id, "tarifa" => $this->tarifa2->id, "created_at" => now()]);
+        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now(), "creditos_restantes" => $this->tarifa->creditos]);
+        $this->suscripcion2 = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio2->id, "tarifa" => $this->tarifa2->id, "created_at" => now(), "creditos_restantes" => $this->tarifa2->creditos]);
     }
 
     public function test_marcar_suscripcion_como_pagada_sin_autenticacion()

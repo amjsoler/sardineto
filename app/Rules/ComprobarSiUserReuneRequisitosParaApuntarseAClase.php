@@ -2,8 +2,10 @@
 
 namespace App\Rules;
 
+use App\Helpers\Helpers;
 use App\Models\Gimnasio;
 use App\Models\Suscripcion;
+use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -18,28 +20,8 @@ class ComprobarSiUserReuneRequisitosParaApuntarseAClase implements ValidationRul
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //Compruebo si tiene suscripción activa este mes
-        $suscripcionActiva = Suscripcion::with("tarifaALaQuePertenece")
-            ->where("usuario", $value)
-            ->where("gimnasio", $this->gimnasioId)
-            ->whereMonth("created_at", "=", now()->month)
-            ->where("pagada", "!=", null)
-            ->first();
-//TODO
-        if($suscripcionActiva === null){
+        if(Helpers::dameSuscripcionActivaOAbonoDeUsuario(User::find($value), Gimnasio::find($this->gimnasioId)) === null){
             $fail(__("validation.clase.usuarioId.ComprobarSiUserReuneRequisitosParaApuntarseAClase"));
-        }else{
-            //Compruebo si este mes se ha apuntado al total de créditos que otorga la tarifa de la suscripción
-            $creditosUsados = auth()->user()->clasesEnLasQueParticipa()
-                ->where("gimnasio", $this->gimnasioId)
-                ->wherePivot("created_at", now()->month)
-                ->count();
-
-            if($creditosUsados >= $suscripcionActiva->TarifaALaQuePertenece->creditos)
-            {
-                $fail(__("validation.clase.usuarioId.ComprobarSiUserReuneRequisitosParaApuntarseAClase"));
-            }
         }
-
     }
 }

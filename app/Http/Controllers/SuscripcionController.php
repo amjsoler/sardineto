@@ -23,6 +23,7 @@ class SuscripcionController extends Controller
 
         $suscripcion = Suscripcion::make($request->all());
         $suscripcion->usuario = auth()->user()->id;
+        $suscripcion->creditos_restantes = $tarifa->creditos;
         $gimnasio->suscripciones()->save($suscripcion);
 
         return response()->json($suscripcion->refresh());
@@ -30,9 +31,12 @@ class SuscripcionController extends Controller
 
     public function adminCreaSuscripcion(Gimnasio $gimnasio, SuscripcionCrearSuscripcionComoAdminRequest $request)
     {
-        $suscripcion = Suscripcion::make($request->all());
+        $tarifa = Tarifa::find($request->tarifa);
+
+        $suscripcion = Suscripcion::make();
         $suscripcion->tarifa = $request->tarifa;
         $suscripcion->usuario = $request->usuario;
+        $suscripcion->creditos_restantes = $tarifa->creditos;
         $gimnasio->suscripciones()->save($suscripcion);
 
         return response()->json($suscripcion->refresh());

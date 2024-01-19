@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreign("tarifa")->references("id")->on("tarifas")->cascadeOnDelete();
 
             $table->dateTime("pagada")->nullable()->default(null);
+            $table->integer("creditos_restantes")->required();
 
             $table->timestamps();
             $table->softDeletes();

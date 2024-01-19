@@ -54,8 +54,8 @@ class ModificarSuscripcionTest extends TestCase
         $this->tarifa = Tarifa::factory()->create(["gimnasio" => $this->gimnasio->id]);
         $this->tarifa2 = Tarifa::factory()->create(["gimnasio" => $this->gimnasio2->id]);
 
-        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now()]);
-        $this->suscripcion2 = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio2->id, "tarifa" => $this->tarifa2->id, "created_at" => now()]);
+        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now(), "creditos_restantes" => $this->tarifa->creditos]);
+        $this->suscripcion2 = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio2->id, "tarifa" => $this->tarifa2->id, "created_at" => now(), "creditos_restantes" => $this->tarifa2->creditos]);
     }
 
     public function test_modificar_suscripcion_sin_autenticacion()
@@ -172,7 +172,8 @@ class ModificarSuscripcionTest extends TestCase
             ]
         ),
             [
-                "tarifa" => $this->tarifa->id
+                "tarifa" => $this->tarifa->id,
+                "creditos_restantes" => 1
             ]
         );
         $response->assertStatus(200);
@@ -182,6 +183,7 @@ class ModificarSuscripcionTest extends TestCase
             ->where("gimnasio", $this->gimnasio->id)
             ->where("tarifa", $this->tarifa->id)
             ->where("pagada", null)
+            ->whereNot("creditos_restantes", 1)
         );
     }
 

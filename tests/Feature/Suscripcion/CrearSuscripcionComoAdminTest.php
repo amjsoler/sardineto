@@ -194,6 +194,7 @@ class CrearSuscripcionComoAdminTest extends TestCase
             ->where("gimnasio", $this->gimnasio->id)
             ->where("tarifa", $this->tarifa->id)
             ->where("pagada", null)
+            ->where("creditos_restantes", $this->tarifa->creditos)
         );
     }
 }

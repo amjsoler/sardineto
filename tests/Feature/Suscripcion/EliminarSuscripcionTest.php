@@ -53,8 +53,8 @@ class EliminarSuscripcionTest extends TestCase
         $this->tarifa = Tarifa::factory()->create(["gimnasio" => $this->gimnasio->id]);
         $this->tarifa2 = Tarifa::factory()->create(["gimnasio" => $this->gimnasio2->id]);
 
-        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now()]);
-        $this->suscripcion2 = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio2->id, "tarifa" => $this->tarifa2->id, "created_at" => now()]);
+        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now(), "creditos_restantes" => $this->tarifa->creditos]);
+        $this->suscripcion2 = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio2->id, "tarifa" => $this->tarifa2->id, "created_at" => now(), "creditos_restantes" => $this->tarifa2->creditos]);
     }
 
     public function test_eliminar_suscripcion_sin_autenticacion()
@@ -103,7 +103,7 @@ class EliminarSuscripcionTest extends TestCase
         $response->assertStatus(200);
 
         //ver suscripciones como propietario ok
-        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now()]);
+        $this->suscripcion = Suscripcion::factory()->create(["usuario" => $this->propietario->id, "gimnasio" => $this->gimnasio->id, "tarifa" => $this->tarifa->id, "created_at" => now(), "creditos_restantes" => $this->tarifa->creditos]);
         $this->actingAs($this->propietario);
         $response = $this->deleteJson(route("eliminar-suscripcion",
             [

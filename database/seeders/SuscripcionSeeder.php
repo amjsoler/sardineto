@@ -17,6 +17,7 @@ class SuscripcionSeeder extends Seeder
             "usuario" => User::find(1),
             "gimnasio" => Gimnasio::find(1),
             "tarifa" => $tarifa->id,
+            "creditos_restantes" => $tarifa->creditos
         ]);
     }
 }

@@ -125,7 +125,7 @@ class VerSuscripcionesDeGimnasioTest extends TestCase
 
         $suscripcion1 = Suscripcion::factory()->make(["tarifa" => $this->tarifa->id]);
         $suscripcion1->usuario = $this->propietario->id;
-
+        $suscripcion1->creditos_restantes = $this->tarifa->creditos;
         $this->gimnasio->suscripciones()->save($suscripcion1);
         $response = $this->getJson(route("ver-suscripciones",
             [
@@ -141,6 +141,7 @@ class VerSuscripcionesDeGimnasioTest extends TestCase
                 ->where("tarifa", $this->tarifa->id)
                 ->where("gimnasio", $this->gimnasio->id)
                 ->where("pagada", null)
+                ->where("creditos_restantes", $this->tarifa->creditos)
             )
         );
 

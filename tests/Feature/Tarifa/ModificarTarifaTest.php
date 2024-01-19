@@ -158,7 +158,8 @@ class ModificarTarifaTest extends TestCase
         $response = $this->putJson(route("editar-tarifas",
             [
                 "gimnasio" => $gimnasio->id,
-                "tarifa" => $tarifa->id
+                "tarifa" => $tarifa->id,
+                "tipo" => "abono"
             ]),
             [
                 "nombre" => "EDIT",
@@ -173,6 +174,7 @@ class ModificarTarifaTest extends TestCase
             ->where("creditos", 10)
             ->where("gimnasio", $gimnasio->id)
             ->has("id")
+            ->where("tipo", "suscripcion")
         );
     }
 }

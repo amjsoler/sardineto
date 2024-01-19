@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helpers;
 use App\Http\Requests\ClaseCrearClaseRequest;
 use App\Http\Requests\ClaseEditarClaseRequest;
 use App\Http\Requests\ClaseUsuarioSeApuntaRequest;
 use App\Models\Clase;
 use App\Models\Gimnasio;
+use App\Models\User;
 
 class ClaseController extends Controller
 {
@@ -39,7 +41,13 @@ class ClaseController extends Controller
 
     public function usuarioSeApunta(Gimnasio $gimnasio, Clase $clase, ClaseUsuarioSeApuntaRequest $request)
     {
-        $clase->participantes()->attach(auth()->user());
+        $suscripcionActiva = Helpers::dameSuscripcionActivaOAbonoDeUsuario(User::find(auth()->user()->id), $gimnasio);
+
+        $clase->participantes()->attach(auth()->user(), ["suscripcion" => $suscripcionActiva->id]);
+
+        //Decrementamos los créditos restantes de la suscripción
+        $suscripcionActiva->creditos_restantes = $suscripcionActiva->creditos_restantes-1;
+        $suscripcionActiva->save();
 
         return response()->json();
     }

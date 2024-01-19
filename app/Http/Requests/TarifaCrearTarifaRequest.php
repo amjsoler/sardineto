@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TiposTarifa;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TarifaCrearTarifaRequest extends FormRequest
 {
@@ -27,6 +29,9 @@ class TarifaCrearTarifaRequest extends FormRequest
                 "required",
                 "integer",
                 "min:0"
+            ],
+            "tipo" => [
+                Rule::enum(TiposTarifa::class)
             ]
         ];
     }
@@ -42,6 +47,7 @@ class TarifaCrearTarifaRequest extends FormRequest
             "creditos.required" => __("validation.tarifa.creditos.required"),
             "creditos.integer" => __("validation.tarifa.creditos.integer"),
             "creditos.min" => __("validation.tarifa.creditos.min"),
+            "tipo.enum" => __("validation.tarifa.tipo.enum")
         ];
     }
 }

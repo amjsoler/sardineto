@@ -18,6 +18,12 @@ class TarifaController extends Controller
     public function crearTarifa(Gimnasio $gimnasio, TarifaCrearTarifaRequest $request)
     {
         $tarifa = Tarifa::make($request->all());
+
+        if($request->tipo !== null)
+        {
+            $tarifa->tipo = $request->tipo;
+        }
+
         $tarifa->gimnasio = $gimnasio->id;
         $tarifa->save();
 
