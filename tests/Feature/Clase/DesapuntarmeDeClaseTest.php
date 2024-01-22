@@ -71,7 +71,7 @@ class DesapuntarmeDeClaseTest extends TestCase
                 "gimnasio" => $this->gimnasio->id,
                 "clase" => $this->clase->id
             ]));
-        $response->assertStatus(200);
+        $response->assertStatus(422); //<- 422 porque no estoy apuntado. Con ver que pasa el policy es suficiente
 
         $this->actingAs($this->administrador);
         $response = $this->getJson(route("usuario-se-desapunta",
@@ -79,7 +79,7 @@ class DesapuntarmeDeClaseTest extends TestCase
                 "gimnasio" => $this->gimnasio->id,
                 "clase" => $this->clase->id
             ]));
-        $response->assertStatus(200);
+        $response->assertStatus(422);
 
         $this->actingAs($this->propietario);
         $response = $this->getJson(route("usuario-se-desapunta",
@@ -87,7 +87,7 @@ class DesapuntarmeDeClaseTest extends TestCase
                 "gimnasio" => $this->gimnasio->id,
                 "clase" => $this->clase->id
             ]));
-        $response->assertStatus(200);
+        $response->assertStatus(422);
 
         $this->clase = Clase::factory()->create(["gimnasio" => $this->gimnasio]);
         $response = $this->getJson(route("usuario-se-desapunta",

@@ -120,7 +120,8 @@ class SuscribirseComoUserTest extends TestCase
         $this->actingAs($this->propietario);
 
         //Vacío la tabla de suscripciones para que no dé conflicto con los test anteriores
-        Suscripcion::truncate();
+        $this->propietario->clasesEnLasQueParticipa()->detach();
+        $this->propietario->suscripciones()->delete();
 
         //Tarifa:required
         $response = $this->postJson(route("crear-suscripcion",

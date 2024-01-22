@@ -67,7 +67,7 @@ Route::get("tutorial-eliminar-cuenta", function () {//TODO
 ///// RUTAS DE GIMNASIOS /////
 //////////////////////////////
 
-Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}", //TODO TESTING
+Route::get("/gimnasios/{gimnasio}/aceptar-invitacion/{hash}",
     [GimnasioController::class, "aceptarInvitacion"])
 ->name("aceptar-invitacion");
 

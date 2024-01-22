@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="min-h-screen dark">
+<html lang="es" class="min-h-dvh dark">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -13,7 +13,7 @@
 
         @vite('resources/css/app.css')
     </head>
-    <body class="min-h-screen">
+    <body class="min-h-dvh">
         @yield("content")
     </body>
 </html>
