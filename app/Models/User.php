@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Clase::class, "usuarios_participan_clases", "usuario", "clase", "id", "id");
     }
+
+    public function suscripciones(): HasMany
+    {
+        return $this->hasMany(Suscripcion::class, "usuario", "id");
+    }
 }

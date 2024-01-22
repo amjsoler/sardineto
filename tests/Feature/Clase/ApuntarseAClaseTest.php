@@ -315,25 +315,28 @@ class ApuntarseAClaseTest extends TestCase
 
         $creditosRestantesDespues = $suscripcion->refresh()->creditos_restantes;
         $this->assertEquals(0, $creditosRestantesDespues);
-dd($this->propietario->refresh()->clasesEnLasQueParticipa()->withPivot("suscripcion"));
-        $this->assertEquals($suscripcion->id, $this->propietario->refresh()->clasesEnLasQueParticipa()->first()->suscripcion);
+        $this->assertEquals($suscripcion->id, $this->propietario->refresh()->clasesEnLasQueParticipa()->withPivot("suscripcion")->first()->pivot->suscripcion);
 
 
         //Usuario se apunta a clase con abono y suscripción activa
         $this->actingAs($this->propietario);
+        $this->propietario->suscripciones()->delete();
+        $this->propietario->clasesEnLasQueParticipa()->detach();
+        $this->tarifa = Tarifa::factory()->create([
+            "tipo" => TiposTarifa::ABONO,
+            "creditos" => 1,
+            "gimnasio" => $this->gimnasio->id
+        ]);
         $suscripcion = Suscripcion::factory()->make(
             [
                 "pagada" => now(),
                 "tarifa" => $this->tarifa->id,
                 "created_at" => now()->subYear(),
-                "tipo" => TiposTarifa::ABONO,
                 "creditos_restantes" => 1
             ]
         );
         $suscripcion->usuario = $this->propietario->id;
         $this->gimnasio->suscripciones()->save($suscripcion);
-
-        $this->propietario->clasesEnLasQueParticipa()->delete();
 
         $response = $this->getJson(route("usuario-se-apunta",
             [
@@ -343,8 +346,9 @@ dd($this->propietario->refresh()->clasesEnLasQueParticipa()->withPivot("suscripc
         $response->assertStatus(200);
         $response->assertExactJson([]);
 
-        $creditosRestantesDespues = $suscripcion->creditos_restantes;
+        $creditosRestantesDespues = $suscripcion->refresh()->creditos_restantes;
+        $this->assertEquals(1, $this->propietario->refresh()->clasesEnLasQueParticipa()->count());
+        $this->assertEquals($suscripcion->id, $this->propietario->refresh()->clasesEnLasQueParticipa()->withPivot("suscripcion")->first()->pivot->suscripcion);
         $this->assertEquals(0, $creditosRestantesDespues);
-        $this->assertEquals($suscripcion->id, $this->propietario->clasesEnLasQueParticipa()->first()->suscripcion);
     }
 }
