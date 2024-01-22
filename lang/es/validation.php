@@ -53,7 +53,13 @@ return [
         ]
     ],
     "usuarioApuntaClase" => [
-        "unique" => "Ya estás apuntado a esta clase"
+        "unique" => "Ya estás apuntado a esta clase",
+        "usuarioId" => [
+            "exists" => "No estás apuntado a esta clase",
+        ],
+        "fechayhora" => [
+            "after" => "No te puedes desapuntar de una clase que ya ha terminado"
+        ]
     ],
     "tarifa" => [
         "nombre" => [

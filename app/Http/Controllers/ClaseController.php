@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
 use App\Http\Requests\ClaseCrearClaseRequest;
+use App\Http\Requests\ClaseDesapuntarseDeClaseRequest;
 use App\Http\Requests\ClaseEditarClaseRequest;
 use App\Http\Requests\ClaseUsuarioSeApuntaRequest;
 use App\Models\Clase;
 use App\Models\Gimnasio;
+use App\Models\Suscripcion;
 use App\Models\User;
 
 class ClaseController extends Controller
@@ -52,9 +54,14 @@ class ClaseController extends Controller
         return response()->json();
     }
 
-    public function usuarioSeDesapunta(Gimnasio $gimnasio, Clase $clase)
+    public function usuarioSeDesapunta(Gimnasio $gimnasio, Clase $clase, ClaseDesapuntarseDeClaseRequest $request)
     {
+        $suscripcionActiva = Suscripcion::find($clase->participantes()->withPivot("suscripcion")->wherePivot("usuario", auth()->user()->id)->first()->pivot->suscripcion);
+
         $clase->participantes()->detach(auth()->user()->id);
+
+        $suscripcionActiva->creditos_restantes = $suscripcionActiva->creditos_restantes+1;
+        $suscripcionActiva->save();
 
         return response()->json();
     }
