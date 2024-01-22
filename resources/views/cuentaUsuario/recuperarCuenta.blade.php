@@ -62,7 +62,7 @@
                               strokeLinejoin="round"></path>
                     </svg>
                     <p class="block mb-2 font-medium text-center text-gray-900 dark:text-white">
-                        {{ __("vistas.cuentaUsuario.verificarcuenta.ko") }}
+                        {{ __("vistas.cuentaUsuario.recuperarcuenta.ko") }}
                     </p>
                     <p></p>
                 @endif
