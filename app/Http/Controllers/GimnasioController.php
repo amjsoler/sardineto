@@ -23,7 +23,7 @@ class GimnasioController extends Controller
 
         $coleccionFinal = $gimnasiosInvitado->merge($gimnasiosPropietario);
 
-        return response()->json($coleccionFinal->sortBy("nombre"), 200);
+        return response()->json($coleccionFinal->sortBy("nombre")->values()->all(), 200);
     }
 
     public function crearGimnasio(GimnasioCrearGimnasioRequest $request)
