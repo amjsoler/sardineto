@@ -20,7 +20,6 @@ class Gimnasio extends Model
     ];
 
     protected $hidden = [
-        "propietario",
         "created_at",
         "updated_at",
         "deleted_at"

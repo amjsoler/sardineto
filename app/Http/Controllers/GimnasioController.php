@@ -48,6 +48,11 @@ class GimnasioController extends Controller
         return response()->json();
     }
 
+    public function usuariosInvitados(Gimnasio $gimnasio)
+    {
+        return $gimnasio->usuariosInvitados()->wherePivot("invitacion_aceptada", false);
+    }
+
     public function invitarUsuario(Gimnasio $gimnasio, GimnasioInvitarUsuarioRequest $request)
     {
         $usuario = User::where("email", $request->get("email"))->first();

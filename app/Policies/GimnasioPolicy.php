@@ -19,6 +19,11 @@ class GimnasioPolicy
         return PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
+    public function usuariosInvitados(User $usuario, Gimnasio $gimnasio)
+    {
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+    }
     public function invitarUsuarios(User $usuario, Gimnasio $gimnasio)
     {
         return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||

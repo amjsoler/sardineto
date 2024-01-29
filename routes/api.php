@@ -109,6 +109,13 @@ Route::delete("gimnasios/{gimnasio}",
     ->can("eliminarGimnasio", "gimnasio")
     ->name("eliminar-gimnasio");
 
+Route::get("gimnasios/{gimnasio}/usuarios-invitados",
+    [GimnasioController::class, "usuariosInvitados"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("usuariosInvitados", "gimnasio")
+    ->name("usuarios-invitados");
+
 Route::post("gimnasios/{gimnasio}/invitar-usuario",
     [GimnasioController::class, "invitarUsuario"]
 )
