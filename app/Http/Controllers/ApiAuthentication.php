@@ -11,6 +11,7 @@ use App\Models\RecuperarCuentaToken;
 use App\Models\User;
 use App\Notifications\RecuperarCuenta;
 use App\Notifications\VerificarNuevaCuentaUsuario;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,8 +24,9 @@ class ApiAuthentication extends Controller
         if (Auth::attempt($request->only("email", "password"))) {
             $token = auth()->user()->createToken("authToken")->plainTextToken;
 
+            $finalData = [...auth()->user()->toArray(), ...["access_token" => $token, "token_type" => "Bearer"]];
             $response["status"] = 200;
-            $response["data"] = ["access_token" => $token, "token_type" => "Bearer"];
+            $response["data"] = $finalData;
         }else{
             $response["status"] = 462;
             $response["data"] = "La contraseña no es correcta";

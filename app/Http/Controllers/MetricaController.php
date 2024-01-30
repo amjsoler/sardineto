@@ -10,7 +10,7 @@ class MetricaController extends Controller
 {
     public function verMetricas()
     {
-        return response()->json(auth()->user()->metricas);
+        return response()->json(auth()->user()->metricas()->orderBy("id", "desc")->get());
     }
 
     public function crearMetrica(MetricaCrearmetricaRequest $request)

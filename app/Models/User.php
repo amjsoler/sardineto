@@ -26,7 +26,8 @@ class User extends Authenticatable
         'remember_token',
         "email_verified_at",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "deleted_at"
     ];
 
     protected $casts = [

@@ -18,7 +18,6 @@ class Metrica extends Model
         "porcentaje_graso"
     ];
     protected $hidden = [
-        "created_at",
         "updated_at",
         "deleted_at"
     ];

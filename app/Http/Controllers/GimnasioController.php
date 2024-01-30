@@ -50,7 +50,7 @@ class GimnasioController extends Controller
 
     public function usuariosInvitados(Gimnasio $gimnasio)
     {
-        return $gimnasio->usuariosInvitados()->wherePivot("invitacion_aceptada", false);
+        return $gimnasio->usuariosInvitados()->withPivot(["invitacion_aceptada"])->get();
     }
 
     public function invitarUsuario(Gimnasio $gimnasio, GimnasioInvitarUsuarioRequest $request)
@@ -61,7 +61,7 @@ class GimnasioController extends Controller
 
         UsuarioInvitadoAGimnasio::dispatch($usuario, $gimnasio, $gimnasio->usuariosInvitados()->wherePivot("usuario", $usuario->id)->withPivot("token_aceptacion")->first()->pivot->token_aceptacion);
 
-        return response()->json();
+        return response()->json($usuario);
     }
 
     public function aceptarInvitacion(Gimnasio $gimnasio, string $hash)
