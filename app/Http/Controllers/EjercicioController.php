@@ -13,7 +13,7 @@ class EjercicioController extends Controller
 {
     public function verEjercicios(Gimnasio $gimnasio)
     {
-        return response()->json($gimnasio->ejercicios);
+        return response()->json($gimnasio->ejercicios()->orderBy("nombre", "asc")->get());
     }
 
     public function crearEjercicio(Gimnasio $gimnasio, EjercicioCrearEjercicioRequest $request)

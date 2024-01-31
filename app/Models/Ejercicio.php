@@ -22,4 +22,9 @@ class Ejercicio extends Model
     ];
 
     protected $hidden = ["created_at", "updated_at", "deleted_at"];
+
+    public function ejerciciosUsuarios() : HasMany
+    {
+        return $this->hasMany(EjercicioUsuario::class, "ejercicio", "id");
+    }
 }

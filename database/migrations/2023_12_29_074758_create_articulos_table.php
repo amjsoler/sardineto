@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string("nombre", 150)->required();
-            $table->text("descripcion", 5000);
+            $table->text("descripcion", 5000)->nullable();
             $table->integer("stock")->required();
 
             $table->unsignedBigInteger("gimnasio");
