@@ -26,7 +26,8 @@ class SuscripcionCrearSuscripcionRequest extends FormRequest
                 Rule::exists("tarifas", "id")->where("gimnasio", $this->gimnasio->id)
             ],
             "usuarioQueSeSuscribe" => [
-                new ComprobarQueUserNoTieneSuscripcionEsteMes($this->gimnasio->id)
+                new ComprobarQueUserNoTieneSuscripcionEsteMes($this->gimnasio->id, $this->tarifa),
+
             ]
         ];
     }

@@ -64,4 +64,9 @@ class Gimnasio extends Model
     {
         return $this->belongsToMany(User::class, "administradores", "gimnasio", "usuario", "id", "id")->withTimestamps();
     }
+
+    public function historialComprasDeArticulos(): HasMany
+    {
+        return $this->hasMany(UsuarioCompraArticulo::class, "gimnasio", "id");
+    }
 }

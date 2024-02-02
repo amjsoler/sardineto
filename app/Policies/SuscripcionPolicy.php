@@ -15,12 +15,20 @@ class SuscripcionPolicy
             PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
+    public function verMisSuscripciones(User $usuario, Gimnasio $gimnasio)
+    {
+        return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+    }
+
     public function crearSuscripciones(User $usuario, Gimnasio $gimnasio)
     {
         return PolicyHelpers::comprobarSiUserEstaInvitadoAlGimnasio($usuario, $gimnasio) ||
             PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
             PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
+
 
     public function crearSuscripcionesComoAdmin(User $usuario, Gimnasio $gimnasio)
     {

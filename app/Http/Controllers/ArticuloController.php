@@ -43,9 +43,14 @@ class ArticuloController extends Controller
 
     public function historialDeCompras(Gimnasio $gimnasio)
     {
-        $compras = auth()->user()->historialDeCompras()->wherePivot("gimnasio", $gimnasio->id)->get();
+        $compras = auth()->user()->historialDeCompras()->withPivot(["pagada", "entregada"])->wherePivot("gimnasio", $gimnasio->id)->get();
 
         return response()->json($compras);
+    }
+
+    public function historialDeComprasDelGimnasio(Gimnasio $gimnasio)
+    {
+        return response()->json($gimnasio->historialComprasDeArticulos()->with(["articulo", "usuario"])->orderBy("id", "desc")->get());
     }
 
     public function comprarArticulo(Gimnasio $gimnasio, Articulo $articulo, ArticuloComprarArticuloRequest $request)

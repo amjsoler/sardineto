@@ -19,6 +19,6 @@ class Suscripcion extends Model
 
     public function tarifaALaQuePertenece() : BelongsTo
     {
-        return $this->belongsTo(Tarifa::class, "tarifa", "id");
+        return $this->belongsTo(Tarifa::class, "tarifa", "id")->withTrashed();
     }
 }

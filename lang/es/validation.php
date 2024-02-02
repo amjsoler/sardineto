@@ -159,7 +159,7 @@ return [
 
     "ejerciciousuario" => [
         "unorm" => [
-            "requird" => "Debes especificar el peso en 1RM en este ejercicio",
+            "required" => "Debes especificar el peso en 1RM en este ejercicio",
             "decimal" => "El peso no es válido"
         ]
     ],

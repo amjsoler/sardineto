@@ -244,6 +244,13 @@ Route::get("gimnasios/{gimnasio}/suscripciones",
     ->can("verSuscripciones", [Suscripcion::class, "gimnasio"])
     ->name("ver-suscripciones");
 
+Route::get("gimnasios/{gimnasio}/mis-suscripciones",
+    [SuscripcionController::class, "verMisSuscripciones"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verMisSuscripciones", [Suscripcion::class, "gimnasio"])
+    ->name("ver-mis-suscripciones");
+
 //Generar una suscripción como user
 Route::post("gimnasios/{gimnasio}/suscripciones",
     [SuscripcionController::class, "crearSuscripcion"]
@@ -323,6 +330,14 @@ Route::get("gimnasios/{gimnasio}/articulos/historial-compras",
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verMiHistorialDeCompras", [Articulo::class, "gimnasio"])
     ->name("articulos-historial-compras");
+
+//Compras del gimnasio (solo admin)
+Route::get("gimnasios/{gimnasio}/articulos/compras-del-gimnasio",
+    [ArticuloController::class, "historialDeComprasDelGimnasio"]
+)
+    ->middleware("auth:sanctum", "cuentaVerificada")
+    ->can("verHistorialDeComprasDelGimnasio", [Articulo::class, "gimnasio"])
+    ->name("articulos-historial-compras-del-gimnasio");
 
 Route::get("gimnasios/{gimnasio}/articulos/{articulo}/comprar",
     [ArticuloController::class, "comprarArticulo"]
@@ -437,12 +452,12 @@ Route::get("gimnasios/{gimnasio}/registros-de-peso",
     ->can("verRegistrosDePeso", [EjercicioUsuario::class, "gimnasio"])
     ->name("ver-registros-de-peso");
 
-Route::get("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
+/*Route::get("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
     [EjerciciosUsuariosController::class, "verRegistrosDePesoPorEjercicio"]
 )
     ->middleware("auth:sanctum", "cuentaVerificada")
     ->can("verRegistrosDePesoPorEjercicio", [EjercicioUsuario::class, "gimnasio", "ejercicio"])
-    ->name("ver-registros-de-peso-por-ejercicio");
+    ->name("ver-registros-de-peso-por-ejercicio");*/
 
 Route::post("gimnasios/{gimnasio}/ejercicios/{ejercicio}/registros-de-peso",
     [EjerciciosUsuariosController::class, "registrarNuevaMarcaDePeso"]

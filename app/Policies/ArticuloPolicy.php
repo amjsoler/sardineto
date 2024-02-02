@@ -48,6 +48,12 @@ class ArticuloPolicy
             PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
     }
 
+    public function verHistorialDeComprasDelGimnasio(User $usuario, Gimnasio $gimnasio)
+    {
+        return PolicyHelpers::comprobarSiUserEsAdministradorDelGimnasio($usuario, $gimnasio) ||
+            PolicyHelpers::comprobarSiUserEsPropietarioDelGimnasio($usuario, $gimnasio);
+    }
+
     public function comprarArticulos(User $usuario, Gimnasio $gimnasio, Articulo $articulo)
     {
         return $this->comprobarSiArticuloPerteneceAGimnasio($articulo, $gimnasio) &&

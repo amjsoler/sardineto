@@ -17,6 +17,17 @@ class SuscripcionController extends Controller
         return response()->json($gimnasio->suscripciones);
     }
 
+    public function verMisSuscripciones(Gimnasio $gimnasio) {
+        return response()->json(
+            $gimnasio->suscripciones()
+                ->with("tarifaALaQuePertenece")
+                ->where("usuario", auth()->user()->getAuthIdentifier())
+                ->orderBy("id", "desc")
+                ->get()
+                ->makeVisible("created_at")
+        );
+    }
+
     public function crearSuscripcion(Gimnasio $gimnasio, SuscripcionCrearSuscripcionRequest $request)
     {
         $tarifa = Tarifa::find($request->tarifa);
