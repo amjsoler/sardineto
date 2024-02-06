@@ -27,8 +27,9 @@ class SuscripcionCrearSuscripcionComoAdminRequest extends FormRequest
             ],
             "usuario" => [
                 "required",
+
                 Rule::exists("usuarios_gimnasios", "usuario")->where("gimnasio", $this->gimnasio->id)->where("invitacion_aceptada", true),
-                new ComprobarQueUserNoTieneSuscripcionEsteMes($this->gimnasio->id)
+                new ComprobarQueUserNoTieneSuscripcionEsteMes($this->gimnasio->id, $this->tarifa)
             ]
         ];
     }

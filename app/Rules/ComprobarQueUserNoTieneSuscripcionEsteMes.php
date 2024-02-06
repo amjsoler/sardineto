@@ -6,6 +6,7 @@ use App\Models\Gimnasio;
 use App\Models\Tarifa;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use function PHPUnit\Framework\isEmpty;
 
 class ComprobarQueUserNoTieneSuscripcionEsteMes implements ValidationRule
 {
@@ -16,10 +17,11 @@ class ComprobarQueUserNoTieneSuscripcionEsteMes implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if(Tarifa::find($this->tarifa)->tipo === "suscripcion"){
+        $tarifa = Tarifa::find($this->tarifa);
+        if(!empty($tarifa) && $tarifa->tipo === "suscripcion"){
             if(Gimnasio::find($this->gimnasio)
                 ->suscripciones()
-                ->with("tarifaALaQuePertenece", function($q){return $q->where("tipo", "suscripcion");})
+                ->whereHas("tarifaALaQuePertenece", function($q){$q->where("tipo","suscripcion");})
                 ->where("usuario", $value)
                 ->whereYear("created_at", now()->year)
                 ->whereMonth("created_at", now()->month)

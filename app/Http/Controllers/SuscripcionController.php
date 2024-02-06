@@ -14,7 +14,16 @@ class SuscripcionController extends Controller
 {
     public function verSuscripciones(Gimnasio $gimnasio)
     {
-        return response()->json($gimnasio->suscripciones);
+        return response()->json(
+            $gimnasio->suscripciones()
+            ->with([
+                "tarifaALaQuePertenece",
+                "usuarioQueSeSuscribe"
+            ])
+                ->orderBy("id", "desc")
+            ->get()
+            ->makeVisible("created_at")
+        );
     }
 
     public function verMisSuscripciones(Gimnasio $gimnasio) {
@@ -37,7 +46,11 @@ class SuscripcionController extends Controller
         $suscripcion->creditos_restantes = $tarifa->creditos;
         $gimnasio->suscripciones()->save($suscripcion);
 
-        return response()->json($suscripcion->refresh());
+        return response()->json(
+            $suscripcion->refresh()
+                ->load("tarifaALaQuePertenece")
+                ->makeVisible("created_at")
+        );
     }
 
     public function adminCreaSuscripcion(Gimnasio $gimnasio, SuscripcionCrearSuscripcionComoAdminRequest $request)

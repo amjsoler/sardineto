@@ -21,4 +21,9 @@ class Suscripcion extends Model
     {
         return $this->belongsTo(Tarifa::class, "tarifa", "id")->withTrashed();
     }
+
+    public function usuarioQueSeSuscribe() : belongsTo
+    {
+        return $this->belongsTo(User::class, "usuario", "id")->withTrashed();
+    }
 }
