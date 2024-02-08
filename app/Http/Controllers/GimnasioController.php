@@ -18,12 +18,26 @@ class GimnasioController extends Controller
 {
     public function misGimnasios()
     {
-        $gimnasiosPropietario = auth()->user()->gimnasiosPropietario;
-        $gimnasiosInvitado = auth()->user()->gimnasiosInvitado()->wherePivot("invitacion_aceptada", true)->get();
+        $gimnasiosPropietario = auth()->user()->gimnasiosPropietario()
+            ->withCount(
+                ["administradores as permisosAdmin" => function($q){
+                    return $q->where("usuario", auth()->user()->id);
+                },
+                ]
+            )->get();
+
+        $gimnasiosInvitado = auth()->user()->gimnasiosInvitado()
+            ->wherePivot("invitacion_aceptada", true)
+            ->withCount(
+                ["administradores as permisosAdmin" => function($q){
+                    return $q->where("usuario", auth()->user()->id);
+                    },
+                ]
+            )->get();
 
         $coleccionFinal = $gimnasiosInvitado->merge($gimnasiosPropietario);
 
-        return response()->json($coleccionFinal->sortBy("nombre")->values()->all(), 200);
+        return response()->json($coleccionFinal->sortBy("nombre")->values(), 200);
     }
 
     public function crearGimnasio(GimnasioCrearGimnasioRequest $request)
