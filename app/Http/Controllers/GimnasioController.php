@@ -64,7 +64,10 @@ class GimnasioController extends Controller
 
     public function usuariosInvitados(Gimnasio $gimnasio)
     {
-        return $gimnasio->usuariosInvitados()->withPivot(["invitacion_aceptada"])->get();
+        return $gimnasio->usuariosInvitados()
+            ->withPivot(["invitacion_aceptada"])
+            ->orderBy("id", "desc")
+            ->get();
     }
 
     public function invitarUsuario(Gimnasio $gimnasio, GimnasioInvitarUsuarioRequest $request)
