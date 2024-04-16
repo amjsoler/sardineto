@@ -1,9 +1,7 @@
-## Posibles API response codes
+# Sardineto
+Es un proyecto centrado en la gestión interna de gimnasios (especialmente de crossfit).
+Gestión de clases, ejercicios, pagos, clientes, etc. Los usuarios/suscritos, podrán apuntarse a las clases, gestionar su suscripción, créditos restantes, etc.
 
-- 200: OK
-- 400: Error desconocido en la petición
-- 422: Error al validar los datos enviado
-- 460: La cuenta no está verificada
-- 461: Ya has iniciado sesión (para las rutas que requieran peticionar como invitado)
-- 462: La contraseña no es correcta durante el inicio de sesión
-- 463: La cuenta ya está verificada
+## Tecnologías
+- Se ha desarrollado una app cliente en Vue.js [https://github.com/amjsoler/sardinetocliente](https://github.com/amjsoler/sardinetocliente)
+- Para el backend se ha expuesto un API REST desarrollada en Laravel [https://github.com/amjsoler/sardineto](https://github.com/amjsoler/sardineto)
